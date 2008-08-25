@@ -1,0 +1,120 @@
+/** @doc Main style sheet */
+.hidden {
+	display: none;
+	visibility: hidden;
+}
+
+body {
+	margin-left: 10%;
+	margin-right: 15%; 
+}
+
+div#bar {
+	float: right;
+	font-size: smaller;
+	position: relative;
+	top: -18px;
+	text-align: right;
+}
+
+div#bar a{
+	color: white;
+	text-decoration: none;
+}
+
+div#bar a:active { 
+	color: yellow; 
+}
+div#bar a:link {}
+div#bar a:hover {
+	text-decoration: underline;
+}
+div#bar a:visited {}
+
+div#bar ul li{
+	color: white;
+	background-color: green;
+	display: inline;
+	margin-left: 1px;
+	padding-left: 4px;
+	padding-right: 4px;
+}
+/*div:hover {
+border: 1px solid black;
+}*/
+
+div#contact {
+	background: orange;
+	border: 1px solid black;
+	color: blue;
+	font-size: 85%;
+	width: 40%;
+	padding-right: 5px;
+	position: relative;
+	top: -10px;
+	right: -60%;
+}
+
+div#content {
+	margin-left: 5%;
+}
+
+div#footer {
+	border: 1px solid black;
+	position: relative;
+	top: 80px;
+}
+
+div#footer img {
+	height: 50px;
+	width: 80px;
+}
+
+div#header {
+	background-color: green;
+	opacity:.85;
+}
+
+div#license {
+	background-color: #F7FFCE;
+	border: 1px dashed #AECF00;
+	font-family: courier, serif;
+	font-size: smaller;
+	position: fixed;
+	right: 3%;
+	bottom: 5%;
+	padding: 10px;
+	text-align: justify;
+	width: 80%;
+	opacity:0.9;
+}
+
+div#nearW ul {
+	list-style: none;
+}
+
+div.result ul li{
+	font-style: italic;
+	margin-bottom: 3px;
+}
+
+div#search {
+	width: 50%;
+}
+
+p.error {
+	color: red;
+	font-size: smaller;
+}
+
+span.morf {
+	color: blue;
+}
+
+/* For IE compability */
+div#header {
+    filter: alpha(opacity=85);
+}
+div#license {
+    filter:alpha(opacity=60);
+}
