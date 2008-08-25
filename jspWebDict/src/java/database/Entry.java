@@ -83,9 +83,14 @@ public class Entry {
 	ResultSet rs = null;
 	Statement st = null;
 
+	/*  TODO --> control "szSQL" --> SQL Injection
+	 *[ as' OR true OR 'as' = 'as ] <-- muestra todas las palabras
+	 * szWord = szWord.replace("'", ""); (eliminar comillas simples?)
+	 */
+	
 	String szSQL;
 	szSQL = "SELECT id FROM word WHERE term = '" + szWord + "'";
-
+	
 	try {
 	    co = initConnection();
 	    st = co.createStatement();
