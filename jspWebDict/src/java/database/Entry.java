@@ -34,12 +34,14 @@ public class Entry {
 	this.definition = def;
 	this.examples = ex;
     }
-    
+
     /** Add a new word to the database 
      * @return null: if everything go fine, in another situation returb a 
      * String which describes the problem
      */
     public static String addWord(String w, String m, String def) throws Exception {
+	if (true)
+	    throw new Exception("Operation not yet implemented"); //TODO
 	Connection co = null;
 	ResultSet rs = null;
 	Statement st = null;
@@ -48,12 +50,12 @@ public class Entry {
 	    if (w == null || def == null)
 		throw new Exception("You must insert the word and its def");
 	    //TODO --> Control SQL Exception --> Eliminar entrada si hay algun problema: mantener consistencia BD
-	    
+
 	    String szSQL = "INSERT INTO word(term) VALUES('" + w + "')";
 	    co = initConnection();
 	    st = co.createStatement();
 	    int n = st.executeUpdate(szSQL);
-	    
+
 	    if (n > 0) {
 		szSQL = "SELECT id FROM word WHERE term = '" + w + "'";
 		rs = st.executeQuery(szSQL);
@@ -75,8 +77,8 @@ public class Entry {
 	return null;
     }
 
-    public static LinkedList<Entry> getDefinition(String szWord) throws Exception {
-	LinkedList<Entry> l;
+    public static ArrayList<LinkedList<Entry>> getDefinition(String szWord) throws Exception {
+	ArrayList<LinkedList<Entry>> aRes = new ArrayList<LinkedList<Entry>>();
 	Connection co = null;
 	ResultSet rs = null;
 	Statement st = null;
@@ -86,20 +88,18 @@ public class Entry {
 
 	try {
 	    co = initConnection();
-	    if(co!=null) szSQL = "SI"; else szSQL="NO";
-	    if(true) throw new Exception("Conexion creada! " + szSQL);
 	    st = co.createStatement();
 	    rs = st.executeQuery(szSQL);
+
 	    // Get the ID of the searched WORD
-	    if (rs.next())
-		l = getDefinition(rs.getInt("id"), szWord);
-	    else
-		l = null;
+	    while (rs.next())
+		aRes.add(getDefinition(rs.getInt("id")));
+
 	} finally {
 	    closeConnection(co, st, rs);
 	}
 
-	return l;
+	return aRes;
 
     }
 
@@ -107,10 +107,11 @@ public class Entry {
      * @param id identifier of the word
      * @param w (opt) term of the word -- can be null ---- optimization purpose
      */
-    public static LinkedList<Entry> getDefinition(int id, String w) throws Exception {
+    public static LinkedList<Entry> getDefinition(int id) throws Exception {
 	Connection co = null;
 	ResultSet rs = null;
 	Statement st = null;
+	String w, m;
 	String szSQL;
 	LinkedList<Entry> l = new LinkedList<Entry>();
 
@@ -118,25 +119,25 @@ public class Entry {
 	    co = initConnection();
 	    st = co.createStatement();
 
-	    if (w == null || w.length() == 0) { //FIXME --> jdk6: w.isEmpty()
-		szSQL = "SELECT term FROM word WHERE id = " + id;
-		rs = st.executeQuery(szSQL);
-		if (rs.next())
-		    w = rs.getString("term");
-		else // Control manually modified ID
-		    throw new Exception("This word does not exist in our DB");
+	    szSQL = "SELECT term, morf FROM word WHERE id = " + id;
+	    rs = st.executeQuery(szSQL);
+	    if (rs.next()) {
+		w = rs.getString("term");
+		m = rs.getString("morf");
 	    }
+	    else // Control manually modified ID
+		throw new Exception("This word does not exist in our DB");
 
 	    /** Get and process the multiple definitions */
-	    szSQL = "SELECT * FROM entry WHERE id = " + id;
+	    szSQL = "SELECT * FROM entry WHERE idWord = " + id;
 	    rs = st.executeQuery(szSQL);
 
 	    while (rs.next()) {
-		String m = rs.getString("morf");
+		int idEntry = rs.getInt("id");
 		String def = rs.getString("definition");
-
 		/** Get examples of use */
-		szSQL = "SELECT sentence FROM examples WHERE id = " + id;
+		szSQL = "SELECT sentence FROM examples WHERE (idWord = " + id +
+			    " AND idEntry = " + idEntry + ")";
 		Statement stEX = co.createStatement();
 		ResultSet rsEX = stEX.executeQuery(szSQL);
 		ArrayList<String> ex = new ArrayList<String>();
@@ -214,8 +215,7 @@ public class Entry {
 	Context initCtx = new InitialContext();
 	Context envCtx = (Context) initCtx.lookup("java:comp/env");
 	DataSource ds = (DataSource) envCtx.lookup("jdbc/jspWebDict");
-	String sz = (ds==null)? "YES" : "NO";
-	if(true)    throw new SQLException("ds is null? " + sz);
+
 	return ds.getConnection();
     }
 
@@ -230,7 +230,7 @@ public class Entry {
 		if (st != null)
 		    st.close();
 	    } finally {
-		if(co != null)
+		if (co != null)
 		    co.close();
 	    }
 	}
