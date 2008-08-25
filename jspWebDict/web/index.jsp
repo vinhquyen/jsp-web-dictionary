@@ -57,25 +57,25 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 	    String szAction = request.getParameter("action");
 	    int iAction;
 	    if (szAction != null) {
-		try {
-		    iAction = Integer.valueOf(szAction);
-		} catch (Exception e) {
-		    iAction = 0;
-		}
-		switch (iAction) {
-		    case 1:
-			szAction = "addword.jsp";
-			break;
-		    case 2:
-			String redirectURL = "index.jsp?id=" + Entry.getRandom();
-			response.sendRedirect(redirectURL);
-			break;
-		    case 3:
-			szAction = "about.jsp";
-			break;
-		    default:
-			szAction = "search.jsp";
-		}
+			try {
+				iAction = Integer.valueOf(szAction);
+			} catch (Exception e) {
+				iAction = 0;
+			}
+			switch (iAction) {
+				case 1:
+					szAction = "addword.jsp";
+					break;
+				case 2:
+					String redirectURL = "index.jsp?id=" + Entry.getRandom();
+					response.sendRedirect(redirectURL);
+					break;
+				case 3:
+					szAction = "about.jsp";
+					break;
+				default:
+					szAction = "search.jsp";
+			}
 	    }
 	    else
 		szAction = "search.jsp";
