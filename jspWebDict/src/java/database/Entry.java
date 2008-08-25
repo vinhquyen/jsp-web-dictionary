@@ -86,6 +86,8 @@ public class Entry {
 
 	try {
 	    co = initConnection();
+	    if(co!=null) szSQL = "SI"; else szSQL="NO";
+	    if(true) throw new Exception("Conexion creada! " + szSQL);
 	    st = co.createStatement();
 	    rs = st.executeQuery(szSQL);
 	    // Get the ID of the searched WORD
@@ -212,7 +214,8 @@ public class Entry {
 	Context initCtx = new InitialContext();
 	Context envCtx = (Context) initCtx.lookup("java:comp/env");
 	DataSource ds = (DataSource) envCtx.lookup("jdbc/jspWebDict");
-
+	String sz = (ds==null)? "YES" : "NO";
+	if(true)    throw new SQLException("ds is null? " + sz);
 	return ds.getConnection();
     }
 
