@@ -49,7 +49,7 @@
 	/** Find lexicographically nearest words */
 	if (aDef == null || aDef.isEmpty()) {
 			out.print("<p>Definition of word ''<em>" + szWord + "</em>'' not FOUND<br/>");
-			out.print("<a href='index.jsp?action=add&word=" + szWord + "'>Add definition</a>");
+			out.print("<a href='index.jsp?action=1&word=" + szWord + "'>Add definition</a>");
 			LinkedList<Entry> laux = Entry.getNearWords(szWord);
 			out.println("<div id='nearW'>");
 			for(Entry e : laux) {

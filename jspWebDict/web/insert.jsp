@@ -14,9 +14,10 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <title>New Word Inserted</title>
+		<link rel="stylesheet" href="css/main.css" type="text/css" />
     </head>
     <body>
-        <h2>Hello World!</h2>
+        <h2>Inserting new word!</h2>
 		<%
 			request.setCharacterEncoding("UTF-8");
 			//NOTA: the term always is saved in lowerCase format!
@@ -28,7 +29,13 @@
 			out.println("Def: " + def + "<br/>");
 			out.println("Morfology: " + mrf + "</p>");
 			
-			String res = Entry.addWord(wrd, mrf, def);
+			String res = null;
+			try {
+				res = Entry.addWord(wrd, mrf, def);
+			}catch (Exception e){
+			    InOut.printError(e, out);
+			    return;
+			}
 			if(res == null)
 			    out.println("<h3>Word added succesfully</h3>");
 			else
