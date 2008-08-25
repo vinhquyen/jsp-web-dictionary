@@ -28,12 +28,12 @@
 	
 	if(szWord != null) { /** get defition by WORD */
 		szWord = szWord.toLowerCase();
-		
+		out.print("<h4>Looking for: " + szWord + "</h4>");
 		try {
 			laux = Entry.getDefinition(szWord);
 		} catch (Exception e) {
 			out.print("<p class='error'>");
-			out.print(e.getMessage());
+			out.print(e.toString());
 			if(laux == null)
 			    out.print("<h3>Lista nula</h3>");
 			out.print("</p>");
