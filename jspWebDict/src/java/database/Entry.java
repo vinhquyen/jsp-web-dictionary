@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Arrays;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -16,11 +17,18 @@ import java.util.Random;
 
 public class Entry {
 
+    /** Process the examples introduced by the user 
+     * TODO: define the examples format........
+     */
+    private static String[] processExamples(String exs) {
+	return exs.split(";");
+    }
     private int id;
     private String word;
-    private String morfologia;
+    private String morfology;
     private String definition;
     private ArrayList<String> examples;
+    private static String aMorf[] = {"adj.", "adv.", "interfj.", "f.", "m.", "prep.", "pron.", "v."};
 
     public Entry(int id, String w) {
 	this.id = id;
@@ -30,7 +38,7 @@ public class Entry {
     public Entry(String w, String m, String def, ArrayList<String> ex) {
 	this.word = w;
 	//TODO test if m is a valid morfology
-	this.morfologia = m;
+	this.morfology = m;
 	this.definition = def;
 	this.examples = ex;
     }
@@ -39,38 +47,65 @@ public class Entry {
      * @return null: if everything go fine, in another situation returb a 
      * String which describes the problem
      */
-    public static String addWord(String w, String m, String def) throws Exception {
-	if (true)
-	    throw new Exception("Operation not yet implemented"); //TODO
+    public static String addWord(String w, String m, String def, String exs) throws Exception {
+	// TODO: test addWord
+	
 	Connection co = null;
 	ResultSet rs = null;
 	Statement st = null;
+
 	try {
-	    //TODO --> comprobaciones?? ++ EJEMPLOS de USO
+	    //TODO --> comprobaciones??
 	    if (w == null || def == null)
 		throw new Exception("You must insert the word and its def");
-	    //TODO --> Control SQL Exception --> Eliminar entrada si hay algun problema: mantener consistencia BD
 
-	    String szSQL = "INSERT INTO word(term) VALUES('" + w + "')";
+	    ArrayList<String> aux = (ArrayList<String>)Arrays.asList(aMorf);
+	    if(!aux.contains(m))
+		throw new Exception("The morfology must be: [" + aux.toString() + "]");
+	    
+	    //FIXME -- TODO --> Eliminar comillas simples (') de los strings (sustituir por [\'] )
+	    def = def.replaceAll("'", "\'");
+	    exs = exs.replaceAll("'", "\'");
+	    /*------------ EOF VALIDATION -------------------*/
+	    
+	    //TODO --> Control SQL Exception --> Eliminar entrada si hay algun problema: mantener consistencia BD
 	    co = initConnection();
+	    co.setAutoCommit(false);
 	    st = co.createStatement();
+
+	    String szSQL = "INSERT INTO word(term, morf) VALUES('" + w + "', '" + m + "')";
 	    int n = st.executeUpdate(szSQL);
 
 	    if (n > 0) {
-		szSQL = "SELECT id FROM word WHERE term = '" + w + "'";
+		szSQL = "SELECT LAST_INSERT_ID() FROM word";
 		rs = st.executeQuery(szSQL);
-		while (rs.next()) {
-		    int id = rs.getInt("id");
-		    szSQL = "INSERT INTO entry VALUES(" + id + ", '" + m + "', '" + def + "')";
+		if (rs.next()) {
+		    int idWord = rs.getInt(1);
+		    szSQL = "INSERT INTO entry(idWord, definition) VALUES(" + idWord + ", '" + def + "')";
 		    st = co.createStatement();
 		    n = st.executeUpdate(szSQL);
 		    if (n == 0)
-			throw new SQLException("ERROR en el INSERT" + st.getWarnings()); //TODO -- DESHACER inserciones--> ROLLBACK?
+			throw new SQLException("ERROR en el INSERT" + st.getWarnings());
+
+		    szSQL = "SELECT LAST_INSERT_ID() FROM entry";
+		    st = co.createStatement();
+		    rs = st.executeQuery(szSQL);
+		    
+		    if (rs.next()) {
+			int idEntry = rs.getInt(1);
+			for (String example : processExamples(exs)) {
+			    szSQL = "INSERT INTO examples VALUES (" + idWord + ", " + idEntry + ", '" + example + "')";
+			    st = co.createStatement();
+			    n = st.executeUpdate(szSQL);
+			}
+		    }
 		}
 	    }
+	    co.commit();
 	} catch (SQLException ex) {
+	    co.rollback(); // Undo operations to maintain DB consistent
 	    Logger.getLogger(Entry.class.getName()).log(Level.SEVERE, null, ex);
-	    return (ex.toString());
+	    return ("INFO: All the operations have been rollbacked <br/>\n" + ex.toString());
 	} finally {
 	    closeConnection(co, st, rs);
 	}
@@ -87,10 +122,10 @@ public class Entry {
 	 *[ as' OR true OR 'as' = 'as ] <-- muestra todas las palabras
 	 * szWord = szWord.replace("'", ""); (eliminar comillas simples?)
 	 */
-	
+
 	String szSQL;
 	szSQL = "SELECT id FROM word WHERE term = '" + szWord + "'";
-	
+
 	try {
 	    co = initConnection();
 	    st = co.createStatement();
@@ -142,7 +177,7 @@ public class Entry {
 		String def = rs.getString("definition");
 		/** Get examples of use */
 		szSQL = "SELECT sentence FROM examples WHERE (idWord = " + id +
-			    " AND idEntry = " + idEntry + ")";
+			" AND idEntry = " + idEntry + ")";
 		Statement stEX = co.createStatement();
 		ResultSet rsEX = stEX.executeQuery(szSQL);
 		ArrayList<String> ex = new ArrayList<String>();
@@ -241,20 +276,20 @@ public class Entry {
 	}
     }
 
-    public String getMorfologia() {
-	return morfologia;
+    public String getMorfology() {
+	return morfology;
     }
 
-    public void setMorfologia(String morfologia) {
-	this.morfologia = morfologia;
+    public void setMorfology(String morf) {
+	this.morfology = morf;
     }
 
-    public String getDefinicion() {
+    public String getDefinition() {
 	return definition;
     }
 
-    public void setDefinicion(String definicion) {
-	this.definition = definicion;
+    public void setDefinition(String def) {
+	this.definition = def;
     }
 
     public ArrayList<String> getExamples() {
@@ -267,6 +302,10 @@ public class Entry {
 
     public int getId() {
 	return id;
+    }
+
+    public static String[] getMorfologies() {
+	return aMorf;
     }
 
     public String getWord() {
