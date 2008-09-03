@@ -32,7 +32,7 @@ public class InOut {
 	    out.println("<ol>");
 	    for (Entry e : laux) {
 		out.print("<li>");
-		out.println("<span class='morf'>" + e.getMorfologia() + "</span> " + e.getDefinicion() + "</li>");
+		out.println("<span class='morf'>" + e.getMorfology() + "</span> " + e.getDefinition() + "</li>");
 
 		ArrayList<String> aEx = e.getExamples();
 		if (aEx != null && !aEx.isEmpty()) {

@@ -22,16 +22,18 @@
 			request.setCharacterEncoding("UTF-8");
 			//NOTA: the term always is saved in lowerCase format!
 			String wrd = request.getParameter("word").toLowerCase();
-			String def = request.getParameter("def");
 			String mrf = request.getParameter("morfology");
+			String def = request.getParameter("def");	
+			String exs = request.getParameter("ex");
 			
 			out.println("<p>Word: " + wrd + "<br/>");
-			out.println("Def: " + def + "<br/>");
-			out.println("Morfology: " + mrf + "</p>");
+			out.println("Def: "		+ def + "<br/>");
+			out.println("Morf: "	+ mrf + "<br/>");
+			out.println("Examples: "+ exs + "</p>" );
 			
 			String res = null;
 			try {
-				res = Entry.addWord(wrd, mrf, def);
+				res = Entry.addWord(wrd, mrf, def, exs);
 			}catch (Exception e){
 			    InOut.printError(e, out);
 			    return;
