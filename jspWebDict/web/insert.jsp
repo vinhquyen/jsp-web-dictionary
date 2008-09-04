@@ -36,12 +36,12 @@
 				res = Entry.addWord(wrd, mrf, def, exs);
 			}catch (Exception e){
 			    InOut.printError(e, out);
-			    return;
+			    res = "";
 			}
 			if(res == null)
 			    out.println("<h3>Word added succesfully</h3>");
-			else
-			    out.println("<h3>ERROR: " + res + "</h3>");
+			else	
+			    InOut.printError(new Exception(res), out);
 		 %>
     </body>
 </html>

@@ -31,6 +31,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 				 }
 			 }
 		</script>
+		<script type="text/javascript" src="js/hiper.js"></script>
 	</head>
 	<body>
 		<div id="header">
@@ -77,8 +78,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 					szAction = "search.jsp";
 			}
 	    }
-	    else
-		szAction = "search.jsp";
+	    else	szAction = "search.jsp";
 			%>
 			<jsp:include page="<%=szAction %>" />
 		</div>

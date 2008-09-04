@@ -11,6 +11,7 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.Random;
@@ -37,7 +38,6 @@ public class Entry {
 
     public Entry(String w, String m, String def, ArrayList<String> ex) {
 	this.word = w;
-	//TODO test if m is a valid morfology
 	this.morfology = m;
 	this.definition = def;
 	this.examples = ex;
@@ -59,19 +59,18 @@ public class Entry {
 	    if (w == null || def == null)
 		throw new Exception("You must insert the word and its def");
 
-	    ArrayList<String> aux = (ArrayList<String>)Arrays.asList(aMorf);
+	    List<String> aux = Arrays.asList(aMorf);
 	    if(!aux.contains(m))
 		throw new Exception("The morfology must be: [" + aux.toString() + "]");
 	    
-	    //FIXME -- TODO --> Eliminar comillas simples (') de los strings (sustituir por [\'] )
+	    // FIXME Eliminar comillas simples (') de los strings (sustituir por [\'] )
 	    def = def.replaceAll("'", "\'");
 	    exs = exs.replaceAll("'", "\'");
 	    /*------------ EOF VALIDATION -------------------*/
 	    
-	    //TODO --> Control SQL Exception --> Eliminar entrada si hay algun problema: mantener consistencia BD
 	    co = initConnection();
-	    co.setAutoCommit(false);
 	    st = co.createStatement();
+	    st.execute("START TRANSACTION");
 
 	    String szSQL = "INSERT INTO word(term, morf) VALUES('" + w + "', '" + m + "')";
 	    int n = st.executeUpdate(szSQL);
@@ -90,7 +89,7 @@ public class Entry {
 		    szSQL = "SELECT LAST_INSERT_ID() FROM entry";
 		    st = co.createStatement();
 		    rs = st.executeQuery(szSQL);
-		    
+
 		    if (rs.next()) {
 			int idEntry = rs.getInt(1);
 			for (String example : processExamples(exs)) {
@@ -101,9 +100,10 @@ public class Entry {
 		    }
 		}
 	    }
-	    co.commit();
+	    st.execute("COMMIT");
 	} catch (SQLException ex) {
-	    co.rollback(); // Undo operations to maintain DB consistent
+	    // Undo operations to maintain DB consistency
+	    st.execute("ROLLBACK");
 	    Logger.getLogger(Entry.class.getName()).log(Level.SEVERE, null, ex);
 	    return ("INFO: All the operations have been rollbacked <br/>\n" + ex.toString());
 	} finally {
