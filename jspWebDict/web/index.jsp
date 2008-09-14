@@ -4,7 +4,20 @@
 		   Author     : chiron
 --%>
 <%@page import="database.*" %>
+<%@page import="java.util.Locale" %>
+<%@page import="java.util.ResourceBundle" %>
 <%@page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+
+<%
+	Locale curr;
+	String szLang = request.getParameter("lang");
+	if(szLang == null || szLang.length() == 0)
+	    curr = Locale.getDefault();
+	else
+	    curr = new Locale(szLang);
+	
+	ResourceBundle r = ResourceBundle.getBundle("resources/main", curr); 
+%>
 
 <!DOCTYPE html 
 PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
@@ -13,7 +26,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-		<title>JSP Web Dictionary v.0.0.1</title>
+		<title>JSP Web Dictionary <% out.print(r.getString("version")); %></title>
 		<link rel="stylesheet" href="css/main.css" type="text/css" />
 		<script>
 			 var show = true;
@@ -41,15 +54,23 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 		</div>
 		<div id="bar">
 			<ul class="inline">
-				<li><a href="index.jsp?action=1">Add a new word</a></li>
-				<li><a href="index.jsp?action=2">Random word</a></li>
-				<li><a href="#" onclick="showDiv('license')">License</a></li>
-				<li><a href="#" onclick="showDiv('contact')">Contact</a></li>
-				<li><a href="index.jsp?action=3">About</a></li>
+				<li><a href="index.jsp?action=1"><% out.print(r.getString("add")); %></a></li>
+				<li><a href="index.jsp?action=2"><% out.print(r.getString("rnd")); %></a></li>
+				<li><a href="#" onclick="showDiv('license')"><% out.print(r.getString("license")); %></a></li>
+				<li><a href="#" onclick="showDiv('contact')"><% out.print(r.getString("contact")); %></a></li>
+				<li><a href="index.jsp?action=3"><% out.print(r.getString("about")); %></a></li>
 			</ul>
 			<div id="contact" class="hidden">
 				<em>admin947 (AT) gmail.com</em>
 			</div>
+		</div>
+		<div id="lang">
+			 <select name="lang" onchange="location.href=location.href+'?lang='+this.value">
+				  <option value="">--</option>
+				  <option value="es">es</option>
+				  <option value="en">en</option>
+				  <option value="ar">patu&eacute;s</option>
+			 </select>
 		</div>
 		<div id="content">
 			<%
