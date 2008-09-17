@@ -205,7 +205,7 @@ public class Entry {
 
 	int endIndex = (3 > szWord.length()) ? szWord.length() : 3;
 	szWord = szWord.substring(0, endIndex);
-	String szSQL = "SELECT * FROM word WHERE term LIKE '" + szWord + "%'";
+	String szSQL = "SELECT * FROM word WHERE term LIKE '" + szWord + "%' LIMIT 10";
 
 	try {
 	    co = initConnection();
@@ -250,6 +250,26 @@ public class Entry {
 	return i;
     }
 
+    public static int getSizeDB() throws SQLException {
+	int iSize = -1;
+	Connection co = null;
+	ResultSet rs = null;
+	Statement st = null;
+	
+	try {
+	    co = initConnection();
+	    st = co.createStatement();
+	    rs = st.executeQuery("SELECT COUNT(id) FROM word");
+	    rs.first();
+	    iSize = rs.getInt("COUNT(id)");
+	} catch (Exception ex) {
+	    Logger.getLogger(Entry.class.getName()).log(Level.SEVERE, null, ex);
+	} finally {
+	    closeConnection(co, st, rs);
+	}
+	return iSize;
+    }
+    
     /** Establish a connection with Database throw JDBC*/
     private static Connection initConnection() throws NamingException, SQLException {
 	Context initCtx = new InitialContext();

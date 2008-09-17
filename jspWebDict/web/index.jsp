@@ -4,6 +4,7 @@
 		   Author     : chiron
 --%>
 <%@page import="database.*" %>
+<%@page import="java.text.MessageFormat" %>
 <%@page import="java.util.Locale" %>
 <%@page import="java.util.ResourceBundle" %>
 <%@page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
@@ -118,6 +119,15 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 			<p>You should have received a <a href="COPYING.txt">copy 
 				of the GNU General Public License</a> along with this program.<br/>  
 				 If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.</p>
+		</div>
+		<div id="counter">
+			 <p>
+			<%
+			int iCount = Entry.getSizeDB();
+			String szC = MessageFormat.format(r.getString("counter"), iCount);
+			out.print(szC); 
+			%>
+			  </p>
 		</div>
 		<div class="hidden" id="footer">
 			<img src="img/guayente.jpg" alt="Asociaci&oacute;n Guayente" />
