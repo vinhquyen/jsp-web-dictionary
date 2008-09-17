@@ -7,7 +7,14 @@
 <%@page import="java.text.MessageFormat" %>
 <%@page import="java.util.*" %>
 
-<% ResourceBundle r = ResourceBundle.getBundle("resources/main"); %>
+<% 
+	ResourceBundle r = ResourceBundle.getBundle("resources/main"); 
+	String szLang = request.getParameter("lang");
+	if(szLang == null || szLang.length() == 0) {
+	    Locale curr = Locale.getDefault();
+	    szLang = curr.getLanguage();
+	}
+%>
 
 <div id="search">
 	<form action="index.jsp">
@@ -15,6 +22,7 @@
 		<label><% out.print(r.getString("searchLab")); %></label>
 		<input type="text" name="word" />
 		<input type="submit" value="Go!"/>
+		<input type="hidden" name="lang" value="<% out.print(szLang); %>"/>
 	  </p>
 	</form>
 </div>

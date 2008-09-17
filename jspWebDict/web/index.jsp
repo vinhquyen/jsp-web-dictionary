@@ -81,7 +81,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 	</head>
 	<body>
 		<div id="header">
-			<h1><a href="index.jsp" style="border: 0;"><img src="img/dict.jpg" alt="home" width="120px"
+			<h1><a href="index.jsp?lang=<% out.print(szLang); %>" style="border: 0;"><img src="img/dict.jpg" alt="home" width="120px"
 													   style="vertical-align:middle;filter:alpha(opacity=80);-moz-opacity:.8;opacity:.8;"/></a>
 			JSP-Tech Web Dictionary</h1>
 		</div>
