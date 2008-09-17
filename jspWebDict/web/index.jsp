@@ -12,8 +12,10 @@
 <%
 	Locale curr;
 	String szLang = request.getParameter("lang");
-	if(szLang == null || szLang.length() == 0)
+	if(szLang == null || szLang.length() == 0) {
 	    curr = Locale.getDefault();
+	    szLang = curr.getLanguage();
+	}
 	else
 	    curr = new Locale(szLang);
 	
@@ -30,19 +32,49 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 		<title>JSP Web Dictionary <% out.print(r.getString("version")); %></title>
 		<link rel="stylesheet" href="css/main.css" type="text/css" />
 		<script>
-			 var show = true;
-			 function showDiv(id) {
-				 var obj = document.getElementById(id);
-				 if(show) {
-					 obj.style.display = "block";
-					 obj.style.visibility = "visible"; 
-					 show = false;
-				 }
-				 else {
-					 obj.style.display = "none";
-					 obj.style.visibility = "hidden"; 
-					 show = true;
-				 }
+			 //var show = true;
+			function showDiv(id) {
+				var obj = document.getElementById(id);
+				if(obj.style.display == "block" || obj.style.visibility == "visible") {
+					obj.style.display = "none";
+					obj.style.visibility = "hidden"; 
+				}
+				else {
+					obj.style.display = "block";
+					obj.style.visibility = "visible"; 	 
+				}
+			 }
+			
+			 function changeLang(lang) {
+				var pag, host, params;
+				var url = location.href;
+				 
+				var j = url.lastIndexOf("/");
+				var i = url.indexOf("?"); 
+				host = url.substring(0, j+1); //get the host		
+				 
+				if(i >= 0) {	// Some POST parameters exist
+					pag = url.substring(j+1, i); //get the page
+					params = url.substr(i); //get the parameters
+					if(params.indexOf("lang=") > -1) { //any parameter is lang and we will override it
+						var args = params.split("&"); 
+						var k;
+						for(k=0; k<args.length; k++) {
+							if(args[k].indexOf("lang=") > -1) {
+								i = args[k].indexOf("=");
+								args[k] = args[k].substring(0,i+1)+lang;
+							}
+							if(k == 0) {params = args[k];}
+							else {params = params.concat("&"+args[k]);}
+						}
+					}
+					else {params = params.concat("&lang="+lang);}
+				}
+				else {	// Do not exist any parameter
+					pag = url.substr(j+1); //get the page
+					params = "?lang="+lang;
+				}
+				location.href = host+pag+params;
 			 }
 		</script>
 		<script type="text/javascript" src="js/hiper.js"></script>
@@ -55,21 +87,21 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 		</div>
 		<div id="bar">
 			<ul class="inline">
-				<li><a href="index.jsp?action=1"><% out.print(r.getString("add")); %></a></li>
-				<li><a href="index.jsp?action=2"><% out.print(r.getString("rnd")); %></a></li>
+				<li><a href="index.jsp?action=1&lang=<% out.print(szLang); %>"><% out.print(r.getString("add")); %></a></li>
+				<li><a href="index.jsp?action=2&lang=<% out.print(szLang); %>"><% out.print(r.getString("rnd")); %></a></li>
 				<li><a href="#" onclick="showDiv('license')"><% out.print(r.getString("license")); %></a></li>
 				<li><a href="#" onclick="showDiv('contact')"><% out.print(r.getString("contact")); %></a></li>
-				<li><a href="index.jsp?action=3"><% out.print(r.getString("about")); %></a></li>
+				<li><a href="index.jsp?action=3&lang=<% out.print(szLang); %>"><% out.print(r.getString("about")); %></a></li>
 			</ul>
 			<div id="contact" class="hidden">
 				<em>admin947 (AT) gmail.com</em>
 			</div>
 		</div>
 		<div id="lang">
-			 <select name="lang" onchange="location.href=location.href+'?lang='+this.value">
+			 <select name="lang" onchange="changeLang(this.value)">
 				  <option value="">--</option>
-				  <option value="es">es</option>
-				  <option value="en">en</option>
+				  <option value="es">espa&ntilde;ol</option>
+				  <option value="en">english</option>
 				  <option value="ar">patu&eacute;s</option>
 			 </select>
 		</div>
@@ -87,20 +119,20 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 			}
 			switch (iAction) {
 				case 1:
-					szAction = "addword.jsp";
+					szAction = "addword.jsp?lang=" + szLang;
 					break;
 				case 2:
-					String redirectURL = "index.jsp?id=" + Entry.getRandom();
+					String redirectURL = "index.jsp?lang=" + szLang + "&id=" + Entry.getRandom();
 					response.sendRedirect(redirectURL);
 					break;
 				case 3:
-					szAction = "about.jsp";
+					szAction = "about.jsp?lang=" + szLang;
 					break;
 				default:
-					szAction = "search.jsp";
+					szAction = "search.jsp?lang=" + szLang;
 			}
 	    }
-	    else	szAction = "search.jsp";
+	    else	szAction = "search.jsp?lang=" + szLang;
 			%>
 			<jsp:include page="<%=szAction %>" />
 		</div>
