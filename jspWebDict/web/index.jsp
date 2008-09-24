@@ -30,67 +30,21 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 		<title>JSP Web Dictionary <% out.print(r.getString("version")); %></title>
-		<link rel="stylesheet" href="css/main.css" type="text/css" />
-		<script>
-			 //var show = true;
-			function showDiv(id) {
-				var obj = document.getElementById(id);
-				if(obj.style.display == "block" || obj.style.visibility == "visible") {
-					obj.style.display = "none";
-					obj.style.visibility = "hidden"; 
-				}
-				else {
-					obj.style.display = "block";
-					obj.style.visibility = "visible"; 	 
-				}
-			 }
-			
-			 function changeLang(lang) {
-				var pag, host, params;
-				var url = location.href;
-				 
-				var j = url.lastIndexOf("/");
-				var i = url.indexOf("?"); 
-				host = url.substring(0, j+1); //get the host		
-				 
-				if(i >= 0) {	// Some POST parameters exist
-					pag = url.substring(j+1, i); //get the page
-					params = url.substr(i); //get the parameters
-					if(params.indexOf("lang=") > -1) { //any parameter is lang and we will override it
-						var args = params.split("&"); 
-						var k;
-						for(k=0; k<args.length; k++) {
-							if(args[k].indexOf("lang=") > -1) {
-								i = args[k].indexOf("=");
-								args[k] = args[k].substring(0,i+1)+lang;
-							}
-							if(k == 0) {params = args[k];}
-							else {params = params.concat("&"+args[k]);}
-						}
-					}
-					else {params = params.concat("&lang="+lang);}
-				}
-				else {	// Do not exist any parameter
-					pag = url.substr(j+1); //get the page
-					params = "?lang="+lang;
-				}
-				location.href = host+pag+params;
-			 }
-		</script>
+		<link rel="stylesheet" href="css/main.css" type="text/css" />	
 		<script type="text/javascript" src="js/hiper.js"></script>
+		<script type="text/javascript" src="js/utils.js"></script>
 	</head>
-	<body>
+	<body onload="cssIE();">
 		<div id="header">
-			<h1><a href="index.jsp?lang=<% out.print(szLang); %>" style="border: 0;"><img src="img/dict.jpg" alt="home" width="120px"
-													   style="vertical-align:middle;filter:alpha(opacity=80);-moz-opacity:.8;opacity:.8;"/></a>
+			<h1><a href="index.jsp?lang=<% out.print(szLang); %>" style="border: 0;"><img id="logo" src="img/dict.jpg" alt="home" width="120px"/></a>
 			JSP-Tech Web Dictionary</h1>
 		</div>
 		<div id="bar">
 			<ul class="inline">
 				<li><a href="index.jsp?action=1&lang=<% out.print(szLang); %>"><% out.print(r.getString("add")); %></a></li>
 				<li><a href="index.jsp?action=2&lang=<% out.print(szLang); %>"><% out.print(r.getString("rnd")); %></a></li>
-				<li><a href="#" onclick="showDiv('license')"><% out.print(r.getString("license")); %></a></li>
-				<li><a href="#" onclick="showDiv('contact')"><% out.print(r.getString("contact")); %></a></li>
+				<li><a href="#" onclick="setVisibility('license')"><% out.print(r.getString("license")); %></a></li>
+				<li><a href="#" onclick="setVisibility('contact')"><% out.print(r.getString("contact")); %></a></li>
 				<li><a href="index.jsp?action=3&lang=<% out.print(szLang); %>"><% out.print(r.getString("about")); %></a></li>
 			</ul>
 			<div id="contact" class="hidden">
@@ -137,20 +91,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 			<jsp:include page="<%=szAction %>" />
 		</div>
 		<div id="license" class="hidden" onclick="showDiv(this.id)">
-			<p> <img src="img/gplv3.png" alt="GPL v3 logo" style="float:left; padding-right: 5px;"/>
-				This program is free software: you can redistribute it and/or modify
-				it under the terms of the GNU General Public License as published by
-				the Free Software Foundation, either version 3 of the License, or
-			(at your option) any later version.</p>
-			
-			<p>This program is distributed in the hope that it will be useful,
-				but WITHOUT ANY WARRANTY; without even the implied warranty of
-				MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-			GNU General Public License for more details.</p>
-			
-			<p>You should have received a <a href="COPYING.txt">copy 
-				of the GNU General Public License</a> along with this program.<br/>  
-				 If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.</p>
+			 <jsp:include page='<%=r.getString("licTxt") %>' />
 		</div>
 		<div id="counter">
 			 <p>
@@ -161,11 +102,22 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 			%>
 			  </p>
 		</div>
-		<div class="hidden" id="footer">
-			<img src="img/guayente.jpg" alt="Asociaci&oacute;n Guayente" />
-			<img src="img/tomcat.gif" alt="Powered by Tomcat" />
-			<img src="img/mysql.png" alt="MySQL Powered" />
-			<img src="img/java.jpg" alt="Java Powered" />
+		<div id="footer">
+			 <p> 
+				El contenido del diccionario est&aacute; ha sido extra&iacute;do 
+				del <span style="text-decoration:underline;">Diccionario del 
+				Benasqu&eacute;s</span>, con el permisos de su autor 
+				&Aacute;ngel Ballar&iacute;n Cornel.<br/>
+				Todo el contenido relacionado con su obra est&aacute; protegido 
+				por sus derechos de	autor -	Copyright(c) &Aacute;ngel 
+				Ballar&iacute;n Cornel,	Zaragoza, 1978.
+			</p>
+			<div class="hidden">
+				<img src="img/guayente.jpg" alt="Asociaci&oacute;n Guayente" />
+				<img src="img/tomcat.gif" alt="Powered by Tomcat" />
+				<img src="img/mysql.png" alt="MySQL Powered" />
+				<img src="img/java.jpg" alt="Java Powered" />
+			</div>
 		</div>
 	</body>
 </html>

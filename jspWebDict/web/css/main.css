@@ -69,8 +69,12 @@ div#counter p {
 
 div#footer {
 	border: 1px solid black;
-	position: relative;
-	top: 80px;
+	font-size: 70%;
+	padding-left: 5px;
+	padding-right: 5px;
+	position: absolute;
+	text-align: justified; 
+	bottom: 20px;
 }
 
 div#footer img {
@@ -95,6 +99,7 @@ div#license {
 	text-align: justify;
 	width: 80%;
 	opacity:0.9;
+	z-index: 1;
 }
 
 div#nearW ul {
@@ -110,6 +115,16 @@ div#search {
 	width: 50%;
 }
 
+img#gpl_logo {
+	 float:left;
+	 padding-right: 5px;
+}
+
+img#logo {
+	 vertical-align:middle; 
+	 opacity:0.8;
+}
+
 p.error {
 	color: red;
 	font-size: smaller;
@@ -117,12 +132,4 @@ p.error {
 
 span.morf {
 	color: blue;
-}
-
-/* For IE compability */
-div#header {
-    filter: alpha(opacity=85);
-}
-div#license {
-    filter:alpha(opacity=60);
 }

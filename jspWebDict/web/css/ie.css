@@ -1,0 +1,16 @@
+body {
+	background-color: black;
+	color: white;
+}
+
+div#header {
+	filter: alpha(opacity=85);
+}
+
+div#license {
+	filter: alpha(opacity=90);
+}
+
+img#logo {
+	filter: alpha(opacity=80);
+}

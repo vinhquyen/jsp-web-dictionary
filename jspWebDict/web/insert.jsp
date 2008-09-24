@@ -30,18 +30,30 @@
 			out.println("Def: "		+ def + "<br/>");
 			out.println("Morf: "	+ mrf + "<br/>");
 			out.println("Examples: "+ exs + "</p>" );
+			//TODO: request.getRemoteHost(); auth por host?
+			// request.getRemoteAddr();
 			
-			String res = null;
-			try {
-				res = Entry.addWord(wrd, mrf, def, exs);
-			}catch (Exception e){
-			    InOut.printError(e, out);
-			    res = "";
+			if(request.getParameter("secret") != null) {
+				String res = null;
+				try {
+					res = Entry.addWord(wrd, mrf, def, exs);
+				}catch (Exception e){
+					InOut.printError(e, out);
+					res = "";
+				}
+				if(res == null)
+					out.println("<h3>Word added succesfully</h3>");
+				else	
+					InOut.printError(new Exception(res), out);
 			}
-			if(res == null)
-			    out.println("<h3>Word added succesfully</h3>");
-			else	
-			    InOut.printError(new Exception(res), out);
+			else {
+				%>
+				 <h3 style="color:red;">Sorry but you are not allowed to add the word</h3>
+				  <p>Please contact with the webmaster to get more
+				   information.</p>
+				<%
+			}
 		 %>
+		  <p><a href="javascript:history.go(-1);">Go Back</a></p>
     </body>
 </html>
