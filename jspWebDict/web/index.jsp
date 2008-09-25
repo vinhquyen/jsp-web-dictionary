@@ -5,22 +5,10 @@
 --%>
 <%@page import="database.*" %>
 <%@page import="java.text.MessageFormat" %>
-<%@page import="java.util.Locale" %>
-<%@page import="java.util.ResourceBundle" %>
+
 <%@page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
-<%
-	Locale curr;
-	String szLang = request.getParameter("lang");
-	if(szLang == null || szLang.length() == 0) {
-	    curr = Locale.getDefault();
-	    szLang = curr.getLanguage();
-	}
-	else
-	    curr = new Locale(szLang);
-	
-	ResourceBundle r = ResourceBundle.getBundle("resources/main", curr); 
-%>
+<%@ include file="WEB-INF/jspf/lang.jspf" %>
 
 <!DOCTYPE html 
 PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
@@ -36,8 +24,12 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 	</head>
 	<body onload="cssIE();">
 		<div id="header">
-			<h1><a href="index.jsp?lang=<% out.print(szLang); %>" style="border: 0;"><img id="logo" src="img/dict.jpg" alt="home" width="120px"/></a>
-			JSP-Tech Web Dictionary</h1>
+			<a href="index.jsp?lang=<% out.print(szLang); %>" 
+			 style="border: 0;"><img id="logo" src="img/dict.jpg" alt="home"/></a>
+			 <div id="title">
+				<h1>JSP-Tech Web Dictionary </h1>
+				<h4><% out.print(r.getString("version"));%></h4>
+			</div>
 		</div>
 		<div id="bar">
 			<ul class="inline">
@@ -104,12 +96,12 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 		</div>
 		<div id="footer">
 			 <p> 
-				El contenido del diccionario est&aacute; ha sido extra&iacute;do 
+				El contenido del diccionario ha sido extra&iacute;do 
 				del <span style="text-decoration:underline;">Diccionario del 
-				Benasqu&eacute;s</span>, con el permisos de su autor 
+				Benasqu&eacute;s</span> bajo el permiso de su autor, 
 				&Aacute;ngel Ballar&iacute;n Cornel.<br/>
-				Todo el contenido relacionado con su obra est&aacute; protegido 
-				por sus derechos de	autor -	Copyright(c) &Aacute;ngel 
+				Todo el contenido relacionado con la obra est&aacute; protegido 
+				por los derechos de	autor -	Copyright(c) &Aacute;ngel 
 				Ballar&iacute;n Cornel,	Zaragoza, 1978.
 			</p>
 			<div class="hidden">

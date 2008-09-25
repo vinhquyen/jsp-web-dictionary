@@ -1,0 +1,6 @@
+TODO
+
+v.0.1.2 ALPHA
+-----------------
+* Introduced full license translation
+* Fixed some translation problems

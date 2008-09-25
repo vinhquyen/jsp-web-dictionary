@@ -7,21 +7,14 @@
 <%@page import="java.text.MessageFormat" %>
 <%@page import="java.util.*" %>
 
-<% 
-	ResourceBundle r = ResourceBundle.getBundle("resources/main"); 
-	String szLang = request.getParameter("lang");
-	if(szLang == null || szLang.length() == 0) {
-	    Locale curr = Locale.getDefault();
-	    szLang = curr.getLanguage();
-	}
-%>
+<%@ include file="WEB-INF/jspf/lang.jspf" %>
 
 <div id="search">
 	<form action="index.jsp">
 	  <p>
 		<label><% out.print(r.getString("searchLab")); %></label>
 		<input type="text" name="word" />
-		<input type="submit" value="Go!"/>
+		<input type="submit" value="<% out.print(r.getString("submit"));%>"/>
 		<input type="hidden" name="lang" value="<% out.print(szLang); %>"/>
 	  </p>
 	</form>

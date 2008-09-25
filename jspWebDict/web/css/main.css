@@ -4,6 +4,11 @@
 	visibility: hidden;
 }
 
+a.add {
+	font-size: 75%;
+	text-decoration: none;
+}
+
 body {
 	margin-left: 10%;
 	margin-right: 15%; 
@@ -72,9 +77,9 @@ div#footer {
 	font-size: 70%;
 	padding-left: 5px;
 	padding-right: 5px;
-	position: absolute;
-	text-align: justified; 
-	bottom: 20px;
+	position: relative;
+	text-align: right; 
+	bottom: -40px;
 }
 
 div#footer img {
@@ -85,6 +90,8 @@ div#footer img {
 div#header {
 	background-color: green;
 	opacity:.85;
+	height: 65px;
+	margin-bottom: 10px;
 }
 
 div#license {
@@ -115,14 +122,27 @@ div#search {
 	width: 50%;
 }
 
+div#title {
+	text-align: right;
+	position: relative;
+	right: 35%;
+}
+div#title h4 {
+	color: yellow;
+	position: relative;
+	top: -20px;
+ }
+
 img#gpl_logo {
 	 float:left;
 	 padding-right: 5px;
 }
 
 img#logo {
-	 vertical-align:middle; 
-	 opacity:0.8;
+	float: left;
+	margin-right: 15px;
+	opacity:0.8;
+	width: 120px; 
 }
 
 p.error {

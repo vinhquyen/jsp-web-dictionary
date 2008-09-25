@@ -1,4 +1,49 @@
 
+/** Creates a new definition OR example text box into the formulary */
+var numEx = 0;
+var numDef = 0;
+function addNode(type) {
+	var node; 
+	var div		= document.createElement("div");
+	var txtArea = document.createElement("textarea");
+	txtArea.cols = 32;
+	txtArea.rows = 4;
+
+	if(type == "def") {
+		node = document.getElementById("definitions");
+		txtArea.name = "def"+numDef;
+		div.id = "def"+numDef;
+		numDef += 1;
+	}
+	 else {
+		node = document.getElementById("examples");
+		txtArea.name = "ex"+numEx;
+		div.id = "def"+numEx;
+		numEx += 1;
+	}
+	//<textarea cols="32" rows="4" name="ex"></textarea>
+	var a = document.createElement("a");
+	a.href = "#";
+	var fDel = "delNode('" + node.id + "', '" + div.id + "')";
+	a.setAttribute("onclick", fDel);
+	a.appendChild(document.createTextNode("[x]"));
+	a.style.position = "relative";
+	a.style.left = "10px";
+	a.style.top	= "-60px";
+
+	//div.style.border = "1px solid red";
+	
+	div.appendChild(txtArea);
+	div.appendChild(a);
+	node.appendChild(div);
+}
+
+function delNode(idParent, id) {
+	var parent = document.getElementById(idParent);
+	var node = document.getElementById(id);
+	parent.removeChild(node);
+}
+
 /** Change the language of the page */
 function changeLang(lang) {
 	var pag, host, params;
@@ -26,7 +71,7 @@ function changeLang(lang) {
 		else {params = params.concat("&lang="+lang);}
 	}
 	else {	// Do not exist any parameter
-		pag = url.substr(j+1); //get the page
+		pag = url.substr(j+1).replace("#", ""); //get the page
 		params = "?lang="+lang;
 	}
 	location.href = host+pag+params;
@@ -39,16 +84,25 @@ function cssIE() {
 	var version		= parseFloat(b_version);
 	
 	if(browser == "Microsoft Internet Explorer") {
-		var headID = document.getElementsByTagName("head")[0];         
+		var head = document.getElementsByTagName("head")[0];         
 		var cssNode = document.createElement('link');
 		cssNode.type = 'text/css';
 		cssNode.rel = 'stylesheet';
 		cssNode.href = 'css/ie.css';
-		headID.appendChild(cssNode);
+		head.appendChild(cssNode);
 		 
 		var body = document.getElementsByTagName("body")[0];
 		var txt = document.createTextNode("This website has NOT been tested for IE compability.");
 		body.appendChild(txt);
+	}
+}
+
+function displayVerb(morf) {
+	if(morf == "v.") {
+		showDiv("verb", true);
+	}
+	else {
+		showDiv("verb", false); 
 	}
 }
 

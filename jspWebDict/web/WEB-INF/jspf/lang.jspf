@@ -1,0 +1,18 @@
+<%-- Allows using ResourceBoundes for internazinalization purposses --%>
+<%@ page import="java.util.Locale" %>
+<%@ page import="java.util.ResourceBundle" %>
+<%@ page pageEncoding="UTF-8" %>
+
+<%
+	Locale curr;
+	String szLang = request.getParameter("lang");
+	if(szLang == null || szLang.length() == 0) {
+	    curr = Locale.getDefault();
+	    szLang = curr.getLanguage();
+	}
+	else
+	    curr = new Locale(szLang);
+	
+	ResourceBundle r = ResourceBundle.getBundle("resources/main", curr);
+	
+%>
