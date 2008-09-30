@@ -271,7 +271,7 @@ public class Entry {
     }
     
     /** Establish a connection with Database throw JDBC*/
-    private static Connection initConnection() throws NamingException, SQLException {
+    public static Connection initConnection() throws NamingException, SQLException {
 	Context initCtx = new InitialContext();
 	Context envCtx = (Context) initCtx.lookup("java:comp/env");
 	DataSource ds = (DataSource) envCtx.lookup("jdbc/jspWebDict");
@@ -281,7 +281,7 @@ public class Entry {
 
     /** Try to close cleanly a DB connection releasing Statement and 
      * ResulSet resources.      */
-    private static void closeConnection(Connection co, Statement st, ResultSet rs) throws SQLException {
+    public static void closeConnection(Connection co, Statement st, ResultSet rs) throws SQLException {
 	try {
 	    if (rs != null)
 		rs.close();

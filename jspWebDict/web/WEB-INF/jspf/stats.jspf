@@ -1,0 +1,20 @@
+<%@page import="java.util.*" %>
+<%@page import="database.InOut" %>
+<%@ page pageEncoding="UTF-8" %>
+
+<% 
+	String browser, cookie, host, os;
+	
+	browser = request.getHeader("user-agent");
+	host = request.getHeader("host");
+	int i = browser.indexOf("(");
+	int j = browser.indexOf(")");
+	os = browser.substring(i+1, j);
+	browser = browser.substring(0, i-1);
+	cookie = request.getHeader("cookie");
+	cookie = cookie.substring(cookie.indexOf("=")+1);
+	
+	i = InOut.addStat(host, browser, os, cookie);
+%>
+
+Visitas &uacute;nicas: <% out.print(i); %>

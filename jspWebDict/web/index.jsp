@@ -86,13 +86,14 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 			 <jsp:include page='<%=r.getString("licTxt") %>' />
 		</div>
 		<div id="counter">
-			 <p>
-			<%
-			int iCount = Entry.getSizeDB();
-			String szC = MessageFormat.format(r.getString("counter"), iCount);
-			out.print(szC); 
-			%>
-			  </p>
+			<p>
+				<%
+				int iCount = Entry.getSizeDB();
+				String szC = MessageFormat.format(r.getString("counter"), iCount);
+				out.print(szC); 
+				%><br/>
+				<%@ include file="WEB-INF/jspf/stats.jspf" %>
+			</p>
 		</div>
 		<div id="footer">
 			 <p> 
