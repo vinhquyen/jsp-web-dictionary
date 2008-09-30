@@ -22,10 +22,10 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 		<script type="text/javascript" src="js/hiper.js"></script>
 		<script type="text/javascript" src="js/utils.js"></script>
 	</head>
-	<body onload="cssIE();">
+	<body onload="init();">
 		<div id="header">
-			<a href="index.jsp?lang=<% out.print(szLang); %>" 
-			 style="border: 0;"><img id="logo" src="img/dict.jpg" alt="home"/></a>
+			<a href="index.jsp?lang=<% out.print(szLang); %>"><img 
+			  id="logo" src="img/dict.jpg" alt="home" /></a>
 			 <div id="title">
 				<h1>JSP-Tech Web Dictionary </h1>
 				<h4><% out.print(r.getString("version"));%></h4>

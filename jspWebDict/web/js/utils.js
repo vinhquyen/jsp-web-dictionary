@@ -92,10 +92,11 @@ function cssIE() {
 		head.appendChild(cssNode);
 		 
 		var body = document.getElementsByTagName("body")[0];
-		var txt = document.createTextNode("This website has NOT been tested for IE compability.");
+		var txt = document.createTextNode("This website has NOT been tested\n for IE compability.");
 		body.appendChild(txt);
 	}
 }
+
 
 function displayVerb(morf) {
 	if(morf == "v.") {
@@ -104,6 +105,12 @@ function displayVerb(morf) {
 	else {
 		showDiv("verb", false); 
 	}
+}
+
+/** This function do the initialization of the web onLoad event */
+function init() {
+	document.forms[0].search.focus();
+	cssIE();
 }
 
 function setVisibility(id) {

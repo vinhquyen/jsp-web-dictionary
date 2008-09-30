@@ -10,10 +10,10 @@
 <%@ include file="WEB-INF/jspf/lang.jspf" %>
 
 <div id="search">
-	<form action="index.jsp">
+	<form action="index.jsp" accept-charset="utf-8">
 	  <p>
 		<label><% out.print(r.getString("searchLab")); %></label>
-		<input type="text" name="word" />
+		<input id="search" type="text" name="word" tabindex="1" />
 		<input type="submit" value="<% out.print(r.getString("submit"));%>"/>
 		<input type="hidden" name="lang" value="<% out.print(szLang); %>"/>
 	  </p>

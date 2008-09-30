@@ -69,7 +69,7 @@ div#counter p {
 	font-size: smaller;
 	text-align: right;
 	width: 33%;
-	 position: relative; right: -66%;
+	position: relative; right: -66%;
 }
 
 div#footer {
@@ -123,9 +123,10 @@ div#search {
 }
 
 div#title {
-	text-align: right;
 	position: relative;
-	right: 35%;
+	right: 25%;
+	text-align: right;
+	z-index: -1;
 }
 div#title h4 {
 	color: yellow;
@@ -139,10 +140,12 @@ img#gpl_logo {
 }
 
 img#logo {
+	border: 0;
 	float: left;
 	margin-right: 15px;
 	opacity:0.8;
-	width: 120px; 
+	position: relative; left: 5px; top: 5px;
+	width: 120px;
 }
 
 p.error {
