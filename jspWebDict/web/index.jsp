@@ -4,8 +4,6 @@
 		   Author     : chiron
 --%>
 <%@page import="database.*" %>
-<%@page import="java.text.MessageFormat" %>
-
 <%@page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
 <%@ include file="WEB-INF/jspf/lang.jspf" %>
@@ -33,11 +31,11 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 		</div>
 		<div id="bar">
 			<ul class="inline">
-				<li><a href="index.jsp?action=1&lang=<% out.print(szLang); %>"><% out.print(r.getString("add")); %></a></li>
-				<li><a href="index.jsp?action=2&lang=<% out.print(szLang); %>"><% out.print(r.getString("rnd")); %></a></li>
+				<li><a href="index.jsp?action=1&amp;lang=<% out.print(szLang); %>"><% out.print(r.getString("add")); %></a></li>
+				<li><a href="index.jsp?action=2&amp;lang=<% out.print(szLang); %>"><% out.print(r.getString("rnd")); %></a></li>
 				<li><a href="#" onclick="setVisibility('license')"><% out.print(r.getString("license")); %></a></li>
 				<li><a href="#" onclick="setVisibility('contact')"><% out.print(r.getString("contact")); %></a></li>
-				<li><a href="index.jsp?action=3&lang=<% out.print(szLang); %>"><% out.print(r.getString("about")); %></a></li>
+				<li><a href="index.jsp?action=3&amp;lang=<% out.print(szLang); %>"><% out.print(r.getString("about")); %></a></li>
 			</ul>
 			<div id="contact" class="hidden">
 				<em>admin947 (AT) gmail.com</em>
@@ -46,9 +44,10 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 		<div id="lang">
 			 <select name="lang" onchange="changeLang(this.value)">
 				  <option value="">--</option>
+				  <!--<option value="es_ES_an">aragon&eacute;s</option>-->
 				  <option value="es">espa&ntilde;ol</option>
 				  <option value="en">english</option>
-				  <option value="ar">patu&eacute;s</option>
+				  <option value="es_ES_be">patu&eacute;s</option>
 			 </select>
 		</div>
 		<div id="content">
@@ -96,14 +95,13 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 			</p>
 		</div>
 		<div id="footer">
-			 <p> 
-				El contenido del diccionario ha sido extra&iacute;do 
-				del <span style="text-decoration:underline;">Diccionario del 
-				Benasqu&eacute;s</span> bajo el permiso de su autor, 
-				&Aacute;ngel Ballar&iacute;n Cornel.<br/>
-				Todo el contenido relacionado con la obra est&aacute; protegido 
-				por los derechos de	autor -	Copyright(c) &Aacute;ngel 
-				Ballar&iacute;n Cornel,	Zaragoza, 1978.
+			<p><% 
+				String szAutor, szCopy, szLib;
+				szLib = "<span style='text-decoration:underline;'>Diccionario del Benasqu&eacute;s</span>";
+				szAutor = "&Aacute;ngel Ballar&iacute;n Cornel";
+				szCopy = "Copyright&copy; " + szAutor + ", Zaragoza, 1978";
+				out.print(MessageFormat.format(rCopy.getString("copydict"), szLib, szAutor, szCopy)); 
+				%>
 			</p>
 			<div class="hidden">
 				<img src="img/guayente.jpg" alt="Asociaci&oacute;n Guayente" />

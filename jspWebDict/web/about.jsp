@@ -4,12 +4,18 @@
 	Author     : chiron
 --%>
 
+<%@ include file="WEB-INF/jspf/lang.jspf" %>
+
 <div>
-	<p>This project is being developed by Santiago Lamora Subir&aacute;
-	with the support of <a href="http://www.guayente.org">Asociaci&oacute;n 
- Guayente</a>.</p>
+	<p>
+	<% 
+		String szGuayen = "<a href='http://www.guayente.org'>Asociaci&oacute;n Guayente</a>";
+		out.print(MessageFormat.format(rAbout.getString("author"), szGuayen));
+	%>
+	</p>
  
- <p>If you want to participate or collaborate with it, please contact with
- <a href="mailto:admin947(AT)gmail.com">admin947(AT)gmail.com</a> (note that
- (AT) means "@" to avoid SPAM.</p>
+ <p><%
+		String mail = "<a href='mailto:admin947(AT)gmail.com'>admin947(AT)gmail.com</a>";
+		out.print(MessageFormat.format(rAbout.getString("colaborate"), mail));
+	 %></p>
 </div>

@@ -13,7 +13,7 @@
 	<form action="index.jsp" accept-charset="utf-8">
 	  <p>
 		<label><% out.print(r.getString("searchLab")); %></label>
-		<input id="search" type="text" name="word" tabindex="1" />
+		<input id="input_search" type="text" name="word" tabindex="1" />
 		<input type="submit" value="<% out.print(r.getString("submit"));%>"/>
 		<input type="hidden" name="lang" value="<% out.print(szLang); %>"/>
 	  </p>

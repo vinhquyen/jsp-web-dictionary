@@ -4,17 +4,19 @@
 
 <% 
 	String browser, cookie, host, os;
-	
-	browser = request.getHeader("user-agent");
-	host = request.getHeader("host");
-	int i = browser.indexOf("(");
-	int j = browser.indexOf(")");
-	os = browser.substring(i+1, j);
-	browser = browser.substring(0, i-1);
-	cookie = request.getHeader("cookie");
-	cookie = cookie.substring(cookie.indexOf("=")+1);
-	
-	i = InOut.addStat(host, browser, os, cookie);
+	int i = 0, j;
+	try {
+		browser = request.getHeader("user-agent");
+		host = request.getRemoteAddr();
+		i = browser.indexOf("(");
+		j = browser.indexOf(")");
+		os = browser.substring(i+1, j);
+		browser = browser.substring(0, i-1);
+		cookie = request.getHeader("cookie");
+		cookie = cookie.substring(cookie.indexOf("=")+1);
+
+		i = InOut.addStat(host, browser, os, cookie);
+	}catch (Exception e) {i=-1;}
 %>
 
 Visitas &uacute;nicas: <% out.print(i); %>

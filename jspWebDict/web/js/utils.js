@@ -42,6 +42,12 @@ function delNode(idParent, id) {
 	var parent = document.getElementById(idParent);
 	var node = document.getElementById(id);
 	parent.removeChild(node);
+	
+	 // TODO: TEST --> fix number of new nodes created (num--)
+	if(id.contains("def"))
+		 numDef -= 1;
+	else if(id.cotains("ex"))
+		 numEx -= 1;
 }
 
 /** Change the language of the page */
@@ -109,7 +115,7 @@ function displayVerb(morf) {
 
 /** This function do the initialization of the web onLoad event */
 function init() {
-	document.forms[0].search.focus();
+	document.forms[0].input_search.focus();
 	cssIE();
 }
 

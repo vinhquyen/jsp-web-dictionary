@@ -1,18 +1,36 @@
 <%-- Allows using ResourceBoundes for internazinalization purposses --%>
 <%@ page import="java.util.Locale" %>
 <%@ page import="java.util.ResourceBundle" %>
+<%@ page import="java.text.MessageFormat" %>
 <%@ page pageEncoding="UTF-8" %>
 
 <%
 	Locale curr;
+	ResourceBundle r, rAbout, rCopy;
 	String szLang = request.getParameter("lang");
 	if(szLang == null || szLang.length() == 0) {
 	    curr = Locale.getDefault();
 	    szLang = curr.getLanguage();
 	}
-	else
-	    curr = new Locale(szLang);
+	else {
+	    String a[] = szLang.split("_");
+	    switch(a.length) {
+			case 1:
+			    curr = new Locale(szLang);
+			    break;
+			case 2:
+				curr = new Locale(a[0], a[1]);
+			    break;
+			case 3:
+				curr = new Locale(a[0], a[1], a[2]);
+			    break;
+			default: // Avoid errors or h4ck1ng5
+			    curr = Locale.getDefault();
+			    szLang = curr.getLanguage();
+		}
+	}
 	
-	ResourceBundle r = ResourceBundle.getBundle("resources/main", curr);
-	
+	r = ResourceBundle.getBundle("resources/main", curr);
+	rAbout = ResourceBundle.getBundle("resources/about", curr);
+	rCopy = ResourceBundle.getBundle("resources/copyright", curr);
 %>
