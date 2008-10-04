@@ -105,7 +105,10 @@ public class InOut {
 	while(!userAgent.contains(aBrowser[i]) && i < aBrowser.length){
 	    i++;
 	}
-	return aBrowser[i];
+	if(i<aBrowser.length)
+	    return aBrowser[i];
+	else
+	    return "Other";
     }
 
     private static String getOperatingSystem(String userAgent) {
@@ -113,6 +116,9 @@ public class InOut {
 	while(!userAgent.contains(aOS[i]) && i < aOS.length){
 	    i++;
 	}
-	return aOS[i];
+	if(i<aOS.length)
+	    return aOS[i];
+	else
+	    return "Other";
     }
 }
