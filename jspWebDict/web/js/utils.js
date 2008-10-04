@@ -98,7 +98,9 @@ function cssIE() {
 		head.appendChild(cssNode);
 		 
 		var body = document.getElementsByTagName("body")[0];
-		var txt = document.createTextNode("This website has NOT been tested\n for IE compability.");
+		var txt = document.createTextNode("This website has NOT been tested <br/> for IE compability.");
+		txt.style.background = black;
+		txt.style.color = red;
 		body.appendChild(txt);
 	}
 }

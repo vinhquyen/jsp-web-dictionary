@@ -100,7 +100,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 				szLib = "<span style='text-decoration:underline;'>Diccionario del Benasqu&eacute;s</span>";
 				szAutor = "&Aacute;ngel Ballar&iacute;n Cornel";
 				szCopy = "Copyright&copy; " + szAutor + ", Zaragoza, 1978";
-				out.print(MessageFormat.format(rCopy.getString("copydict"), szLib, szAutor, szCopy)); 
+				out.print(MessageFormat.format(rCopy.getString("copydict"), szLib, szAutor, szCopy));
 				%>
 			</p>
 			<div class="hidden">

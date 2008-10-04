@@ -1,22 +1,19 @@
-<%@page import="java.util.*" %>
-<%@page import="database.InOut" %>
+<%@ page import="database.InOut" %>
+<%@ page import="java.util.*" %>
+<%@ page import="java.text.MessageFormat" %>
 <%@ page pageEncoding="UTF-8" %>
 
 <% 
-	String browser, cookie, host, os;
+	String userAgent, cookie, host;
 	int i = 0, j;
-	try {
-		browser = request.getHeader("user-agent");
-		host = request.getRemoteAddr();
-		i = browser.indexOf("(");
-		j = browser.indexOf(")");
-		os = browser.substring(i+1, j);
-		browser = browser.substring(0, i-1);
-		cookie = request.getHeader("cookie");
-		cookie = cookie.substring(cookie.indexOf("=")+1);
+	
+	host = request.getRemoteAddr();
+	
+	userAgent = request.getHeader("user-agent");
+	
+	cookie = request.getHeader("cookie");
+	cookie = cookie.substring(cookie.indexOf("=")+1);
 
-		i = InOut.addStat(host, browser, os, cookie);
-	}catch (Exception e) {i=-1;}
+	i = InOut.addStat(host, userAgent, cookie);
+	out.print(MessageFormat.format(r.getString("visitor"), i));
 %>
-
-Visitas &uacute;nicas: <% out.print(i); %>

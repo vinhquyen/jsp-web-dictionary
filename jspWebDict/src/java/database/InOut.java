@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package database;
 
 import java.io.IOException;
@@ -17,22 +13,25 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.jsp.JspWriter;
 
-/**
- *
- * @author chiron
+/** 
+ * Implements all the InOut operations included in JspWriter and Visitor Stats
  */
 public class InOut {
-    private static String lastCookie;
+    private static String[] aBrowser = {"Firefox", "IE", "Opera", "Chrome"};
+    private static String[] aOS = {"Linux", "Windows", "MacOS"};
     
-    public static int addStat(String host, String browser, String os, String cookie) throws SQLException {
+    public static int addStat(String host, String userAgent, String cookie) {
+	String browser, os, szSQL;
 	int iVisitors = -1;
+	
+	browser = getBrowser(userAgent);
+	os = getOperatingSystem(userAgent);
 	
 	String dateFormat = "yyyy-MM-dd HH:mm:ss";
 	Calendar cal = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat(dateFormat);
 	String date = sdf.format(cal.getTime()).toString();
 
-	String szSQL;
 	Connection co = null;
 	ResultSet rs = null;
 	Statement st = null;
@@ -42,23 +41,29 @@ public class InOut {
 	    st = co.createStatement();
 	    
 	    /* Insert new visitor */ //TODO: improve SELECT COUNT(cookie) WHERE cookie = cookie
-	    if(lastCookie == null || lastCookie.compareTo(cookie) != 0){
-		szSQL = "INSERT INTO stats(ip, date, browser, os) VALUES ('"+ host 
-			+"','" + date +"', '" + browser + "', '" + os + "')";
+	    szSQL = "SELECT COUNT(session) FROM stats WHERE session = '" + cookie + "'";
+	    rs = st.executeQuery(szSQL);
+	    
+	    if(!rs.next() || rs.getInt("COUNT(session)") == 0){
+		szSQL = "INSERT INTO stats(ip, date, browser, os, session) VALUES ('"+ host 
+			+"','" + date +"', '" + browser + "', '" + os + "', '" + cookie +"')";
 		st.executeUpdate(szSQL);
 	    }
-	    
-	    szSQL = "SELECT COUNT(DISTINCT(ip)) FROM stats";
+
+	    szSQL = "SELECT COUNT(DISTINCT(session)) FROM stats";
 	    rs = st.executeQuery(szSQL);
 	    rs.next();
-	    
-	    iVisitors = rs.getInt("COUNT(DISTINCT(ip))");
+	    iVisitors = rs.getInt("COUNT(DISTINCT(session))");
 	} catch (Exception ex) {
 	    Logger.getLogger(Entry.class.getName()).log(Level.SEVERE, null, ex);
 	} finally {
-	    Entry.closeConnection(co, st, rs);
+	    try {
+		Entry.closeConnection(co, st, rs);
+	    } catch (SQLException ex) {
+		Logger.getLogger(InOut.class.getName()).log(Level.SEVERE, null, ex);
+	    }
 	}
-	lastCookie = cookie;
+	
 	return iVisitors;
     }
 
@@ -78,7 +83,7 @@ public class InOut {
 	    for (Entry e : laux) {
 		out.print("<li>");
 		out.println("<span class='morf'>" + e.getMorfology() + 
-				"</span> " + e.getDefinition() + "</li>");
+				"</span> " + e.getDefinition());
 
 		ArrayList<String> aEx = e.getExamples();
 		if (aEx != null && !aEx.isEmpty()) {
@@ -87,10 +92,27 @@ public class InOut {
 			out.println("<li>" + szExample + "</li>");
 		    out.println("</ul>");
 		}
+		out.print("</li>");
 	    }
 	    out.println("</ol>");
 	} catch (IOException ex) {
 	    Logger.getLogger(InOut.class.getName()).log(Level.SEVERE, null, ex);
 	}
+    }
+
+    private static String getBrowser(String userAgent) {
+	int i = 0;
+	while(!userAgent.contains(aBrowser[i]) && i < aBrowser.length){
+	    i++;
+	}
+	return aBrowser[i];
+    }
+
+    private static String getOperatingSystem(String userAgent) {
+	int i = 0;
+	while(!userAgent.contains(aOS[i]) && i < aOS.length){
+	    i++;
+	}
+	return aOS[i];
     }
 }
