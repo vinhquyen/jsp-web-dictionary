@@ -27,9 +27,10 @@
 	String szId = request.getParameter("id");
 	String szWord = request.getParameter("word");
 	
-	if(szWord == null && szId == null)
+	if(szWord == null && szId == null) {
+	    out.print("</div>");
 		return;
-	
+	}
 	if(szWord != null) { /** get defition by WORD */
 		szWord = szWord.toLowerCase();
 		// out.print("<h4>Looking for: " + szWord + "</h4>"); //DEBUG

@@ -16,11 +16,17 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 		<title>JSP Web Dictionary <% out.print(r.getString("version")); %></title>
-		<link rel="stylesheet" href="css/main.css" type="text/css" />	
+		<link rel="stylesheet" href="css/main.css" type="text/css" />
+		<% 
+			String css = request.getParameter("css");
+			if(css != null && css.compareTo("blue") == 0) { %>
+				<link rel="stylesheet" href="css/blue.css" type="text/css" /> 
+		<% } %>
 		<script type="text/javascript" src="js/hiper.js"></script>
 		<script type="text/javascript" src="js/utils.js"></script>
 	</head>
 	<body onload="init();">
+		<div id="login"><%@ include file="WEB-INF/jspf/login.jspf" %></div>
 		<div id="header">
 			<a href="index.jsp?lang=<% out.print(szLang); %>"><img 
 			  id="logo" src="img/dict.jpg" alt="home" /></a>
@@ -93,7 +99,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 				%><br/>
 				<%@ include file="WEB-INF/jspf/stats.jspf" %>
 			</p>
-		</div>
+		</div><!-- End of CONTENT -->
 		<div id="footer">
 			<p><% 
 				String szAutor, szCopy, szLib;
@@ -103,12 +109,14 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 				out.print(MessageFormat.format(rCopy.getString("copydict"), szLib, szAutor, szCopy));
 				%>
 			</p>
-			<div class="hidden">
+			<div>
 				<img src="img/guayente.jpg" alt="Asociaci&oacute;n Guayente" />
 				<img src="img/tomcat.gif" alt="Powered by Tomcat" />
 				<img src="img/mysql.png" alt="MySQL Powered" />
 				<img src="img/java.jpg" alt="Java Powered" />
 			</div>
 		</div>
+		<div id="bg"></div>
+		<div id="bg_"></div>
 	</body>
 </html>

@@ -6,14 +6,20 @@
 <% 
 	String userAgent, cookie, host;
 	int i = 0, j;
-	
+	/*
 	host = request.getRemoteAddr();
 	
 	userAgent = request.getHeader("user-agent");
-	
-	cookie = request.getHeader("cookie");
-	cookie = cookie.substring(cookie.indexOf("=")+1);
 
-	i = InOut.addStat(host, userAgent, cookie);
+    cookie = request.getHeader("cookie");
+    i = cookie.indexOf("=")+1;
+    j = cookie.indexOf(";");
+    try{cookie = cookie.substring(i, j);
+    }catch (Exception e){cookie = cookie.substring(i);}
+
+	out.print(cookie);
+
+	i = InOut.addStat(host, userAgent, cookie, out); */
+	i = InOut.getVisitors();
 	out.print(MessageFormat.format(r.getString("visitor"), i));
 %>

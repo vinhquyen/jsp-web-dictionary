@@ -104,7 +104,7 @@ function textSeleccionat()
 	str = "";
 	if (nav.nav) //Netscape 
 	{
-	   str = ""+document.getSelection(); 
+	   str = ""+window.getSelection(); //+document.getSelection(); DEPRECATED
   	} 
 	else if (document.selection &&  document.selection.createRange) 
  	{ 

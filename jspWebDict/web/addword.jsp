@@ -3,9 +3,9 @@
 	 Created on : 14-ago-2008, 11:44:54
 	 Author     : chiron
 --%>
-<%@page import="database.*" %>
-<%@page import="java.text.MessageFormat" %>
-<%@page import="java.util.*" %>
+<%@ page import="database.*" %>
+<%@ page import="java.text.MessageFormat" %>
+<%@ page import="java.util.*" %>
 
 <%@ include file="WEB-INF/jspf/lang.jspf" %>
 

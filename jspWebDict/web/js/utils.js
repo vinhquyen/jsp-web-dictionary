@@ -91,17 +91,36 @@ function cssIE() {
 	
 	if(browser == "Microsoft Internet Explorer") {
 		var head = document.getElementsByTagName("head")[0];         
-		var cssNode = document.createElement('link');
+		var cssNode = document.createElement("link");
 		cssNode.type = 'text/css';
 		cssNode.rel = 'stylesheet';
 		cssNode.href = 'css/ie.css';
 		head.appendChild(cssNode);
 		 
 		var body = document.getElementsByTagName("body")[0];
-		var txt = document.createTextNode("This website has NOT been tested <br/> for IE compability.");
-		txt.style.background = black;
-		txt.style.color = red;
-		body.appendChild(txt);
+		var div = document.createElement("div")
+		div.id = "ie";
+		div.style.background = "black";
+		div.style.color = "red";
+		div.style.opacity = "0.7";
+		div.style.position = "fixed";
+		div.style.textAlign = "center";
+		div.style.paddingTop = "33%";
+		div.style.top = "0";
+		div.style.left = "0";
+		div.style.height = "100%";
+		div.style.width = "100%";
+		div.setAttribute("onclick", "showDiv('ie', false)");
+		
+		var msg = "This website has NOT been tested for IE compability."
+		var txt = document.createTextNode(msg);
+		div.appendChild(txt);
+		div.appendChild(document.createElement("br"));
+		msg = "Click to continue";
+		txt = document.createTextNode(msg);
+		div.appendChild(txt);
+		 
+		body.appendChild(div);
 	}
 }
 
