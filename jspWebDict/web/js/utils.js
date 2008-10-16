@@ -89,7 +89,7 @@ function cssIE() {
 	var b_version	= navigator.appVersion;
 	var version		= parseFloat(b_version);
 	
-	if(browser == "Microsoft Internet Explorer") {
+	if(browser == "Microsoft Internet Explorer" || true) {
 		var head = document.getElementsByTagName("head")[0];         
 		var cssNode = document.createElement("link");
 		cssNode.type = 'text/css';
@@ -99,6 +99,7 @@ function cssIE() {
 		 
 		/* cookies */
 		var cookie = checkCookie();
+		 cookie = false;
 		if(cookie) {
 			return
 		}
@@ -110,7 +111,7 @@ function cssIE() {
 		div.id = "ie";
 		div.style.background = "black";
 		div.style.color = "red";
-		div.style.opacity = "0.2";
+		div.style.opacity = "0.65";
 		div.style.filter = "alpha(opacity=65)";
 		div.style.position = "fixed";
 		div.style.textAlign = "center";
@@ -122,14 +123,26 @@ function cssIE() {
 		div.setAttribute("onclick", "showDiv('ie', false)");
 		div.onclick = function(){showDiv('ie', false)};
 		
-		var msg = "This website has NOT been tested for IE compability."
-		var txt = document.createTextNode(msg);
-		div.appendChild(txt);
+		var msg = "This website has NOT been tested for Internet Explorer compability."
+		div.appendChild(document.createTextNode(msg));
 		div.appendChild(document.createElement("br"));
-		msg = "Click to continue";
-		txt = document.createTextNode(msg);
-		div.appendChild(txt);
 		 
+		msg = "Click to continue";
+		div.appendChild(document.createTextNode(msg));
+		div.appendChild(document.createElement("br"));
+		
+		msg = "Please, download other browsers like Mozilla Firefox, Opera..."
+		div.appendChild(document.createTextNode(msg));
+		div.appendChild(document.createElement("br"));
+		
+		var link = document.createElement("a");
+		link.href = "http://www.mozilla.com/en-US/firefox/";
+		link.alt = "Mozilla Firefox";
+		link.target = "_blank";
+		var ref = document.createTextNode("Mozilla Project Web Page");
+		link.appendChild(ref);
+		div.appendChild(link);
+
 		body.appendChild(div);
 		}
 	}

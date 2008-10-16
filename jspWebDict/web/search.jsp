@@ -10,7 +10,7 @@
 <%@ include file="WEB-INF/jspf/lang.jspf" %>
 
 <div id="search">
-	<form action="index.jsp" accept-charset="utf-8">
+	<form  id="s_word" action="index.jsp" accept-charset="utf-8">
 	  <p>
 		<label><% out.print(r.getString("searchLab")); %></label>
 		<input id="input_search" type="text" name="word" tabindex="1" />
