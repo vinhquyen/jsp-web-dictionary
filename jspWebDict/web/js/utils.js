@@ -89,7 +89,7 @@ function cssIE() {
 	var b_version	= navigator.appVersion;
 	var version		= parseFloat(b_version);
 	
-	if(browser == "Microsoft Internet Explorer" || true) {
+	if(browser == "Microsoft Internet Explorer") {
 		var head = document.getElementsByTagName("head")[0];         
 		var cssNode = document.createElement("link");
 		cssNode.type = 'text/css';
@@ -99,7 +99,6 @@ function cssIE() {
 		 
 		/* cookies */
 		var cookie = checkCookie();
-		 cookie = false;
 		if(cookie) {
 			return
 		}

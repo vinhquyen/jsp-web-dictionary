@@ -51,10 +51,10 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 		<div id="lang">
 			 <select name="lang" onchange="changeLang(this.value)">
 				  <option value="">--</option>
-				  <!--<option value="es_ES_an">aragon&eacute;s</option>-->
+				  <option value="an_ES">aragon&eacute;s</option>
 				  <option value="es">espa&ntilde;ol</option>
 				  <option value="en">english</option>
-				  <option value="es_ES_be">patu&eacute;s</option>
+				  <option value="be_ES">patu&eacute;s</option>
 			 </select>
 		</div>
 		<div id="content">
