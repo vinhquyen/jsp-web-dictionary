@@ -97,12 +97,21 @@ function cssIE() {
 		cssNode.href = 'css/ie.css';
 		head.appendChild(cssNode);
 		 
+		/* cookies */
+		var cookie = checkCookie();
+		if(cookie) {
+			return
+		}
+		else {
+		/* END of cookies */
+
 		var body = document.getElementsByTagName("body")[0];
 		var div = document.createElement("div")
 		div.id = "ie";
 		div.style.background = "black";
 		div.style.color = "red";
-		div.style.opacity = "0.7";
+		div.style.opacity = "0.2";
+		div.style.filter = "alpha(opacity=65)";
 		div.style.position = "fixed";
 		div.style.textAlign = "center";
 		div.style.paddingTop = "33%";
@@ -111,6 +120,7 @@ function cssIE() {
 		div.style.height = "100%";
 		div.style.width = "100%";
 		div.setAttribute("onclick", "showDiv('ie', false)");
+		div.onclick = function(){showDiv('ie', false)};
 		
 		var msg = "This website has NOT been tested for IE compability."
 		var txt = document.createTextNode(msg);
@@ -121,6 +131,7 @@ function cssIE() {
 		div.appendChild(txt);
 		 
 		body.appendChild(div);
+		}
 	}
 }
 
@@ -136,7 +147,8 @@ function displayVerb(morf) {
 
 /** This function do the initialization of the web onLoad event */
 function init() {
-	document.forms[0].input_search.focus();
+	var f = document.getElementById("s_word");
+	f.input_search.focus();
 	cssIE();
 }
 

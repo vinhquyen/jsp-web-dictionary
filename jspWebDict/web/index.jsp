@@ -22,6 +22,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 			if(css != null && css.compareTo("blue") == 0) { %>
 				<link rel="stylesheet" href="css/blue.css" type="text/css" /> 
 		<% } %>
+		<script type="text/javascript" src="js/cookies.js"></script>
 		<script type="text/javascript" src="js/hiper.js"></script>
 		<script type="text/javascript" src="js/utils.js"></script>
 	</head>
