@@ -9,13 +9,13 @@
 
 <%@ include file="WEB-INF/jspf/lang.jspf" %>
 
-<h2><% out.print(r.getString("add")); %>:</h2>
+<h2><%= r.getString("add")  %>:</h2>
 <form action="insert.jsp" method="get">
-	<p> <label for="word"><% out.print(r.getString("word")); %></label>
+	<p> <label for="word"><%= r.getString("word")  %></label>
 		<input type="text" name="word"/>
 	</p>
 	<p>
-		<label><% out.print(r.getString("morf")); %></label>
+		<label><%= r.getString("morf")  %></label>
 		<select name="morfology" onblur="displayVerb(this.value);" onchange="javascript:displayVerb(this.value);">
 		<%
 			for (String m : Entry.getMorfologies()) {
@@ -26,31 +26,31 @@
 		%>
 		</select>
 		<div id="verb" class="hidden">
-			<p><% out.print(r.getString("vProp")); %><br/>
-				<input type='checkbox' name="tr." /><label><% out.print(r.getString("vTr")); %></label>
-				<input type='checkbox' name="int."/><label><% out.print(r.getString("vIntr")); %></label>
-				<input type='checkbox' name="r."/><label><% out.print(r.getString("vRef")); %></label>
+			<p><%= r.getString("vProp")  %><br/>
+				<input type='checkbox' name="tr." /><label><%= r.getString("vTr")  %></label>
+				<input type='checkbox' name="int."/><label><%= r.getString("vIntr")  %></label>
+				<input type='checkbox' name="r."/><label><%= r.getString("vRef")  %></label>
 			</p>
 		</div>
 	</p>
 	<!-- Definitions -->
 	<div id="definitions">
 		<p>
-			<label for="Definition"><% out.print(r.getString("def")); %></label>
-			<a class="add" href="#" onclick="addNode('def')"><% out.print(r.getString("addnode")); %></a><br/>
+			<label for="Definition"><%= r.getString("def")  %></label>
+			<a class="add" href="#" onclick="addNode('def')"><%= r.getString("addnode")  %></a><br/>
 			<textarea cols="32" rows="4" name="def"></textarea>
 		</p>
 	</div>
 	<!-- Examples -->
 	<div id="examples">
 		<p>
-			<label for="Examples"><% out.print(r.getString("exUse")); %></label>
-			<a class="add" href="#" onclick="addNode('ex')"><% out.print(r.getString("addnode")); %></a><br/>
+			<label for="Examples"><%= r.getString("exUse")  %></label>
+			<a class="add" href="#" onclick="addNode('ex')"><%= r.getString("addnode")  %></a><br/>
 			<textarea cols="32" rows="4" name="ex"></textarea>
 		</p>
 	</div>
 	<p>
-		<input type="submit" value="<% out.print(r.getString("addword")); %>"/>
-		<input type="reset" value="<% out.print(r.getString("clear")); %>"/>
+		<input type="submit" value="<%= r.getString("addword")  %>"/>
+		<input type="reset" value="<%= r.getString("clear")  %>"/>
 	</p>
 </form>

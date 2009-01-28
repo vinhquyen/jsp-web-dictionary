@@ -15,7 +15,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-		<title>JSP Web Dictionary <% out.print(r.getString("version")); %></title>
+		<title>JSP Web Dictionary <%= r.getString("version")  %></title>
 		<link rel="stylesheet" href="css/main.css" type="text/css" />
 		<% 
 			String css = request.getParameter("css");
@@ -29,20 +29,20 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 	<body onload="init();">
 		<div id="login"><%@ include file="WEB-INF/jspf/login.jspf" %></div>
 		<div id="header">
-			<a href="index.jsp?lang=<% out.print(szLang); %>"><img 
+			<a href="index.jsp?lang=<%= szLang); %>"><img 
 			  id="logo" src="img/dict.jpg" alt="home" /></a>
 			 <div id="title">
 				<h1>JSP-Tech Web Dictionary </h1>
-				<h4><% out.print(r.getString("version"));%></h4>
+				<h4><%= r.getString("version") %></h4>
 			</div>
 		</div>
 		<div id="bar">
 			<ul class="inline">
-				<li><a href="index.jsp?action=1&amp;lang=<% out.print(szLang); %>"><% out.print(r.getString("add")); %></a></li>
-				<li><a href="index.jsp?action=2&amp;lang=<% out.print(szLang); %>"><% out.print(r.getString("rnd")); %></a></li>
-				<li><a href="#" onclick="setVisibility('license')"><% out.print(r.getString("license")); %></a></li>
-				<li><a href="#" onclick="setVisibility('contact')"><% out.print(r.getString("contact")); %></a></li>
-				<li><a href="index.jsp?action=3&amp;lang=<% out.print(szLang); %>"><% out.print(r.getString("about")); %></a></li>
+				<li><a href="index.jsp?action=1&amp;lang=<%= szLang); %>"><%= r.getString("add")  %></a></li>
+				<li><a href="index.jsp?action=2&amp;lang=<%= szLang); %>"><%= r.getString("rnd")  %></a></li>
+				<li><a href="#" onclick="setVisibility('license')"><%= r.getString("license")  %></a></li>
+				<li><a href="#" onclick="setVisibility('contact')"><%= r.getString("contact")  %></a></li>
+				<li><a href="index.jsp?action=3&amp;lang=<%= szLang); %>"><%= r.getString("about")  %></a></li>
 			</ul>
 			<div id="contact" class="hidden">
 				<em>admin947 (AT) gmail.com</em>

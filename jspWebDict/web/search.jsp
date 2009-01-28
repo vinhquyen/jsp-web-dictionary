@@ -12,10 +12,10 @@
 <div id="search">
 	<form  id="s_word" action="index.jsp" accept-charset="utf-8">
 	  <p>
-		<label><% out.print(r.getString("searchLab")); %></label>
+		<label><%= r.getString("searchLab") %></label>
 		<input id="input_search" type="text" name="word" tabindex="1" />
-		<input type="submit" value="<% out.print(r.getString("submit"));%>"/>
-		<input type="hidden" name="lang" value="<% out.print(szLang); %>"/>
+		<input type="submit" value="<%= r.getString("submit") %>"/>
+		<input type="hidden" name="lang" value="<%= szLang %>"/>
 	  </p>
 	</form>
 </div>
@@ -51,6 +51,7 @@
 			return;
 	    }
 	}
+	// TODO: sustituir por JSLT !! o algo mas elegante
 	/** Find lexicographically nearest words */
 	if (aDef == null || aDef.isEmpty()) {
 			String notF = MessageFormat.format(r.getString("notFound"), "''<em>" + szWord + "</em>'' ");

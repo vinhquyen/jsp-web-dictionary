@@ -111,6 +111,20 @@ public class Entry {
 	}
 	return null;
     }
+    
+    public static String updateWord(String w, String m, String def, String exs) throws Exception {
+     /* FIXME: use PreparedStatements
+      szSQL = SELECT id FROM word WHERE  term = ?  // ?=w
+      szSQL.setString(1, w);
+      idW = szSQL.executeQuery(); //FIXME: getRow().getCol(1)¿?
+      
+      szSQL=UPDATE entry SET definition = ? WHERE idWord = ?
+      szSQL.sestString(1, def); //?1=def;?2=idW
+      szSQL.setInt(2, idW);
+      szSQL.executeUpdate();
+     */
+      return null;
+    }
 
     public static ArrayList<LinkedList<Entry>> getDefinition(String szWord) throws Exception {
 	ArrayList<LinkedList<Entry>> aRes = new ArrayList<LinkedList<Entry>>();
