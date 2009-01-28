@@ -55,7 +55,7 @@ public class Entry {
 	Statement st = null;
 
 	try {
-	    //TODO --> comprobaciones??
+	    //TODO --> comprobaciones?? (A nivel de PRESENTACION)
 	    if (w == null || def == null)
 		throw new Exception("You must insert the word and its def");
 
