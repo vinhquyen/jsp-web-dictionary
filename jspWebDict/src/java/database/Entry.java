@@ -19,24 +19,21 @@ import java.util.Random;
 
 public class Entry {
 
-    /** Process the examples introduced by the user 
-     * TODO: define the examples format........
-     */
-    private static String[] processExamples(String exs) {
-        return exs.split(";");
-    }
     private int id;
     private String word;
     private String morfology;
     private String definition;
     private static String aMorf[] = {"adj.", "adv.", "interfj.", "f.", "m.", "prep.", "pron.", "v."};
 
+    /** Constructor used to return the list of nearest word */
     public Entry(int id, String w) {
         this.id = id;
         this.word = w;
     }
-
-    public Entry(String w, String m, String def) {
+    
+    /** Standar constructor */
+    public Entry(int id, String w, String m, String def) {
+        this.id = id;
         this.word = w;
         this.morfology = m;
         this.definition = def;
@@ -185,7 +182,7 @@ public class Entry {
         } finally {
             closeConnection(co, st, rs);
         }
-        return new Entry(w, m, def);
+        return new Entry(id, w, m, def);
     }
 
     /** Get the nearest words lexicographycally */ //TODO: use JQuery
@@ -292,10 +289,6 @@ public class Entry {
 
     public String getMorfology() {
         return morfology;
-    }
-
-    public void setMorfology(String morf) {
-        this.morfology = morf;
     }
 
     public String getDefinition() {
