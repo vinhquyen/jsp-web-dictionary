@@ -54,18 +54,19 @@
 	<div id="definitions">
 		<p>
 			<label for="Definition"><%= r.getString("def") %></label>
-			<a class="add" href="#" onclick="addNode('def')"><%= r.getString("addnode") %></a><br/>
+			<!--<a class="add" href="#" onclick="addNode('def')"><%= r.getString("addnode") %></a>-->
+            <br/>
 			<textarea cols="32" rows="4" name="def"><%= e.getDefinition() %></textarea>
 		</p>
 	</div>
-	<!-- Examples -->
+	<!-- Examples
 	<div id="examples">
 		<p>
 			<label for="Examples"><%= r.getString("exUse") %></label>
 			<a class="add" href="#" onclick="addNode('ex')"><%= r.getString("addnode") %></a><br/>
 			<textarea cols="32" rows="4" name="ex"></textarea>
 		</p>
-	</div>
+	</div>  -->
 	<p>
 		<input type="submit" value="<%= r.getString("addword") %>"/>
 		<input type="reset" value="<%= r.getString("clear") %>"/>

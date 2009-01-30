@@ -60,16 +60,14 @@ public class Entry {
             if (!aux.contains(m))
                 throw new Exception("The morfology must be: [" + aux.toString() + "]");
 
-            // FIXME Eliminar comillas simples (') de los strings (sustituir por [\'] )
-            def = def.replaceAll("'", "\'");
             /*------------ EOF VALIDATION -------------------*/
 
             co = initConnection();
 
             stInsert = co.prepareStatement("INSERT INTO word(term, morf, definition) VALUES(?,?,?)");
             stInsert.setString(1, w);
-            stInsert.setString(1, m);
-            stInsert.setString(1, def);
+            stInsert.setString(2, m);
+            stInsert.setString(3, def);
 
             int n = stInsert.executeUpdate();
             if(n<1) throw new SQLException("Entry.java:76, NOT Insert "+w);
@@ -86,29 +84,9 @@ public class Entry {
     public static String updateWord(String w, String m, String def) throws Exception {
         Connection co = null;
         ResultSet rs = null;
-        PreparedStatement stInsert = null;
+        PreparedStatement stUpdate = null;
         int idW;
         
-        // FIXME: use PreparedStatements
-        stInsert = co.prepareStatement("SELECT id FROM word WHERE  term = ?");
-        stInsert.setString(1, w);
-        
-        rs = stInsert.executeQuery();
-        if(rs.next()) { //FIXME: getRow().getCol(1)?
-            idW = rs.getInt("id");
-        } else throw new Exception("UPDATE ERROR: the word "+w+"notExists");
-        
-        stInsert=co.prepareStatement("UPDATE entry SET term=?, morf=?, " +
-                                        "definition = ? WHERE idWord = ?");
-        stInsert.setString(1, w);
-        stInsert.setString(2, m);
-        stInsert.setString(3, def);
-        stInsert.setInt(4, idW);
-        stInsert.executeUpdate();
-                 
-        /**************************/
-   
-     
         try {
             //TODO --> comprobaciones?? (A nivel de PRESENTACION)
             if (w == null || def == null)
@@ -118,25 +96,35 @@ public class Entry {
             if (!aux.contains(m))
                 throw new Exception("The morfology must be: [" + aux.toString() + "]");
 
-            // FIXME Eliminar comillas simples (') de los strings (sustituir por [\'] )
-            def = def.replaceAll("'", "\'");
             /*------------ EOF VALIDATION -------------------*/
 
             co = initConnection();
+            
+            /* Get the Word IDentifier */
+            stUpdate = co.prepareStatement("SELECT id FROM word WHERE  term = ?");
+            stUpdate.setString(1, w);
 
-            stInsert = co.prepareStatement("INSERT INTO word(term, morf, definition) VALUES(?,?,?)");
-            stInsert.setString(1, w);
-            stInsert.setString(1, m);
-            stInsert.setString(1, def);
+            rs = stUpdate.executeQuery();
+            if(rs.next()) {
+                idW = rs.getInt("id");
+            } else throw new Exception("UPDATE ERROR: the word "+w+"notExists");
 
-            int n = stInsert.executeUpdate();
-            if(n<1) throw new SQLException("Entry.java:76, NOT Insert "+w);
+            /* Update the word values */
+            stUpdate=co.prepareStatement("UPDATE word SET term=?, morf=?, " +
+                                            "definition = ? WHERE id = ?");
+            stUpdate.setString(1, w);
+            stUpdate.setString(2, m);
+            stUpdate.setString(3, def);
+            stUpdate.setInt(4, idW);
+      
+            int n = stUpdate.executeUpdate();
+            if(n<1) throw new SQLException("Entry.java:125, NOT Update "+w);
 
         } catch (SQLException ex) {
-            return ("ERROR: There are a problem inserting the word<br/>\n"
+            return ("ERROR: There are a problem updating the word<br/>\n"
                         + ex.toString());
         } finally {
-            closeConnection(co, stInsert, rs);
+            closeConnection(co, stUpdate, rs);
         }
         return null;
     }

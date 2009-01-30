@@ -30,8 +30,8 @@
 			out.println("Morf: "	+ mrf + "<br/>");
 			//TODO: request.getRemoteHost(); auth por host?
 			// request.getRemoteAddr();
-			
-			if(request.getParameter("secret") != null) {
+			// FIXME: Is the user logged? (and is granted)
+			if(true /*request.getParameter("secret") != null*/) {
 				String res = null;
 				try {
 					res = Entry.addWord(wrd, mrf, def);
