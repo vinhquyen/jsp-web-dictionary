@@ -29,7 +29,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 	<body onload="init();">
 		<div id="login"><%@ include file="WEB-INF/jspf/login.jspf" %></div>
 		<div id="header">
-			<a href="index.jsp?lang=<%= szLang); %>"><img 
+			<a href="index.jsp?lang=<%= szLang %>"><img 
 			  id="logo" src="img/dict.jpg" alt="home" /></a>
 			 <div id="title">
 				<h1>JSP-Tech Web Dictionary </h1>
@@ -38,11 +38,11 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 		</div>
 		<div id="bar">
 			<ul class="inline">
-				<li><a href="index.jsp?action=1&amp;lang=<%= szLang); %>"><%= r.getString("add")  %></a></li>
-				<li><a href="index.jsp?action=2&amp;lang=<%= szLang); %>"><%= r.getString("rnd")  %></a></li>
+				<li><a href="index.jsp?action=1&amp;lang=<%= szLang %>"><%= r.getString("add")  %></a></li>
+				<li><a href="index.jsp?action=2&amp;lang=<%= szLang %>"><%= r.getString("rnd")  %></a></li>
 				<li><a href="#" onclick="setVisibility('license')"><%= r.getString("license")  %></a></li>
 				<li><a href="#" onclick="setVisibility('contact')"><%= r.getString("contact")  %></a></li>
-				<li><a href="index.jsp?action=3&amp;lang=<%= szLang); %>"><%= r.getString("about")  %></a></li>
+				<li><a href="index.jsp?action=3&amp;lang=<%= szLang %>"><%= r.getString("about")  %></a></li>
 			</ul>
 			<div id="contact" class="hidden">
 				<em>admin947 (AT) gmail.com</em>

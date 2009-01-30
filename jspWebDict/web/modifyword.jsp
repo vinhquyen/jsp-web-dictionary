@@ -55,7 +55,7 @@
 		<p>
 			<label for="Definition"><%= r.getString("def") %></label>
 			<a class="add" href="#" onclick="addNode('def')"><%= r.getString("addnode") %></a><br/>
-			<textarea cols="32" rows="4" name="def"><%= e.getDefinition()); %></textarea>
+			<textarea cols="32" rows="4" name="def"><%= e.getDefinition() %></textarea>
 		</p>
 	</div>
 	<!-- Examples -->

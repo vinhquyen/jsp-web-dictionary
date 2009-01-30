@@ -3,10 +3,10 @@
 <%@ page import="java.text.MessageFormat" %>
 <%@ page pageEncoding="UTF-8" %>
 
-<% 
+<% /*
 	String userAgent, cookie, host;
 	int i = 0, j;
-	/*
+	
 	host = request.getRemoteAddr();
 	
 	userAgent = request.getHeader("user-agent");
@@ -19,7 +19,22 @@
 
 	out.print(cookie);
 
-	i = InOut.addStat(host, userAgent, cookie, out); */
+	i = InOut.addStat(host, userAgent, cookie, out);
 	i = InOut.getVisitors();
-	out.print(MessageFormat.format(r.getString("visitor"), i));
+	out.print(MessageFormat.format(r.getString("visitor"), i)); */
 %>
+
+<!-- Begin W3Counter Tracking Code -->
+<script type="text/javascript" src="http://www.w3counter.com/tracker.js">
+</script>
+<script type="text/javascript">
+	w3counter(17544);
+</script>
+<noscript>
+	<div>
+		 <a href="http://www.w3counter.com"><img 
+		  src="http://www.w3counter.com/tracker.php?id=17544" style="border: 0" 
+		alt="W3Counter" /></a>
+	</div>
+</noscript>
+<!-- End W3Counter Tracking Code-->

@@ -23,7 +23,7 @@
 <%
 	request.setCharacterEncoding("UTF-8");
 	
-	ArrayList<LinkedList<Entry>> aDef= null;
+	Entry aDef= null;
 	String szId = request.getParameter("id");
 	String szWord = request.getParameter("word");
 	
@@ -44,8 +44,7 @@
 	else {	/** get definition by ID */
 	    try {
 			int id = Integer.valueOf(szId);
-			aDef = new ArrayList<LinkedList<Entry>>();
-			aDef.add(Entry.getDefinition(id));
+			aDef = Entry.getDefinition(id);
 	    } catch (Exception e) {
 			InOut.printError(e, out);
 			return;
@@ -53,7 +52,7 @@
 	}
 	// TODO: sustituir por JSLT !! o algo mas elegante
 	/** Find lexicographically nearest words */
-	if (aDef == null || aDef.isEmpty()) {
+	if (aDef == null) {
 			String notF = MessageFormat.format(r.getString("notFound"), "''<em>" + szWord + "</em>'' ");
 			out.print("<p>" + notF + "<br/>");
 			out.print("<a href='index.jsp?action=1&word=" + szWord + "'>" + r.getString("addDef") + "</a>");
@@ -69,18 +68,10 @@
 	/** Show the definions of the word*/
 	else {
 	    if(szWord == null)
-			szWord = aDef.get(0).getFirst().getWord().toLowerCase();
+			szWord = aDef.getWord().toLowerCase();
 	    
-	    int i = 1;
-	    for(LinkedList<Entry> laux : aDef) {
-			out.print("<h3>" + szWord);
-			if(aDef.size() > 1)
-			    out.print("<sup>" + i + "</sup>");
-			out.println("</h3>");
-			InOut.printWordDef(laux, out);
-			i++;
-		}
-		//out.print("<p>Number of definitions: " + laux.size() + "</p>"); //DEBUG
+		out.println("<h3>" + szWord + "</h3>");
+		InOut.printWordDef(aDef, out);
 	}
 %> 
 </div>

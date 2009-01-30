@@ -3,7 +3,9 @@
 	display: none;
 	visibility: hidden;
 }
-
+div#about {
+	text-align: justify;
+}
 a.add {
 	font-size: 75%;
 	text-decoration: none;

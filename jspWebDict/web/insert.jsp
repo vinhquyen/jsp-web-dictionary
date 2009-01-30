@@ -24,19 +24,17 @@
 			String wrd = request.getParameter("word").toLowerCase();
 			String mrf = request.getParameter("morfology");
 			String def = request.getParameter("def");	
-			String exs = request.getParameter("ex");
 			
 			out.println("<p>Word: " + wrd + "<br/>");
 			out.println("Def: "		+ def + "<br/>");
 			out.println("Morf: "	+ mrf + "<br/>");
-			out.println("Examples: "+ exs + "</p>" );
 			//TODO: request.getRemoteHost(); auth por host?
 			// request.getRemoteAddr();
 			
 			if(request.getParameter("secret") != null) {
 				String res = null;
 				try {
-					res = Entry.addWord(wrd, mrf, def, exs);
+					res = Entry.addWord(wrd, mrf, def);
 				}catch (Exception e){
 					InOut.printError(e, out);
 					res = "";
