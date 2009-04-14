@@ -39,19 +39,19 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
         <div id="bar">
             <ul class="inline">
              <% if (session.getAttribute("user") != null) { %>
-                <li><a href="index.jsp?action=1&amp;lang=<%=szLang %>"><%= r.getString("add") %></a></li>
+                <li><a href="index.jsp?action=1"><%= r.getString("add") %></a></li>
              <% } %>
-                <li><a href="index.jsp?action=2&amp;lang=<%=szLang %>"><%=r.getString("rnd") %></a></li>
+                <li><a href="index.jsp?action=2"><%=r.getString("rnd") %></a></li>
                 <li><a href="#" onclick="setVisibility('license')"><%=r.getString("license") %></a></li>
                 <li><a href="#" onclick="setVisibility('contact')"><%=r.getString("contact") %></a></li>
-                <li><a href="index.jsp?action=3&amp;lang=<%=szLang %>"><%=r.getString("about") %></a></li>
+                <li><a href="index.jsp?action=3"><%=r.getString("about") %></a></li>
             </ul>
             <div id="contact" class="hidden">
                 <em>admin947 (AT) gmail.com</em>
             </div>
         </div>
         <div id="lang">
-            <select name="lang" onchange="changeLang(this.value)">
+        <select name="lang" onchange="changeLang(this.value)">
                 <option value="">[idioma]</option>
                 <option value="an_ES">aragon&eacute;s</option>
                 <option value="es">espa&ntilde;ol</option>
@@ -73,24 +73,24 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
             }
             switch (iAction) {
                 case 1:
-                    szAction = "addword.jsp?lang=" + szLang;
+                    szAction = "addword.jsp";
                     break;
                 case 2:
-                    String redirectURL = "index.jsp?lang="+szLang+"&id="+Entry.getRandom();
+                    String redirectURL = "index.jsp?id="+Entry.getRandom();
                     response.sendRedirect(redirectURL);
                     break;
                 case 3:
-                    szAction = "about.jsp?lang="+szLang;
+                    szAction = "about.jsp";
                     break;
                 case 4:
-                    szAction = "modifyword.jsp?lang="+szLang+"&id="+request.getParameter("id");
+                    szAction = "modifyword.jsp?id="+request.getParameter("id");
                     break;
                 default:
-                    szAction = "search.jsp?lang="+szLang;
+                    szAction = "search.jsp";
             }
         }
         else
-            szAction = "search.jsp?lang=" + szLang;
+            szAction = "search.jsp";
             %>
             <jsp:include page="<%=szAction %>" />
         </div>

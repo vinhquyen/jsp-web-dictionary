@@ -1,4 +1,4 @@
-<%-- Allows using ResourceBoundes for internazinalization purposses --%>
+<%-- Allows using ResourceBoundes for internationalization purposses --%>
 <%@ page import="java.util.Locale" %>
 <%@ page import="java.util.ResourceBundle" %>
 <%@ page import="java.text.MessageFormat" %>
@@ -7,28 +7,39 @@
 <%
 	Locale curr;
 	ResourceBundle r, rAbout, rCopy, rConf;
+        String newLang, szLang;
         
-	String szLang = request.getParameter("lang");
-	if(szLang == null || szLang.length() == 0) {
+        newLang = request.getParameter("lang");
+        if ( newLang != null && newLang.length() > 0 ) {
+            szLang = newLang;
+            session.setAttribute("lang", szLang);
+            //out.print("<h1>NEW LANG: " + szLang + "</h1>");
+        } else {
+            szLang = (String) session.getAttribute("lang");
+            //out.print("<h1>Session LANG: " + szLang + "</h1>");
+        } 
+        
+	if (szLang == null || szLang.length() == 0) {
 	    curr = Locale.getDefault();
 	    szLang = curr.getLanguage();
+            session.setAttribute("lang", szLang);
 	}
 	else {
 	    String a[] = szLang.split("_");
 	    switch(a.length) {
-			case 1:
-			    curr = new Locale(szLang);
-			    break;
-			case 2:
-				curr = new Locale(a[0], a[1]);
-			    break;
-			case 3:
-				curr = new Locale(a[0], a[1], a[2]);
-			    break;
-			default: // Avoid errors or h4ck1ng5
-			    curr = Locale.getDefault();
-			    szLang = curr.getLanguage();
-		}
+                case 1:
+                    curr = new Locale(szLang);
+                    break;
+                case 2:
+                    curr = new Locale(a[0], a[1]);
+                    break;
+                case 3:
+                    curr = new Locale(a[0], a[1], a[2]);
+                    break;
+                default: // Avoid errors or h4ck1ng5
+                    curr = Locale.getDefault();
+                    szLang = curr.getLanguage();
+            }
 	}
 	
 	r = ResourceBundle.getBundle("resources/main", curr);

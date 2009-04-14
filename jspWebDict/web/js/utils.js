@@ -53,7 +53,7 @@ function delNode(idParent, id) {
 /** Change the language of the page */
 function changeLang(lang) {
 	var pag, host, params;
-	var url = location.href;
+	var url = location.href.replace("#", "");
 	
 	var j = url.lastIndexOf("/");
 	var i = url.indexOf("?"); 
@@ -77,7 +77,7 @@ function changeLang(lang) {
 		else {params = params.concat("&lang="+lang);}
 	}
 	else {	// Do not exist any parameter
-		pag = url.substr(j+1).replace("#", ""); //get the page
+		pag = url.substr(j+1); //get the page
 		params = "?lang="+lang;
 	}
 	location.href = host+pag+params;
