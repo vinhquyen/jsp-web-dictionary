@@ -15,7 +15,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <title>JSP Web Dictionary <%= r.getString("version")%></title>
+        <title>JSP Web Dictionary <%= rConf.getString("version")%></title>
         <link rel="stylesheet" href="css/main.css" type="text/css" />
         <%
         String css = request.getParameter("css");
@@ -32,13 +32,15 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
             <a href="index.jsp?lang=<%= szLang%>"><img 
                 id="logo" src="img/dict.jpg" alt="home" /></a>
             <div id="title">
-                <h1>JSP-Tech Web Dictionary </h1>
-                <h4><%= r.getString("version")%></h4>
+                <h1><%= rConf.getString("title")%></h1>
+                <h4>JSP-Tech Web Dictionary <%= rConf.getString("version")%></h4>
             </div>
         </div>
         <div id="bar">
             <ul class="inline">
+             <% if (session.getAttribute("user") != null) { %>
                 <li><a href="index.jsp?action=1&amp;lang=<%=szLang %>"><%= r.getString("add") %></a></li>
+             <% } %>
                 <li><a href="index.jsp?action=2&amp;lang=<%=szLang %>"><%=r.getString("rnd") %></a></li>
                 <li><a href="#" onclick="setVisibility('license')"><%=r.getString("license") %></a></li>
                 <li><a href="#" onclick="setVisibility('contact')"><%=r.getString("contact") %></a></li>
@@ -50,7 +52,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
         </div>
         <div id="lang">
             <select name="lang" onchange="changeLang(this.value)">
-                <option value="">--</option>
+                <option value="">[idioma]</option>
                 <option value="an_ES">aragon&eacute;s</option>
                 <option value="es">espa&ntilde;ol</option>
                 <option value="en">english</option>

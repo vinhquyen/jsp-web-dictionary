@@ -6,7 +6,8 @@
 
 <%
 	Locale curr;
-	ResourceBundle r, rAbout, rCopy;
+	ResourceBundle r, rAbout, rCopy, rConf;
+        
 	String szLang = request.getParameter("lang");
 	if(szLang == null || szLang.length() == 0) {
 	    curr = Locale.getDefault();
@@ -33,4 +34,5 @@
 	r = ResourceBundle.getBundle("resources/main", curr);
 	rAbout = ResourceBundle.getBundle("resources/about", curr);
 	rCopy = ResourceBundle.getBundle("resources/copyright", curr);
+        rConf = ResourceBundle.getBundle("resources/config", curr);
 %>

@@ -24,12 +24,13 @@
 
 	szUser = (String) session.getAttribute("user");
 	if (szUser != null) // User identified
-	{ %>
+	{ 
+            %>
 		<form method="post">
 			Welcome <i> <%=szUser %> </i>
 			<input type="submit" name="action" value="logout">
 		</form>
-	<%	
+            <%	
 	}
 	else { %>
 			<form method="post">

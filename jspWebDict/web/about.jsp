@@ -7,7 +7,11 @@
 <%@ include file="WEB-INF/jspf/lang.jspf" %>
 
 <div id="about">
-	<h3>Acerca de este proyecto</h3>
+	<h3>Acerca de...</h3>
+        <h4>... el patu&eacute;s</h4>
+        <p><a href="http://an.wikipedia.org/wiki/Benasqu%C3%A9s">Wikipedia</a>
+        </p>
+        <h4>... este proyecto</h4>
 	<p>
 		El proyecto surge como una necesidad de mantener viva una lengua, o 
 		lo que es lo mismo, una cultura y una manera de ver y hacer las cosas.

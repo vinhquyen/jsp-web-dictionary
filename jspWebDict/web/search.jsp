@@ -76,8 +76,9 @@
             String szParams = "&lang="+szLang+"&id="+idWord;
     %> 
         <h3><%=szWord %><sup style="font-size:65%;font-weight:100;">
+            <% if (session.getAttribute("user") != null) { %>
                 <a href="index.jsp?action=4<%=szParams %>">modificar</a></sup></h3>
-    <%
+    <%      }
             InOut.printWordDef(aDef, out);
         }
     %> 
