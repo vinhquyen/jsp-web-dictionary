@@ -15,7 +15,6 @@
             <label><%= r.getString("searchLab")%></label>
             <input id="input_search" type="text" name="word" tabindex="1" />
             <input type="submit" value="<%= r.getString("submit")%>"/>
-            <input type="hidden" name="lang" value="<%= szLang%>"/>
         </p>
     </form>
 </div>
@@ -28,25 +27,22 @@
         String szWord = request.getParameter("word");
         int idWord = 0;
 
-        if (szWord == null && szId == null) {
-            out.print("</div>");
-            return;
-        }
-        if (szWord != null) {
-            /** get defition by WORD */
-            szWord = szWord.toLowerCase();
+        if (szWord != null || szId != null) {
+            if (szId != null) {
+        /** get definition by ID */
             try {
-                aDef = Entry.getDefinition(szWord);
+                idWord = Integer.valueOf(szId);
+                aDef = Entry.getDefinition(idWord);
             } catch (Exception e) {
                 InOut.printError(e, out);
                 return;
             }
         }
-        else {
-            /** get definition by ID */
+        else { // szWord != null
+            /** get defition by WORD */
+            szWord = szWord.toLowerCase();
             try {
-                idWord = Integer.valueOf(szId);
-                aDef = Entry.getDefinition(idWord);
+                aDef = Entry.getDefinition(szWord);
             } catch (Exception e) {
                 InOut.printError(e, out);
                 return;
@@ -69,17 +65,15 @@
         }
         /** Show the definions of the word*/
         else {
-
             szWord = aDef.getWord().toLowerCase();            
             idWord = aDef.getId();
-
-            String szParams = "&lang="+szLang+"&id="+idWord;
     %> 
         <h3><%=szWord %><sup style="font-size:65%;font-weight:100;">
             <% if (session.getAttribute("user") != null) { %>
-                <a href="index.jsp?action=4<%=szParams %>">modificar</a></sup></h3>
+                <a href="index.jsp?action=4&id=<%=idWord %>">modificar</a></sup></h3>
     <%      }
             InOut.printWordDef(aDef, out);
         }
-    %> 
+    }
+    %>
 </div>

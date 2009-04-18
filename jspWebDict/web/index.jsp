@@ -8,6 +8,21 @@
 
 <%@ include file="WEB-INF/jspf/lang.jspf" %>
 
+<%  /** Show the word searched at the browser title bar **/
+    String szTitle = request.getParameter("word");
+    String idWord = request.getParameter("id");
+    if (szTitle == null)
+        if (idWord != null) {
+            try {
+                int id = Integer.parseInt(idWord);
+                szTitle = Entry.getDefinition(id).getWord() + " -";
+            } catch (Exception e) {
+                szTitle = "";
+            }
+        } else  szTitle = "";
+    else  szTitle += " -";
+%>
+
 <!DOCTYPE html 
 PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
@@ -15,7 +30,8 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <title>JSP Web Dictionary <%= rConf.getString("version")%></title>
+        <title><%=szTitle %> JSP Web Dictionary 
+                    <%=rConf.getString("version")%></title>
         <link rel="stylesheet" href="css/main.css" type="text/css" />
         <%
         String css = request.getParameter("css");
