@@ -26,6 +26,7 @@
         String szId = request.getParameter("id");
         String szWord = request.getParameter("word");
         int idWord = 0;
+        boolean userLogged = (session.getAttribute("user") != null);
 
         if (szWord != null || szId != null) {
             if (szId != null) {
@@ -51,25 +52,29 @@
         // TODO: sustituir por JSLT !! o algo mas elegante
         /** Find lexicographically nearest words */
         if (aDef == null) {
-            String notF = MessageFormat.format(r.getString("notFound"), "''<em>" + szWord + "</em>'' ");
-            out.print("<p>" + notF + "<br/>");
-            out.print("<a href='index.jsp?action=1&word=" + szWord + "'>" + r.getString("addDef") + "</a>");
-            LinkedList<Entry> laux = Entry.getNearWords(szWord);
-            out.println("<div id='nearW'>");
-            for (Entry e : laux) {
-                out.print("<li>");
-                out.print("<a href='index.jsp?id=" + e.getId() + "'>" + e.getWord() + "</a>");
-                out.println("</li>");
-            }
-            out.println("</div>");
-        }
+            if( userLogged ) {
+                String notF = MessageFormat.format(r.getString("notFound"), "''<em>" + szWord + "</em>'' ");
+                %> <p> <%=notF %> <br/>
+                    <a href='index.jsp?action=1&word=<%=szWord %>'><%=r.getString("addDef") %></a></p>
+            <% }
+            LinkedList<Entry> laux = Entry.getNearWords(szWord); %>
+            <div id='nearW'>
+                <h4><%=r.getString("nearWord") %></h4>
+            <%
+            for (Entry e : laux) { %>
+                <li>
+                    <a href='index.jsp?id=<%=e.getId()%>'><%=e.getWord() %></a>
+                </li>
+            <% } %>
+            </div>
+        <% }
         /** Show the definions of the word*/
         else {
             szWord = aDef.getWord().toLowerCase();            
             idWord = aDef.getId();
     %> 
         <h3><%=szWord %><sup style="font-size:65%;font-weight:100;">
-            <% if (session.getAttribute("user") != null) { %>
+            <% if (userLogged) { %>
                 <a href="index.jsp?action=4&id=<%=idWord %>">modificar</a></sup></h3>
     <%      }
             InOut.printWordDef(aDef, out);
