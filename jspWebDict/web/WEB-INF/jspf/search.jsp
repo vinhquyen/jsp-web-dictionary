@@ -7,7 +7,7 @@
 <%@page import="java.text.MessageFormat" %>
 <%@page import="java.util.*" %>
 
-<%@ include file="WEB-INF/jspf/lang.jspf" %>
+<%@ include file="lang.jspf" %>
 
 <div id="search">
     <form  id="s_word" action="index.jsp" accept-charset="utf-8">

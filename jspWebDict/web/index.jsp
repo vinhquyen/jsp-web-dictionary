@@ -89,24 +89,24 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
             }
             switch (iAction) {
                 case 1:
-                    szAction = "addword.jsp";
+                    szAction = "WEB-INF/jspf/addword.jsp";
                     break;
                 case 2:
                     String redirectURL = "index.jsp?id="+Entry.getRandom();
                     response.sendRedirect(redirectURL);
                     break;
                 case 3:
-                    szAction = "about.jsp";
+                    szAction = "WEB-INF/jspf/about.jsp";
                     break;
                 case 4:
-                    szAction = "modifyword.jsp?id="+request.getParameter("id");
+                    szAction = "WEB-INF/jspf/modifyword.jsp?id="+request.getParameter("id");
                     break;
                 default:
-                    szAction = "search.jsp";
+                    szAction = "WEB-INF/jspf/search.jsp";
             }
         }
         else
-            szAction = "search.jsp";
+            szAction = "WEB-INF/jspf/search.jsp";
             %>
             <jsp:include page="<%=szAction %>" />
         </div>

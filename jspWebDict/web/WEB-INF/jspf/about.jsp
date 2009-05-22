@@ -4,7 +4,7 @@
                         Author     : chiron
 --%>
 
-<%@ include file="WEB-INF/jspf/lang.jspf" %>
+<%@ include file="lang.jspf" %>
 
 <div id="about">
     <h3>Acerca de...</h3>

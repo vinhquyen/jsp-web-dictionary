@@ -7,7 +7,7 @@
 <%@ page import="java.text.MessageFormat" %>
 <%@ page import="java.util.*" %>
 
-<%@ include file="WEB-INF/jspf/lang.jspf" %>
+<%@ include file="lang.jspf" %>
 
 <h2><%= r.getString("add")  %>:</h2>
 <form action="insert.jsp" method="get">
