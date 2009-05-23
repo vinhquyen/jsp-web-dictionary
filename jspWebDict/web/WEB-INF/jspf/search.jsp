@@ -41,7 +41,7 @@
         }
         else { // szWord != null
             /** get defition by WORD */
-            szWord = szWord.toLowerCase();
+            szWord = szWord.toLowerCase().trim();
             try {
                 aDef = Entry.getDefinition(szWord);
             } catch (Exception e) {
@@ -52,22 +52,29 @@
         // TODO: sustituir por JSLT !! o algo mas elegante
         /** Find lexicographically nearest words */
         if (aDef == null) {
-            if( userLogged ) {
+                //szWord = InOut.userInputParser(szWord, out);
+                szWord = InOut.userInputParser(szWord);
                 String notF = MessageFormat.format(r.getString("notFound"), "''<em>" + szWord + "</em>'' ");
-                %> <p> <%=notF %> <br/>
-                    <a href='index.jsp?action=1&word=<%=szWord %>'><%=r.getString("addDef") %></a></p>
-            <% }
-            LinkedList<Entry> laux = Entry.getNearWords(szWord); %>
-            <div id='nearW'>
-                <h4><%=r.getString("nearWord") %></h4>
-            <%
-            for (Entry e : laux) { %>
-                <li>
-                    <a href='index.jsp?id=<%=e.getId()%>'><%=e.getWord() %></a>
-                </li>
-            <% } %>
-            </div>
-        <% }
+             %>
+                <p><%=notF %><br/>
+             <% if( userLogged ) { %>
+                    <a href='index.jsp?action=1&word=<%=szWord %>'><%=r.getString("addDef") %></a>
+                <% }
+            %> </p> <%
+            
+            LinkedList<Entry> laux = Entry.getNearWords(szWord);
+            if( !laux.isEmpty()) { %>
+                <div id='nearW'>
+                    <h4><%=r.getString("nearWord") %></h4>
+                <%
+                for (Entry e : laux) { %>
+                    <li>
+                        <a href='index.jsp?id=<%=e.getId()%>'><%=e.getWord() %></a>
+                    </li>
+                <% } %>
+                </div>
+         <% }
+        }
         /** Show the definions of the word*/
         else {
             szWord = aDef.getWord().toLowerCase();            

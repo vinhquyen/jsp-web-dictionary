@@ -3,6 +3,8 @@ package database;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.servlet.jsp.JspWriter;
 
 /** 
@@ -31,5 +33,21 @@ public class InOut {
         } catch (IOException ex) {
             Logger.getLogger(InOut.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    /** Parses the user input to avoid Cross-Scripting and HTML injection
+     *  - Replace "<" and ">" by the HTML code (for a RAW output)
+     * http://fnr.sourceforge.net/docs/net/sourceforge/java/util/text/StringUtils.html
+     * http://www.stringutils.com/
+     */
+    public static String userInputParser(String input) {
+        String output;
+       /* Pattern p = Pattern.compile("<*>*</>");
+        Matcher m = p.matcher(input);
+        boolean b = m.matches(); */
+
+        output = input.replaceAll("<", "&lt;").replaceAll(">", "&gt;");
+
+        return output;
     }
 }
