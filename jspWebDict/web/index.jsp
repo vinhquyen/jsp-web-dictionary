@@ -21,6 +21,9 @@
             }
         } else  szTitle = "";
     else  szTitle += " -";
+
+    /** Get if the user is logged */
+    boolean userLogged = (session.getAttribute("user") != null);
 %>
 
 <!DOCTYPE html 
@@ -43,7 +46,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
         <script type="text/javascript" src="js/utils.js"></script>
     </head>
     <body onload="init();">
-        <div id="login"><%@ include file="WEB-INF/jspf/login.jspf" %></div>
+        <!--<div id="login"><%@ include file="WEB-INF/jspf/login.jspf" %></div>-->
         <div id="header">
             <a href="index.jsp?lang=<%= szLang%>"><img 
                 id="logo" src="img/dict.jpg" alt="home" /></a>
@@ -54,7 +57,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
         </div>
         <div id="bar">
             <ul class="inline">
-             <% if (session.getAttribute("user") != null) { %>
+             <% if (userLogged) { %>
                 <li><a href="index.jsp?action=1"><%= r.getString("add") %></a></li>
              <% } %>
                 <li><a href="index.jsp?action=2"><%=r.getString("rnd") %></a></li>
@@ -89,7 +92,9 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
             }
             switch (iAction) {
                 case 1:
-                    szAction = "WEB-INF/jspf/addword.jsp";
+                    if( userLogged ) 
+                            szAction = "WEB-INF/jspf/addword.jsp";
+                    else    szAction = "WEB-INF/jspf/search.jsp";
                     break;
                 case 2:
                     String redirectURL = "index.jsp?id="+Entry.getRandom();
@@ -99,8 +104,10 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
                     szAction = "WEB-INF/jspf/about.jsp";
                     break;
                 case 4:
-                    szAction = "WEB-INF/jspf/modifyword.jsp?id="+request.getParameter("id");
-                    break;
+                    if( userLogged ) {
+                        szAction = "WEB-INF/jspf/modifyword.jsp?id="+request.getParameter("id");
+                        break;
+                    }
                 default:
                     szAction = "WEB-INF/jspf/search.jsp";
             }
