@@ -1,6 +1,6 @@
 * Import SQL in directory web/_var/DB_creation.sql
 * JDK >= 5
-* Tomcat5.5
+* Tomcat >= 5.5
 * jdbc-mysql-connector.jar (>=5) /usr/share/java
 * /etc/tomcat5.5/catalina.policy
 	grant codeBase "file:/usr/share/tomcat5.5-webapps/jspWebDict/-" {
@@ -13,8 +13,8 @@
    };
 
 
-
-/usr/share/tomcat6/lib [pueden ser enlaces simbolicos]
+* Java libraries (tomcat)
+/usr/share/tomcat6/lib
 	naming-factory.jar
 	naming-factory-dbcp.jar
 	naming-resources.jar
