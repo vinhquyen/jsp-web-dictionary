@@ -7,6 +7,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Hashtable;
+import java.util.Iterator;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -16,6 +19,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.Random;
+import java.util.SortedSet;
 
 public class Entry {
 
@@ -40,7 +44,7 @@ public class Entry {
     }
 
     /** Add a new word to the database 
-     * @return null: if everything go fine, in another situation returb a 
+     * @return null: if everything go fine, in another situation return a
      * String which describes the problem
      */
     public static String addWord(String w,String m,String def)throws Exception {
@@ -77,7 +81,10 @@ public class Entry {
         }
         return null;
     }
-
+    /* TODO --> update the SortedSet and the Hashtable of words
+     * 1. Insert term and id into the Hashtable
+     * 2. Insert term into SortedSet
+    */
     public static String updateWord(String w, String m, String def) throws Exception {
         Connection co = null;
         ResultSet rs = null;
@@ -131,9 +138,9 @@ public class Entry {
         ResultSet rs = null;
         Statement st = null;
 
-        /*  TODO --> control "stInsert" --> SQL Injection
+        /*  [DONE] --> control "stInsert" --> SQL Injection
          *[ as' OR true OR 'as' = 'as ] <-- muestra todas las palabras
-         * szWord = szWord.replace("'", ""); (eliminar comillas simples?)
+         * szWord = szWord.replace("'", "");
          */
         String szSQL = "SELECT id FROM word WHERE term = '" + szWord + "'";
 
@@ -185,17 +192,51 @@ public class Entry {
         return new Entry(id, w, m, def);
     }
 
-    /** Get the nearest words lexicographycally */ //TODO: use JQuery
 
+    private static Hashtable<String, Integer> allWords;
+    private static ArrayList<String> orderedWords;
+
+    /** Get the nearest words lexicographycally */ 
+    // FIXME: use ¿JQuery?
     public static LinkedList<Entry> getNearWords(String szWord) throws Exception {
+        int index, inf, sup;
+        LinkedList<Entry> l = new LinkedList<Entry>();
+        String aux;
+
+        if(allWords == null || orderedWords == null) {
+            allWords = new Hashtable<String, Integer>();
+            orderedWords = new ArrayList<String>();
+            initAllWordsStructs(allWords, orderedWords);
+        }
+        
+        
+        orderedWords.add(szWord);
+        Collections.sort(orderedWords);
+        index = orderedWords.indexOf(szWord);
+        orderedWords.remove(index); // Delete the word inserted artificial to make the lookup but it does not exist
+
+        inf = Math.max(0, index-5);
+        sup = Math.min(index+5, orderedWords.size());
+
+        for(index = inf; index < sup; index++) {
+            aux = orderedWords.get(index);
+            l.add(new Entry(allWords.get(aux), aux));
+        }
+        
+        return l;
+    }
+
+    /**
+     * Initialites the structures that allows find lexicographically near words
+     * @param allWords Hashtable that contains all the pair <term, id>
+     * @param orderedWords SortedSet that contains the term's ordered
+    */
+    private static void initAllWordsStructs(Hashtable<String, Integer> allWords, ArrayList<String> orderedWords) throws Exception {
         Connection co = null;
         ResultSet rs = null;
         Statement st = null;
-        LinkedList<Entry> l = new LinkedList<Entry>();
 
-        int endIndex = (3 > szWord.length()) ? szWord.length() : 3;
-        szWord = szWord.substring(0, endIndex);
-        String szSQL = "SELECT * FROM word WHERE term LIKE '" + szWord + "%' LIMIT 10";
+        String szSQL = "SELECT term, id FROM word WHERE 1=1 ORDER BY term";
 
         try {
             co = initConnection();
@@ -205,12 +246,12 @@ public class Entry {
             while (rs.next()) {
                 int id = rs.getInt("id");
                 String word = rs.getString("term");
-                l.add(new Entry(id, word));
+                allWords.put(word, id);
+                orderedWords.add(word);
             }
         } finally {
             closeConnection(co, st, rs);
         }
-        return l;
     }
 
     /** Generate a random word id (accessing to DB) */
