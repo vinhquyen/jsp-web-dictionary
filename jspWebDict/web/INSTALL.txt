@@ -7,7 +7,8 @@
 	   permission java.net.SocketPermission "localhost:3306", "connect,resolve";
    };
    
-   // FIXME -- security hole
+   // Add java policy to allo the acess
+   //[This is an insecure trick, DON'T if you DON'T KNOW what are you doing]
    grant {
    	permission java.security.AllPermission;
    };
