@@ -51,7 +51,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
             <a href="index.jsp?lang=<%= szLang%>"><img 
                 id="logo" src="img/dict.jpg" alt="home" /></a>
             <div id="title">
-                <h1><%= rConf.getString("title")%></h1>
+                <h1><%= r.getString("title")%></h1>
                 <h4>JSP-Tech Web Dictionary <%= rConf.getString("version")%></h4>
             </div>
         </div>
@@ -73,9 +73,9 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
         <select name="lang" onchange="changeLang(this.value)">
                 <option value="">[idioma]</option>
                 <option value="an_ES">aragon&eacute;s</option>
+                <option value="be_ES">benasqu&eacute;s</option>
                 <option value="es">espa&ntilde;ol</option>
                 <option value="en">english</option>
-                <option value="be_ES">patu&eacute;s</option>
             </select>
         </div>
         <div id="content">
@@ -140,7 +140,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
                 %>
             </p>
             <div>
-                <img src="img/guayente.jpg" alt="Asociaci&oacute;n Guayente" />
+                <img src="img/guayen.png" alt="Asociaci&oacute;n Guayente" />
                 <img src="img/tomcat.gif" alt="Powered by Tomcat" />
                 <img src="img/mysql.png" alt="MySQL Powered" />
                 <img src="img/java.jpg" alt="Java Powered" />
