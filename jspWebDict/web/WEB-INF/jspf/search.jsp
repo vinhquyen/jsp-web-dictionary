@@ -66,12 +66,14 @@
             if( !laux.isEmpty()) { %>
                 <div id='nearW'>
                     <h4><%=r.getString("nearWord") %></h4>
+                    <ul>
                 <%
                 for (Entry e : laux) { %>
-                    <li>
+                      <li>
                         <a href='index.jsp?id=<%=e.getId()%>'><%=e.getWord() %></a>
-                    </li>
+                      </li>
                 <% } %>
+                    </ul>
                 </div>
          <% }
         }
@@ -79,12 +81,15 @@
         else {
             szWord = aDef.getWord().toLowerCase();            
             idWord = aDef.getId();
-    %> 
-        <h3><%=szWord %><sup style="font-size:65%;font-weight:100;">
+        %>
+        <h3><%=szWord %>
             <% if (userLogged) { %>
-                <a href="index.jsp?action=4&id=<%=idWord %>">modificar</a></sup></h3>
-    <%      }
-            InOut.printWordDef(aDef, out);
+              <sup style="font-size:65%;font-weight:100;">
+                  <a href="index.jsp?action=4&id=<%=idWord %>">modificar</a>
+              </sup>
+            <% } %>
+        </h3>
+        <% InOut.printWordDef(aDef, out);
         }
     }
     %>

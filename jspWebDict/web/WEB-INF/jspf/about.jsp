@@ -8,7 +8,7 @@
 
 <div id="about">
     <h3>Acerca de...</h3>
-    <h4>... el patu&eacute;s</h4>
+    <h4>... el benasqu&eacute;s o patu&eacute;s</h4>
     <p><a href="http://an.wikipedia.org/wiki/Benasqu%C3%A9s">Wikipedia</a>
     </p>
     <h4>... este proyecto</h4>
@@ -35,7 +35,7 @@
     </p>
     <h3>Agradecimientos</h3>
     <ul>
-        <li>A Mar&iacute;a Jos&eacute; Subir&aacute, Carmen Cast&aacute;n y 
+        <li>A Mar&iacute;a Jos&eacute; Subir&aacute; Carmen Cast&aacute;n y 
             Jos&eacute; Antonio Saura Rami; por la traducci&oacute;n al 
         patu&eacute;s</li>
         <li>A Dabi, por la traducci&oacute;n al aragon&eacute;s</li>

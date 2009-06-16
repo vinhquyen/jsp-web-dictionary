@@ -14,10 +14,15 @@
    };
 
 
-* Java libraries (tomcat)
-/usr/share/tomcat6/lib
+* Java libraries 
+/usr/share/tomcat6/lib/
 	naming-factory.jar
 	naming-factory-dbcp.jar
 	naming-resources.jar
+
+/usr/share/java/
 	mysql-connector-java.jar
 
+NOTE: add a symbolic link in /usr/share/tomcat6/lib to 
+	/usr/share/java/mysql-connector-java.jar
+* Configure user and password in META-INF/context.xml

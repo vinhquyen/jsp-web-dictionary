@@ -116,7 +116,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
             szAction = "WEB-INF/jspf/search.jsp";
             %>
             <jsp:include page="<%=szAction %>" />
-        </div>
+        </div><!-- End of CONTENT -->
         <div id="license" class="hidden" onclick="showDiv(this.id)">
             <jsp:include page='<%=r.getString("licTxt") %>' />
         </div>
@@ -129,7 +129,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
                 %><br/>
                 <%@ include file="WEB-INF/jspf/stats.jspf" %>
             </p>
-        </div><!-- End of CONTENT -->
+        </div><!-- End of STATS -->
         <div id="footer">
             <p><%
         String szAutor, szCopy, szLib;
