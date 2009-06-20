@@ -22,7 +22,7 @@
     <%
         request.setCharacterEncoding("UTF-8");
 
-        Entry aDef = null;
+        ArrayList<Entry> aDef = null;
         String szId = request.getParameter("id");
         String szWord = request.getParameter("word");
         int idWord = 0;
@@ -33,7 +33,8 @@
         /** get definition by ID */
             try {
                 idWord = Integer.valueOf(szId);
-                aDef = Entry.getDefinition(idWord);
+                aDef = new ArrayList<Entry>();
+                aDef.add(Entry.getDefinition(idWord));
             } catch (Exception e) {
                 InOut.printError(e, out);
                 return;
@@ -51,7 +52,7 @@
         }
         // TODO: sustituir por JSLT !! o algo mas elegante
         /** Find lexicographically nearest words */
-        if (aDef == null) {
+        if (aDef == null || aDef.isEmpty()) {
                 //szWord = InOut.userInputParser(szWord, out);
                 szWord = InOut.userInputParser(szWord);
                 String notF = MessageFormat.format(r.getString("notFound"), "''<em>" + szWord + "</em>'' ");
@@ -79,17 +80,21 @@
         }
         /** Show the definions of the word*/
         else {
-            szWord = aDef.getWord().toLowerCase();            
-            idWord = aDef.getId();
-        %>
-        <h3><%=szWord %>
-            <% if (userLogged) { %>
-              <sup style="font-size:65%;font-weight:100;">
-                  <a href="index.jsp?action=4&id=<%=idWord %>">modificar</a>
-              </sup>
-            <% } %>
-        </h3>
-        <% InOut.printWordDef(aDef, out);
+            int i = 1;
+            for(Entry e : aDef) {
+                szWord = e.getWord().toLowerCase();
+                idWord = e.getId();
+            %>
+                <h3><%=szWord %><% if(aDef.size()>1) {%> <sup><%=i %></sup> <% }
+                      if (userLogged) { %>
+                      <sup style="font-size:65%;font-weight:100;">
+                          <a href="index.jsp?action=4&id=<%=idWord %>">modificar</a>
+                      </sup>
+                    <% } %>
+                </h3>
+                <p><% InOut.printWordDef(e, out); %></p><%
+                i++;
+            }
         }
     }
     %>

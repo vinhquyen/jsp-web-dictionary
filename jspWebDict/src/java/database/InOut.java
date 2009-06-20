@@ -3,8 +3,6 @@ package database;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import javax.servlet.jsp.JspWriter;
 
 /** 
@@ -24,12 +22,8 @@ public class InOut {
 
     public static void printWordDef(Entry e, JspWriter out) {
         try {
-            out.println("<ol>");
-            out.print("<li>");
             out.println("<span class='morf'>" + e.getMorfology() +
                     "</span> " + e.getDefinition());
-            out.print("</li>");
-            out.println("</ol>");
         } catch (IOException ex) {
             Logger.getLogger(InOut.class.getName()).log(Level.SEVERE, null, ex);
         }

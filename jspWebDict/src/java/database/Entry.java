@@ -133,7 +133,9 @@ public class Entry {
         return null;
     }
 
-    public static Entry getDefinition(String szWord) throws Exception {
+    // TODO: Return multiple results. In ex: "y" = conj. + adv + ...
+    public static ArrayList<Entry> getDefinition(String szWord) throws Exception {
+        ArrayList<Entry> res = new ArrayList<Entry>();
         Connection co = null;
         ResultSet rs = null;
         Statement st = null;
@@ -150,14 +152,14 @@ public class Entry {
             rs = st.executeQuery(szSQL);
 
             // Get the ID of the searched WORD
-            if (rs.next())
-                return getDefinition(rs.getInt("id"));
+            while (rs.next())
+                res.add(getDefinition(rs.getInt("id")));
 
         } finally {
             closeConnection(co, st, rs);
         }
 
-        return null;
+        return res;
 
     }
 

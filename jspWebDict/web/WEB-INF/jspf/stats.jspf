@@ -5,11 +5,13 @@
 <script type="text/javascript">
 	w3counter(17544);
 </script>
-<noscript>
+<object> <!-- this tag has been added to W3C-XHTML compliance -->
+  <noscript>
     <div>
         <a href="http://www.w3counter.com"><img
           src="http://www.w3counter.com/tracker.php?id=17544" style="border: 0"
           alt="W3Counter" /></a>
     </div>
-</noscript>
+  </noscript>
+</object>
 <!-- End W3Counter Tracking Code-->
