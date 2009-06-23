@@ -25,4 +25,6 @@
 
 NOTE: add a symbolic link in /usr/share/tomcat6/lib to 
 	/usr/share/java/mysql-connector-java.jar
+
 * Configure user and password in META-INF/context.xml
+* Add URIEncoding="UTF-8" in /etc/tomcat6/server.xml --> Connector 8180 or 8080 (Debian)
