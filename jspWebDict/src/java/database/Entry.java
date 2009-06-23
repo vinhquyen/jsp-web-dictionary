@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Hashtable;
-import java.util.Iterator;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -19,7 +18,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.Random;
-import java.util.SortedSet;
 
 public class Entry {
 
@@ -27,7 +25,9 @@ public class Entry {
     private String word;
     private String morfology;
     private String definition;
-    private static String aMorf[] = {"adj.", "adv.", "interfj.", "f.", "m.", "prep.", "pron.", "v."};
+    private static String aMorf[] = {"adj.", "adv.", "art.", "conj.", "interj.", "f.", "m.", "prep.", "pron.", "v."};
+    private static String longMorf[] = {"adjetivo", "adverbio", "artículo", "conjunción",
+                                        "interjección", "femenino", "masculino", "preposición", "pronombre", "verbo"};
 
     /** Constructor used to return the list of nearest word */
     public Entry(int id, String w) {
@@ -85,12 +85,12 @@ public class Entry {
      * 1. Insert term and id into the Hashtable
      * 2. Insert term into SortedSet
     */
-    public static String updateWord(String w, String m, String def) throws Exception {
+    public static String updateWord(String id, String w, String m, String def) throws Exception {
         Connection co = null;
         ResultSet rs = null;
         PreparedStatement stUpdate = null;
         int idW;
-        
+
         try {
             //TODO --> comprobaciones?? (A nivel de PRESENTACION)
             if (w == null || def == null)
@@ -99,19 +99,19 @@ public class Entry {
             List<String> aux = Arrays.asList(aMorf);
             if (!aux.contains(m))
                 throw new Exception("The morfology must be: [" + aux.toString() + "]");
-
+        
             /*------------ EOF VALIDATION -------------------*/
 
             co = initConnection();
             
             /* Get the Word IDentifier */
-            stUpdate = co.prepareStatement("SELECT id FROM word WHERE  term = ?");
-            stUpdate.setString(1, w);
-
-            rs = stUpdate.executeQuery();
-            if(rs.next()) {
-                idW = rs.getInt("id");
-            } else throw new Exception("UPDATE ERROR: the word "+w+"notExists");
+            try {
+                idW = Integer.valueOf(id);
+            } catch (Exception ex) {
+                return ("ERROR: There are a problem updating the word<br/>\n"
+                        + "The identifier is not valid<br/>\n"
+                        + ex.toString());
+            }
 
             /* Update the word values */
             stUpdate=co.prepareStatement("UPDATE word SET term=?, morf=?, " +
@@ -124,6 +124,11 @@ public class Entry {
             int n = stUpdate.executeUpdate();
             if(n<1) throw new SQLException("Entry.java:125, NOT Update "+w);
 
+            // Rebuild structures for random search
+            allWords = new Hashtable<String, Integer>();
+            orderedWords = new ArrayList<String>();
+            initAllWordsStructs(allWords, orderedWords);
+
         } catch (SQLException ex) {
             return ("ERROR: There are a problem updating the word<br/>\n"
                         + ex.toString());
@@ -133,7 +138,6 @@ public class Entry {
         return null;
     }
 
-    // TODO: Return multiple results. In ex: "y" = conj. + adv + ...
     public static ArrayList<Entry> getDefinition(String szWord) throws Exception {
         ArrayList<Entry> res = new ArrayList<Entry>();
         Connection co = null;

@@ -20,29 +20,40 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
         <h2>Inserting new word!</h2>
         <%
         request.setCharacterEncoding("UTF-8");
-        //NOTA: the term always is saved in lowerCase format!
-        String wrd = request.getParameter("word").toLowerCase();
+        
+        String id  = request.getParameter("id");
+        String wrd = request.getParameter("word");
         String mrf = request.getParameter("morfology");
         String def = request.getParameter("def");
 
-        out.println("<p>Word: " + wrd + "<br/>");
-        out.println("Def: " + def + "<br/>");
-        out.println("Morf: " + mrf + "<br/>");
+        if(wrd == null || wrd.length() == 0) response.sendRedirect("index.jsp");
+        %>
+        <p> Id:   <%=id  %><br/>
+            Word: <%=wrd %><br/>
+            Def:  <%=def %><br/>
+            Morf: <%=mrf %><br/>
+        </p>
+        <%
         //TODO: request.getRemoteHost(); auth por host?
         // request.getRemoteAddr();
         // FIXME: Is the user logged? (and is granted)
         if (true /*request.getParameter("secret") != null*/) {
-            String res = null;
+            String res = "ALLRIGHT";
             try {
-                res = Entry.updateWord(wrd, mrf, def);
+                out.println("<h3>"+res+"</h3>");
+                res = Entry.updateWord(id, wrd, mrf, def);
+                out.println("<h3>"+res+"</h3>");
             } catch (Exception e) {
+                out.println("<h3>EXCEP 1</h3>");
                 InOut.printError(e, out);
                 res = "";
             }
-            if (res == null)
-                out.println("<h3>Word added succesfully</h3>");
-            else
+            if (res == null) { %>
+                <h3>Word added succesfully</h3>  <%
+            } else {
+                out.println("<h3>EXCEP 2</h3>");
                 InOut.printError(new Exception(res), out);
+            }
         }
         else {
         %>

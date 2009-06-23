@@ -21,8 +21,9 @@
 	    }
 %>
 
-<h2><%= r.getString("add") %>:</h2>
-<form action="update.jsp" method="get">
+<h2><%= r.getString("modifyword") %>:</h2>
+<form action="update.jsp" method="post">
+    <input type="hidden" name="id" value="<%=szId %>" />
 	<p> <label for="word"><%= r.getString("word") %></label>
 		<input type="text" name="word" value="<%=e.getWord() %>"/>
 	</p>
@@ -56,7 +57,7 @@
 			<label for="Definition"><%= r.getString("def") %></label>
 			<!--<a class="add" href="#" onclick="addNode('def')"><%= r.getString("addnode") %></a>-->
             <br/>
-			<textarea cols="32" rows="4" name="def"><%= e.getDefinition() %></textarea>
+			<textarea cols="80" rows="8" name="def"><%= e.getDefinition() %></textarea>
 		</p>
 	</div>
 	<!-- Examples
@@ -68,7 +69,7 @@
 		</p>
 	</div>  -->
 	<p>
-		<input type="submit" value="<%= r.getString("addword") %>"/>
+		<input type="submit" value="<%= r.getString("modifyword") %>"/>
 		<input type="reset" value="<%= r.getString("clear") %>"/>
 	</p>
 </form>

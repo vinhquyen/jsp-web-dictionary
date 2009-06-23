@@ -10,7 +10,7 @@
 <%@ include file="lang.jspf" %>
 
 <h2><%= r.getString("add")  %>:</h2>
-<form action="insert.jsp" method="get">
+<form action="insert.jsp" method="post">
 	<p> <label for="word"><%= r.getString("word")  %></label>
 		<input type="text" name="word"/>
 	</p>

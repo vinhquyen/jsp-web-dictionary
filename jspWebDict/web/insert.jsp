@@ -20,11 +20,12 @@
         <h2>Inserting new word!</h2>
 		<%
 			request.setCharacterEncoding("UTF-8");
-			//NOTA: the term always is saved in lowerCase format!
-			String wrd = request.getParameter("word").toLowerCase();
+			
+			String wrd = request.getParameter("word");
 			String mrf = request.getParameter("morfology");
 			String def = request.getParameter("def");	
-			
+
+            if(wrd == null || wrd.length() == 0) response.sendRedirect("index.jsp");
 			out.println("<p>Word: " + wrd + "<br/>");
 			out.println("Def: "		+ def + "<br/>");
 			out.println("Morf: "	+ mrf + "<br/>");
