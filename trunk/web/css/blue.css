@@ -3,31 +3,19 @@ div#bar ul li{
 	background-color: #074c87;
 }
 
-div#bg {
-	background-image: url('http://www.w3schools.com/css/bgdesert.jpg');
-	/*background-image: url('../img/bg.png');
-	background-repeat: no-repeat;*/
-	position: absolute;
-	top: 0;
-	left: 0;
-	height: 100%;
-	width: 100%;
-	opacity: 0.3;
-	z-index: -2;
-}
-div#bg_ {
-	background: #074c87;
-	position: absolute;
-	top: 0;
-	left: 0;
-	height: 100%;
-	width: 100%;
-	opacity: 0.3;
-	z-index: -2;
-}
-
 div#header {
-	background-image: url('../img/bg.png');
+/*	background-attachment:fixed;*/
+    background-image: url('../img/bg.png');
 	background-repeat: no-repeat;
-	background-color: #074c87;
-}
+    background-position: right top;
+	background-color: #01245c; /*#eb8b11;/*== aprox naranja /*#ef9c00; /*#074c87; */
+} 
+/*
+img#backgr {
+    position: fixed;
+    left: 381px;
+    margin: 0 auto;
+    z-index: -1;
+    width: 701px;
+    height: 107px;
+}*/

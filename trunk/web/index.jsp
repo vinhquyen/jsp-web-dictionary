@@ -31,32 +31,43 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <title><%=szTitle %> JSP Web Dictionary 
-                    <%=rConf.getString("version")%></title>
-        <link rel="stylesheet" href="css/main.css" type="text/css" />
-        <%
-        String css = request.getParameter("css");
-        if (css != null && css.compareTo("blue") == 0) { %>
-            <link rel="stylesheet" href="css/blue.css" type="text/css" /> 
-        <% } %>
-        <script type="text/javascript" src="js/cookies.js"></script>
-        <script type="text/javascript" src="js/hiper.js"></script>
-        <script type="text/javascript" src="js/utils.js"></script>
-    </head>
-    <body onload="init();">
-        <!--<div id="login"><%@ include file="WEB-INF/jspf/login.jspf" %></div>-->
-        <div id="header">
-            <a href="index.jsp?lang=<%= szLang%>"><img 
-                id="logo" src="img/dict.jpg" alt="home" /></a>
-            <div id="title">
-                <h1><%= r.getString("title")%></h1>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title><%=szTitle %> JSP Web Dictionary
+                <%=rConf.getString("version")%></title>
+    <link rel="stylesheet" href="css/main.css" type="text/css" />
+    <%
+    String css = request.getParameter("css");
+    if (css == null || css.compareTo("green") != 0) { %>
+        <link rel="stylesheet" href="css/blue.css" type="text/css" />
+    <% } %>
+    <script type="text/javascript" src="js/cookies.js"></script>
+    <script type="text/javascript" src="js/hiper.js"></script>
+    <script type="text/javascript" src="js/utils.js"></script>
+</head>
+<body onload="init();">
+ <div id="bounding_box">
+   <!--<div id="login"><%@ include file="WEB-INF/jspf/login.jspf" %></div>-->
+   <div id="header">
+<!--       <img id="backgr" src="img/bg.png" alt="Header background" /> -->
+       <div id="lang">
+            <select name="lang" onchange="changeLang(this.value)">
+                <option value="">[idioma]</option>
+                <option value="an_ES">aragon&eacute;s</option>
+                <option value="be_ES">benasqu&eacute;s</option>
+                <option value="es">espa&ntilde;ol</option>
+                <option value="en">english</option>
+            </select>
+       </div>
+       <div id="title">
+                <h1><a href="index.jsp"><img
+                    id="logo" src="img/dict.jpg" alt="home" /></a>
+                    <%= r.getString("title")%>
+                </h1>
                 <h4>JSP-Tech Web Dictionary <%= rConf.getString("version")%></h4>
-            </div>
-        </div>
-        <div id="bar">
-            <ul class="inline">
+       </div>
+       <div id="bar">
+            <ul>
              <% if (userLogged) { %>
                 <li><a href="index.jsp?action=1"><%= r.getString("add") %></a></li>
              <% } %>
@@ -68,22 +79,14 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
             <div id="contact" class="hidden">
                 <em>admin947 (AT) gmail.com</em>
             </div>
-        </div>
-        <div id="lang">
-        <select name="lang" onchange="changeLang(this.value)">
-                <option value="">[idioma]</option>
-                <option value="an_ES">aragon&eacute;s</option>
-                <option value="be_ES">benasqu&eacute;s</option>
-                <option value="es">espa&ntilde;ol</option>
-                <option value="en">english</option>
-            </select>
-        </div>
-        <div id="content">
+       </div>
+   </div> <!-- End of HEADER -->
+   <div id="content">
             <%
         request.setCharacterEncoding("UTF-8");
 
         String szAction = request.getParameter("action");
-        int iAction;
+        int iAction = 0;
         if (szAction != null) {
             try {
                 iAction = Integer.valueOf(szAction);
@@ -116,21 +119,20 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
             szAction = "WEB-INF/jspf/search.jsp";
             %>
             <jsp:include page="<%=szAction %>" />
-        </div><!-- End of CONTENT -->
-        <div id="license" class="hidden" onclick="showDiv(this.id)">
-            <jsp:include page='<%=r.getString("licTxt") %>' />
-        </div>
-        <div id="counter">
-            <p>
-                <%
+   </div><!-- End of CONTENT -->
+       
+   <div id="footer">
+       <div id="counter">
+    <%
         int iCount = Entry.getSizeDB();
         String szC = MessageFormat.format(r.getString("counter"), iCount);
         out.print(szC);
-                %><br/>
-                <%@ include file="WEB-INF/jspf/stats.jspf" %>
-            </p>
-        </div><!-- End of STATS -->
-        <div id="footer">
+     %>
+    </div>
+        <div id="license" class="hidden" onclick="showDiv(this.id)">
+            <jsp:include page='<%=r.getString("licTxt") %>' />
+        </div>
+            <%@ include file="WEB-INF/jspf/stats.jspf" %>
             <p><%
         String szAutor, szCopy, szLib;
         szLib = "<span style='text-decoration:underline;'>Diccionario del Benasqu&eacute;s</span>";
@@ -139,14 +141,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
         out.print(MessageFormat.format(rCopy.getString("copydict"), szLib, szAutor, szCopy));
                 %>
             </p>
-            <div>
-                <img src="img/guayen.png" alt="Asociaci&oacute;n Guayente" />
-                <img src="img/tomcat.gif" alt="Powered by Tomcat" />
-                <img src="img/mysql.png" alt="MySQL Powered" />
-                <img src="img/java.jpg" alt="Java Powered" />
-            </div>
-        </div>
-        <div id="bg"></div>
-        <div id="bg_"></div>
-    </body>
+   </div>
+ </div><!-- End of Bounding Box -->
+</body>
 </html>

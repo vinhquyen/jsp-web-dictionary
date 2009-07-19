@@ -1,17 +1,19 @@
 <%@ page pageEncoding="UTF-8" %>
 
 <!-- Begin W3Counter Tracking Code -->
-<script type="text/javascript" src="http://www.w3counter.com/tracker.js" />
+<div id="w3counter" style="float:left; position:relative; top:20px;">
+<script type="text/javascript" src="http://www.w3counter.com/tracker.js"></script>
 <script type="text/javascript">
 	w3counter(17544);
 </script>
 <object> <!-- this tag has been added to W3C-XHTML compliance -->
   <noscript>
-    <div>
+      <p>
         <a href="http://www.w3counter.com"><img
           src="http://www.w3counter.com/tracker.php?id=17544" style="border: 0"
           alt="W3Counter" /></a>
-    </div>
+      </p>
   </noscript>
 </object>
+</div>
 <!-- End W3Counter Tracking Code-->

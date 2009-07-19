@@ -14,7 +14,8 @@
         <p>
             <label><%= r.getString("searchLab")%></label>
             <input id="input_search" type="text" name="word" tabindex="1" />
-            <input type="submit" value="<%= r.getString("submit")%>"/>
+            <input type="image" src="img/arrow.gif" alt="<%= r.getString("submit")%>"
+            style="position:relative; top:8px;"/>
         </p>
     </form>
 </div>

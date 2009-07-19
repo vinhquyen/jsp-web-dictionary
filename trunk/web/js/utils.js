@@ -160,8 +160,8 @@ function displayVerb(morf) {
 /** This function do the initialization of the web onLoad event */
 function init() {
 	var f = document.getElementById("s_word");
-	f.input_search.focus();
-	cssIE();
+    if(f) f.input_search.focus();
+    cssIE();
 }
 
 function setVisibility(id) {

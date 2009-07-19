@@ -33,15 +33,25 @@
         out.print(MessageFormat.format(rAbout.getString("colaborate"), mail));
         %>
     </p>
+
+    <p>Su c&oacute;digo fuente est&aacute; disponible en:
+        <i>http://code.google.com/p/jsp-web-dictionary/</i>
+    </p>
+
     <h3>Agradecimientos</h3>
     <ul>
-        <li>A Mar&iacute;a Jos&eacute; Subir&aacute; Carmen Cast&aacute;n y 
+        <li>A Mar&iacute;a Jos&eacute; Subir&aacute;, Carmen Cast&aacute;n y
             Jos&eacute; Antonio Saura Rami; por la traducci&oacute;n al 
         patu&eacute;s</li>
         <li>A Dabi, por la traducci&oacute;n al aragon&eacute;s</li>
         <li>A &Aacute;ngel Ballar&iacute;n, por su trabajo realizado para crear
-            un diccionario que, junto a los vocablos, tambi&eacute;n recoge 
-        costumbres y tradiciones del Valle de Benasque</li>
+            un diccionario que, junto a los vocablos, recoge costumbres y 
+            tradiciones del valle de Benasque</li>
     </ul>
-    
+    <div id="logos">
+          <img src="img/guayen.png" alt="Asociaci&oacute;n Guayente" />
+          <img src="img/tomcat.gif" alt="Powered by Tomcat" />
+          <img src="img/mysql.png" alt="MySQL Powered" />
+          <img src="img/java.jpg" alt="Java Powered" />
+    </div>
 </div>
