@@ -16,6 +16,11 @@
             <input id="input_search" type="text" name="word" tabindex="1" />
             <input type="image" src="img/arrow.gif" alt="<%= r.getString("submit")%>"
             style="position:relative; top:8px;"/>
+
+            <input type="submit" name="lng" value="ar" />
+            <input type="submit" name="lng" value="ca" />
+            <input type="submit" name="lng" value="es" />
+            <input type="submit" name="lng" value="fr" />
         </p>
     </form>
 </div>
@@ -26,7 +31,10 @@
         ArrayList<Entry> aDef = null;
         String szId = request.getParameter("id");
         String szWord = request.getParameter("word");
+        String lng = request.getParameter("lng");
+   
         int idWord = 0;
+
         boolean userLogged = (session.getAttribute("user") != null);
 
         if (szWord != null || szId != null) {
@@ -38,16 +46,22 @@
                 aDef.add(Entry.getDefinition(idWord));
             } catch (Exception e) {
                 InOut.printError(e, out);
+                out.println("</div>");
                 return;
             }
         }
         else { // szWord != null
             /** get defition by WORD */
-            szWord = szWord.toLowerCase().trim();
+            szWord = szWord.trim();
             try {
-                aDef = Entry.getDefinition(szWord);
+                if(lng == null)
+                    lng = "be"; // Default language
+                
+                aDef = (Entry.getDefinition(szWord, lng));
+                
             } catch (Exception e) {
                 InOut.printError(e, out);
+                out.println("</div>");
                 return;
             }
         }
@@ -64,26 +78,34 @@
                 <% }
             %> </p> <%
             
-            LinkedList<Entry> laux = Entry.getNearWords(szWord);
+            LinkedList<Entry> laux = Entry.getNearWords(szWord, lng);
             if( !laux.isEmpty()) { %>
                 <div id='nearW'>
                     <h4><%=r.getString("nearWord") %></h4>
-                    <ul>
-                <%
+                    <div style="float: left;"><ul>
+                <% int i = 1;
                 for (Entry e : laux) { %>
                       <li>
                         <a href='index.jsp?id=<%=e.getId()%>'><%=e.getWord() %></a>
-                      </li>
-                <% } %>
-                    </ul>
-                </div>
+                      </li> <%
+                    if ( i % 10 == 0 && i < laux.size()) { %>
+                        </ul></div>
+                        <div style="float:left;">
+                            <ul> <%
+                    }
+                    i++;
+                } %>
+                      </ul>
+                    </div>
+                  
+                </div><br style="clear:both;"/>
          <% }
         }
         /** Show the definions of the word*/
         else {
             int i = 1;
             for(Entry e : aDef) {
-                szWord = e.getWord().toLowerCase();
+                szWord = e.getWord();
                 idWord = e.getId();
             %>
                 <h3><%=szWord %><% if(aDef.size()>1) {%> <sup><%=i %></sup> <% }
@@ -94,6 +116,10 @@
                     <% } %>
                 </h3>
                 <p><% InOut.printWordDef(e, out); %></p><%
+
+                if(lng != null) {
+                    InOut.printWordMultiLang(e, out);
+                }
                 i++;
             }
         }

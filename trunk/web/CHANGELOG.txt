@@ -1,6 +1,31 @@
-TODO
+0.1.7 Beta
+-----------------
+* Updated the database structure to improve the search:
+	- Supports variants for a same definition, i.e.: 
+		chip-chop, chip-chap (onomat.)
+		enredáire, enredadó, enredadéra (adj.)
 
-v.0.1.2 ALPHA
+	- Allow a better multilingual search
+* Extended the nearest word issue for every language of multilingual dict.
+
+
+0.1.6 Beta
+-----------------
+* Diccionario multilingue
+	- Busqueda por los diferentes idiomas: es, ca, fr, ar
+* Added manifest = dictionary presentation (About)
+* Created a litle manual (how to use the web)
+* Fixed the sort to a case INSENSITIVE (for the lookup of near lexicograph words)
+
+
+0.1.5 Beta
+-----------------
+* Lavado de cara
+	- Fijada la apariencia para los distintos navegadores
+	- Fondo de color azul
+	- Reestructurado el contenido en bloques
+
+0.1.2 ALPHA
 -----------------
 * Introduced full license translation
 * Fixed some translation problems

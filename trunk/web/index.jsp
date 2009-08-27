@@ -33,7 +33,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title><%=szTitle %> JSP Web Dictionary
+    <title><%=szTitle %> <%= r.getString("title")%> / JSP Web Dictionary
                 <%=rConf.getString("version")%></title>
     <link rel="stylesheet" href="css/main.css" type="text/css" />
     <%
@@ -47,7 +47,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 </head>
 <body onload="init();">
  <div id="bounding_box">
-   <!--<div id="login"><%@ include file="WEB-INF/jspf/login.jspf" %></div>-->
+   <!-- <div id="login">< % @ include file="WEB-INF/jspf/login.jspf"  %> UNCOMMENT </div> -->
    <div id="header">
 <!--       <img id="backgr" src="img/bg.png" alt="Header background" /> -->
        <div id="lang">
@@ -75,6 +75,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
                 <li><a href="#" onclick="setVisibility('license')"><%=r.getString("license") %></a></li>
                 <li><a href="#" onclick="setVisibility('contact')"><%=r.getString("contact") %></a></li>
                 <li><a href="index.jsp?action=3"><%=r.getString("about") %></a></li>
+                <li><strong><a href="#" onclick="setVisibility('help')"><%=r.getString("help") %></a></strong></li>
             </ul>
             <div id="contact" class="hidden">
                 <em>admin947 (AT) gmail.com</em>
@@ -122,17 +123,24 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
    </div><!-- End of CONTENT -->
        
    <div id="footer">
+       <div id="help" class="hidden" onclick="showDiv(this.id)">
+           <jsp:include page="WEB-INF/jspf/help.jsp" />
+       </div>
        <div id="counter">
     <%
         int iCount = Entry.getSizeDB();
         String szC = MessageFormat.format(r.getString("counter"), iCount);
         out.print(szC);
      %>
-    </div>
+        </div>
         <div id="license" class="hidden" onclick="showDiv(this.id)">
+            <p><img id="gpl_logo" src="img/gplv3.png" alt="GPL v3 logo"/>
+                Copyright&copy; Santiago Lamora Subir&aacute; <%=java.util.Calendar.getInstance().get(java.util.Calendar.YEAR) %>
+            </p>
+
             <jsp:include page='<%=r.getString("licTxt") %>' />
         </div>
-            <%@ include file="WEB-INF/jspf/stats.jspf" %>
+            <!-- include file="WEB-INF/jspf/stats.jspf"  %> UNCOMMENT -->
             <p><%
         String szAutor, szCopy, szLib;
         szLib = "<span style='text-decoration:underline;'>Diccionario del Benasqu&eacute;s</span>";

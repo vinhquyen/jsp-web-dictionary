@@ -13,29 +13,27 @@
     </p>
     <h4>... este proyecto</h4>
     <p>
-        El proyecto surge como una necesidad de mantener viva una lengua, o 
+        Surge como una necesidad de mantener viva una lengua, o
         lo que es lo mismo, una cultura y una manera de ver y hacer las cosas.
         Una lengua se mantiene viva gracias a la gente, a sus hablantes, por 
         ello su difusi&oacute;n es fundamental para que continue formando parte 
-        de nuestra vida.<br/>
-        Las nuevas tecnolog&iacute;as nos proporcionan potentes m&eacute;todos
-        para contribuir a esta labor, de aqu&iacute; el origen de este portal.
+        de nuestra vida. Las nuevas tecnolog&iacute;as nos proporcionan potentes
+        m&eacute;todos para contribuir a esta labor, de aqu&iacute; el origen de
+        este portal. Para m&aacute;s informaci&oacute;n puede leer el
+        <a href="#" onclick="setVisibility('manifest')">manifiesto</a> (en benasqués).
     </p>
     <p>
         <%
         String szGuayen = "<a href='http://www.guayente.org'>Asociaci&oacute;n Guayente</a>";
-        out.print(MessageFormat.format(rAbout.getString("author"), szGuayen));
-        %>
-    </p>
-    
-    <p><%
+        out.print(MessageFormat.format(rAbout.getString("author")+" ", szGuayen));
+        
         String mail = "<a href='mailto:admin947(AT)gmail.com'>admin947(AT)gmail.com</a>";
         out.print(MessageFormat.format(rAbout.getString("colaborate"), mail));
         %>
     </p>
 
-    <p>Su c&oacute;digo fuente est&aacute; disponible en:
-        <i>http://code.google.com/p/jsp-web-dictionary/</i>
+    <p>Su c&oacute;digo fuente est&aacute; disponible en: 
+        <a href="http://jsp-web-dictionary.googlecode.com">http://jsp-web-dictionary.googlecode.com</a>
     </p>
 
     <h3>Agradecimientos</h3>
@@ -53,5 +51,8 @@
           <img src="img/tomcat.gif" alt="Powered by Tomcat" />
           <img src="img/mysql.png" alt="MySQL Powered" />
           <img src="img/java.jpg" alt="Java Powered" />
+    </div>
+    <div id="manifest" class="hidden" onclick="setVisibility('manifest')">
+        <jsp:include page="manifest.jsp" />
     </div>
 </div>
