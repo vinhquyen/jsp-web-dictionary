@@ -115,11 +115,9 @@
                       </sup>
                     <% } %>
                 </h3>
-                <p><% InOut.printWordDef(e, out); %></p><%
-
-                if(lng != null) {
-                    InOut.printWordMultiLang(e, out);
-                }
+                <p><% InOut.printWordDef(e, out); %></p>
+                <% InOut.printWordMultiLang(e, out); %>
+                <%
                 i++;
             }
         }

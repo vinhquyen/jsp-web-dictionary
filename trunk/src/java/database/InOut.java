@@ -33,13 +33,13 @@ public class InOut {
         try {
             out.println("<dl>");
                 if(e.getAr() != null && e.getAr().length() > 0)
-                    out.println("<dt title='aragon&eacute;s'>ar.<dd>"+e.getAr()+"</dd></dt>");
+                    out.println("<dt title='aragon&eacute;s'>ar.</dt><dd>"+e.getAr()+"</dd>");
                 if(e.getCa() != null && e.getCa().length() > 0)
-                    out.println("<dt title='catal&agrave;'>ca.<dd>"+e.getCa()+"</dd></dt>");
+                    out.println("<dt title='catal&agrave;'>ca.</dt><dd>"+e.getCa()+"</dd>");
                 if(e.getEs() != null && e.getEs().length() > 0)
-                    out.println("<dt title='castellano'>es.<dd>"+e.getEs()+"</dd></dt>");
+                    out.println("<dt title='castellano'>es.</dt><dd>"+e.getEs()+"</dd>");
                 if(e.getFr() != null && e.getFr().length() > 0)
-                    out.println("<dt title='fran&ccedil;ais'>fr.<dd>"+e.getFr()+"</dd></dt>");
+                    out.println("<dt title='fran&ccedil;ais'>fr.</dt><dd>"+e.getFr()+"</dd>");
             out.println("</dl>");
         } catch (IOException ex) {
             Logger.getLogger(InOut.class.getName()).log(Level.WARNING, null, ex);
