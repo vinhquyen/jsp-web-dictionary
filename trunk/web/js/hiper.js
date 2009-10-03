@@ -75,7 +75,7 @@ function engega_doubleclick(e)
 
 		if (!e)
 		{
-			var e = new emula_event();
+			e = new emula_event();
 		}
 
 		var obj = top.document.getElementById('hiperList');
@@ -260,7 +260,7 @@ function EsSeparador(c)
 {
 	return (c == '\'' || c == '-' || c == '/' || c == '+'  || c == ',' || c == '.' || c == '$' || c == '%' || c == '&'  ||
 			c == '<'  || c == '>' || c == '_' || c == '\\' || c == ';' || c == ')' || c == '=' || c == '+' || c == ':'  || 
-			c == '�'  || c == '!' || c == '?' || c == '�'  || c == '�' || c == '(' || c == ' ' || c == '[' || c == ']'  ||
+			c == '\ufffd'  || c == '!' || c == '?' || c == '\ufffd'  || c == '\ufffd' || c == '(' || c == ' ' || c == '[' || c == ']'  ||
 			c == '*'  || c.charCodeAt(0) == 13 || c.charCodeAt(0) == 10 || c.charCodeAt(0) == 11); 
 }
 

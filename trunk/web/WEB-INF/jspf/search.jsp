@@ -15,12 +15,20 @@
             <label><%= r.getString("searchLab")%></label>
             <input id="input_search" type="text" name="word" tabindex="1" />
             <input type="image" src="img/arrow.gif" alt="<%= r.getString("submit")%>"
-            style="position:relative; top:8px;"/>
+            style="position:relative; top:8px;" onmouseover="setVisibility('be');" onmouseout="setVisibility('be');"/>
 
-            <input type="submit" name="lng" value="ar" />
-            <input type="submit" name="lng" value="ca" />
-            <input type="submit" name="lng" value="es" />
-            <input type="submit" name="lng" value="fr" />
+            <input type="submit" name="lng" value="ar" onmouseover="setVisibility(this.value);" onmouseout="setVisibility(this.value);"/>
+            <input type="submit" name="lng" value="ca" onmouseover="setVisibility(this.value);" onmouseout="setVisibility(this.value);"/>
+            <input type="submit" name="lng" value="es" onmouseover="setVisibility(this.value);" onmouseout="setVisibility(this.value);"/>
+            <input type="submit" name="lng" value="fr" onmouseover="setVisibility(this.value);" onmouseout="setVisibility(this.value);"/>
+            <input type="submit" name="cnt" value="Contexto" onmouseover="setVisibility('cnt');" onmouseout="setVisibility('cnt');"/>
+
+            <span id="be"  class="hidden cnt">B&uacute;squeda por t&eacute;rmino en benasq&eacute;s (por defecto).</span>
+            <span id="ar"  class="hidden cnt">B&uacute;squeda por t&eacute;rmino en aragon&eacute;s.</span>
+            <span id="ca"  class="hidden cnt">B&uacute;squeda por t&eacute;rmino en catal&aacute;n.</span>
+            <span id="es"  class="hidden cnt">B&uacute;squeda por t&eacute;rmino en espa&ntilde;ol.</span>
+            <span id="fr"  class="hidden cnt">B&uacute;squeda por t&eacute;rmino en franc&eacute;s.</span>
+            <span id="cnt" class="hidden cnt">B&uacute;squeda por contexto: muestra las definiciones que contienen la palabra introducida.</span>
         </p>
     </form>
 </div>
@@ -34,11 +42,12 @@
         String lng = request.getParameter("lng");
    
         int idWord = 0;
+        String szHighLight = null;
 
         boolean userLogged = (session.getAttribute("user") != null);
 
-        if (szWord != null || szId != null) {
-            if (szId != null) {
+    if (szWord != null || szId != null) {
+        if (szId != null) {
         /** get definition by ID */
             try {
                 idWord = Integer.valueOf(szId);
@@ -55,10 +64,15 @@
             szWord = szWord.trim();
             try {
                 if(lng == null)
-                    lng = "be"; // Default language
-                
-                aDef = (Entry.getDefinition(szWord, lng));
-                
+                        lng = "be"; // Set the default language
+
+                if(request.getParameter("cnt") != null) {
+                    aDef = Entry.getWordInContext(szWord);
+                    szHighLight = szWord;
+                }
+                else {
+                    aDef = Entry.getDefinition(szWord, lng);
+                }
             } catch (Exception e) {
                 InOut.printError(e, out);
                 out.println("</div>");
@@ -115,7 +129,7 @@
                       </sup>
                     <% } %>
                 </h3>
-                <p><% InOut.printWordDef(e, out); %></p>
+                <p><% InOut.printWordDef(e, out, szHighLight); %></p>
                 <% InOut.printWordMultiLang(e, out); %>
                 <%
                 i++;

@@ -86,8 +86,8 @@ function changeLang(lang) {
 /** Set CSS styles for IE compability */
 function cssIE() {
 	var browser		= navigator.appName;
-	var b_version	= navigator.appVersion;
-	var version		= parseFloat(b_version);
+//	var b_version	= navigator.appVersion;
+//	var version		= parseFloat(b_version);
 	
 	if(browser == "Microsoft Internet Explorer") {
 		var head = document.getElementsByTagName("head")[0];         
@@ -122,20 +122,20 @@ function cssIE() {
 		div.setAttribute("onclick", "showDiv('ie', false)");
 		div.onclick = function(){showDiv('ie', false)};
 		
-		var msg = "This website has NOT been tested for Internet Explorer compability."
+		var msg = "NO ha sido comprobada la compatibilidad de esta con Internet Explorer."
 		div.appendChild(document.createTextNode(msg));
 		div.appendChild(document.createElement("br"));
 		 
-		msg = "Click to continue";
+		msg = "Haga click para continuar";
 		div.appendChild(document.createTextNode(msg));
 		div.appendChild(document.createElement("br"));
 		
-		msg = "Please, download other browsers like Mozilla Firefox, Opera..."
+		msg = "Por favor, descargue otros navegadores, que s&iacute; cumplen los est&aacute;ndares como Mozilla Firefox, Opera..."
 		div.appendChild(document.createTextNode(msg));
 		div.appendChild(document.createElement("br"));
 		
 		var link = document.createElement("a");
-		link.href = "http://www.mozilla.com/en-US/firefox/";
+		link.href = "http://www.mozilla.com/es-ES/firefox/";
 		link.alt = "Mozilla Firefox";
 		link.target = "_blank";
 		var ref = document.createTextNode("Mozilla Project Web Page");

@@ -36,6 +36,8 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
     <title><%=szTitle %> <%= r.getString("title")%> / JSP Web Dictionary
                 <%=rConf.getString("version")%></title>
     <link rel="stylesheet" href="css/main.css" type="text/css" />
+    <!--<link rel="icon" href="favicon.ico" type="image/icon"/>-->
+    <link rel="icon" href="img/favicon.png" type="image/png"/>
     <%
     String css = request.getParameter("css");
     if (css == null || css.compareTo("green") != 0) { %>
@@ -78,7 +80,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
                 <li><strong><a href="#" onclick="setVisibility('help')"><%=r.getString("help") %></a></strong></li>
             </ul>
             <div id="contact" class="hidden">
-                <em>admin947 (AT) gmail.com</em>
+                <em>admin947<img src="img/arroba.gif" alt="@" style="border:0; height:10px; width:12px; vertical-align:middle;" />gmail.com</em>
             </div>
        </div>
    </div> <!-- End of HEADER -->
@@ -140,7 +142,8 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 
             <jsp:include page='<%=r.getString("licTxt") %>' />
         </div>
-            <!-- include file="WEB-INF/jspf/stats.jspf"  %> UNCOMMENT -->
+            <!-- %@include file="WEB-INF/jspf/stats.jspf"  %> -->
+            
             <p><%
         String szAutor, szCopy, szLib;
         szLib = "<span style='text-decoration:underline;'>Diccionario del Benasqu&eacute;s</span>";

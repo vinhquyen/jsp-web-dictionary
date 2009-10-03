@@ -20,10 +20,20 @@ public class InOut {
         }
     }
 
-    public static void printWordDef(Entry e, JspWriter out) {
+    public static void printWordDef(Entry e, JspWriter out, String szHighLight) {
         try {
-            out.println("<span class='morf'>" + e.getMorfology() +
-                    "</span> " + e.getDefinition());
+            String szDef = e.getDefinition();
+            String szMorf = e.getMorfology();
+            
+            szMorf = "<abbr class='morf' title='"+Entry.longMorf(szMorf)+"'>"+szMorf+"</abbr> ";
+            
+            /* Hightlight the results when the words have been found by context search */
+            if( szHighLight != null ) {
+                szDef = szDef.replaceAll(szHighLight, "<span style='background:yellow;'>"+szHighLight+"</span>");
+            }
+            
+            out.println(szMorf + szDef);
+
         } catch (IOException ex) {
             Logger.getLogger(InOut.class.getName()).log(Level.WARNING, null, ex);
         }

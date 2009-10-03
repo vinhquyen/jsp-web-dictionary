@@ -27,7 +27,7 @@
         String szGuayen = "<a href='http://www.guayente.org'>Asociaci&oacute;n Guayente</a>";
         out.print(MessageFormat.format(rAbout.getString("author")+" ", szGuayen));
         
-        String mail = "<a href='mailto:admin947(AT)gmail.com'>admin947(AT)gmail.com</a>";
+        String mail = "<strong>admin947<img src='img/arroba.gif' alt='@' style='border:0; height:10px; width:12px; vertical-align:middle;' />gmail.com</strong>";
         out.print(MessageFormat.format(rAbout.getString("colaborate"), mail));
         %>
     </p>

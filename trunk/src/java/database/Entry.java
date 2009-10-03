@@ -8,7 +8,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Hashtable;
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -27,22 +26,26 @@ public class Entry {
     private int id;
     private String word;
     private String morfology;
-    private String definition;/** TODO Change definition for a ArrayList<String> to allow polisemic words */
-
+    private String definition; // TODO Change definition for a ArrayList<String> to allow polisemic words
+    
     /** Multilingual params */
-    private String ar; /** @ar aragones  */
-    private String ca; /** @ca catalan  */
-    private String es; /** @es spanish */
-    private String fr; /** @fr french */
+    private String ar;    // @ar aragones
+    private String ca;   // @ca catalan
+    private String es;  // @es spanish
+    private String fr; // @fr french
 
     /** Morfology */
-    private static String aMorf[] = {"adj.", "adv.", "art.", "conj.", "interj.", "f.", "m.", "prep.", "pron.", "v."};
-    private static String longMorf[] = {"adjetivo", "adverbio", "artículo", "conjunción",
-        "interjección", "femenino", "masculino", "preposición", "pronombre", "verbo"};
+    private static String aMorf[] = {"adj.", "adv.", "art.", "conj.", "interj.", "f.", "loc. adv.", "m.", "prep.", "pref.", "pron.", "suf.", "v."};
+    private static String aLongMorf[] = {"adjetivo", "adverbio", "artículo", "conjunción",
+        "interjección", "femenino", "locución adverbial", "masculino", "preposición", "prefijo", "pronombre", "sufijo", "verbo"};
+    private static Hashtable<String, String> longMorf;
 
     /** Near word and random auxiliar structures */
     private static Hashtable<String, ArrayList<Entry>> htWords;
 
+    /***********************
+     *   CONSTRUCTORS      *
+     ***********************/
     public Entry() {
     }
 
@@ -59,6 +62,10 @@ public class Entry {
         this.morfology = m;
         this.definition = def;
     }
+
+    /***************************************
+     * MODIFICATION DEFINITION OPERATIONS  *
+     **************************************/
 
     /** Add a new word to the database 
      * @return null: if everything go fine, in another situation return a
@@ -100,10 +107,7 @@ public class Entry {
         initAllWordsStructs(); // Rebuild structures for random search
         return null;
     }
-    /* TODO --> update the SortedSet and the Hashtable of words
-     * 1. Insert term and id into the Hashtable
-     * 2. Insert term into SortedSet
-     */
+
 
     public static String updateWord(String id, String w, String m, String def) throws Exception {
         Connection co = null;
@@ -116,9 +120,10 @@ public class Entry {
             if (w == null || def == null)
                 throw new Exception("You must insert the word and its def");
 
+         /* FIXME: Check the morphology? Perhaps its better don't do in favor of flexibility
             List<String> aux = Arrays.asList(aMorf);
             if (!aux.contains(m))
-                throw new Exception("The morfology must be: [" + aux.toString() + "]");
+                throw new Exception("The morfology must be: [" + aux.toString() + "]"); */
 
             /*------------ EOF VALIDATION -------------------*/
 
@@ -140,9 +145,8 @@ public class Entry {
             stUpdate.setInt(4, idW);
 
             int n = stUpdate.executeUpdate();
-            if (n < 1) {
+            if (n < 1)
                 throw new SQLException("Entry.java:125, NOT Update " + w);
-            }
 
         } catch (SQLException ex) {
             return ("ERROR: There are a problem updating the word<br/>\n" + ex.toString());
@@ -153,6 +157,10 @@ public class Entry {
         initAllWordsStructs(); // Rebuild structures for random search
         return null;
     }
+
+    /******************************
+     *   SEARCH DEFINITIONS OP    *
+     ******************************/
 
     public static ArrayList<Entry> getDefinition(String szWord, String lang) throws Exception {
         ArrayList<Entry> res = new ArrayList<Entry>();
@@ -168,8 +176,8 @@ public class Entry {
         Matcher m = p.matcher(lang);
 
         /* Input  for avoid injection with invalid params */
-        if(!m.matches())
-            throw new SQLException("The lang "+lang+" doesn't exist in our database");
+        if (!m.matches())
+            throw new SQLException("The lang " + lang + " doesn't exist in our database");
 
         String szSQL; // = "SELECT id FROM word WHERE term = ?";
         szSQL = "SELECT id FROM multilang_" + lang + " WHERE term = ?";
@@ -189,11 +197,14 @@ public class Entry {
         }
 
         return res;
-
     }
-
-    /** Get the definition of  a Word 
+    
+    /**
+     * Get the definition of  a Word
      * @param id identifier of the word
+     * @return Entry with matching identifer
+     * @throws java.sql.SQLException
+     * @throws javax.naming.NamingException
      */
     public static Entry getDefinition(int id) throws SQLException, NamingException {
         Entry result = null;
@@ -212,9 +223,9 @@ public class Entry {
             rs = st.executeQuery();
             if (rs.next()) {
                 result = new Entry();
-                result.id         = id;
-                result.word       = rs.getString("term");
-                result.morfology  = rs.getString("morf");
+                result.id = id;
+                result.word = rs.getString("term");
+                result.morfology = rs.getString("morf");
                 result.definition = rs.getString("definition");
                 getMultiLangDef(result);
             }
@@ -228,14 +239,17 @@ public class Entry {
     }
 
     /**
-     * Get the definition and translation of the @word in the defined @lang
+     * Update the Entry @e with the translation of the @word in a set of langs
+     * @param e Entry to get the translation
+     * @throws java.sql.SQLException
+     * @throws javax.naming.NamingException
      */
     private static void getMultiLangDef(Entry e) throws SQLException, NamingException {
         Connection co = null;
         ResultSet rs = null;
         PreparedStatement st = null;
         String szSQL;
-  
+
         try {
             szSQL = "SELECT ar, ca, es, fr FROM multilang WHERE id = ?";
             co = initConnection();
@@ -243,7 +257,7 @@ public class Entry {
             st.setInt(1, e.id);
 
             rs = st.executeQuery();
-            if(rs.next()) {
+            if (rs.next()) {
                 e.ar = rs.getString("ar");
                 e.ca = rs.getString("ca");
                 e.es = rs.getString("es");
@@ -255,24 +269,25 @@ public class Entry {
         }
     }
 
-    /** Get the nearest words lexicographycally */
-    // FIXME: use ¿JQuery? 
-    //TODO: multi-lang!!
-    //  --> Comparators: http://lkamal.blogspot.com/2008/07/java-sorting-comparator-vs-comparable.html
-    //  --> Comparable: http://java.sun.com/docs/books/tutorial/collections/interfaces/order.html
+    /**
+     * Get the nearest words lexicographycally
+     * @param szWord Word searched (user input)
+     * @param lang Word language (to search near words)
+     * @return List of Entry near lexicographyally
+     * @throws java.lang.Exception
+     */
     public static LinkedList<Entry> getNearWords(String szWord, String lang) throws Exception {
         int index, inf, sup;
         LinkedList<Entry> l = new LinkedList<Entry>();
 
-        if (htWords == null) {
+        if (htWords == null)
             initAllWordsStructs();
-        }
 
         ArrayList<Entry> aux = htWords.get(lang);
 
         Entry e = new Entry(-1, szWord);
         aux.add(e);
-                
+
         Collections.sort(aux, new EntryComparator());
 
         index = aux.indexOf(e);
@@ -281,12 +296,50 @@ public class Entry {
         inf = Math.max(0, index - 15);
         sup = Math.min(index + 15, aux.size());
 
-        for( index = inf; index < sup; index++ ) {
-                l.add( aux.get( index ) );
-        }
- 
+        for (index = inf; index < sup; index++)
+            l.add(aux.get(index));
+
         return l;
     }
+
+    /**
+     * Search the word by context, in other words, given a word it looks for it
+     * in each definition and then return those ones that match.
+     * @param szWord Word to find (in context)
+     * @return Array of Entries that match its definition with the given word
+     * @throws javax.naming.NamingException
+     * @throws java.sql.SQLException
+     */
+    public static ArrayList<Entry> getWordInContext(String szWord) throws NamingException, SQLException {
+
+        ArrayList<Entry> res = new ArrayList<Entry>();
+        Connection co = null;
+        ResultSet rs = null;
+        PreparedStatement st = null;
+
+        /** TODO: search only in the examples: LIKE «?» **/
+        String szSQL = "SELECT id FROM word WHERE definition LIKE ? LIMIT 0 , 10";
+
+        try {
+            co = initConnection();
+            st = co.prepareStatement(szSQL);
+            st.setString(1, "%"+szWord+"%");
+            rs = st.executeQuery();
+
+            // Get the ID of the searched WORD
+            while (rs.next())
+                res.add(getDefinition(rs.getInt("id")));
+
+        } finally {
+            closeConnection(co, st, rs);
+        }
+
+        return res;
+    }
+
+    /***********************
+     *      AUXILIAR OP     *
+     ***********************/
 
     /**
      * Initialites the structures that allows find lexicographically near words
@@ -298,26 +351,23 @@ public class Entry {
         ResultSet rs = null;
         Statement st = null;
 
-        if(htWords == null) {
+        if (htWords == null)
             htWords = new Hashtable<String, ArrayList<Entry>>();
-        }
-        else {
+        else
             htWords.clear();
-        }
-        
+
         String aLang[] = {"ar", "be", "ca", "es", "fr"};
-        for(String lng : aLang) {
+        for (String lng : aLang) {
             ArrayList<Entry> aux = new ArrayList<Entry>();
-            String szSQL = "SELECT id, term FROM multilang_"+lng; //+" ORDER BY upper(term)";
+            String szSQL = "SELECT id, term FROM multilang_" + lng; //+" ORDER BY upper(term)";
 
             try {
                 co = initConnection();
                 st = co.createStatement();
                 rs = st.executeQuery(szSQL);
 
-                while (rs.next()) {
-                    aux.add( new Entry( rs.getInt("id"), rs.getString("term")));
-                }
+                while (rs.next())
+                    aux.add(new Entry(rs.getInt("id"), rs.getString("term")));
 
             } finally {
                 closeConnection(co, st, rs);
@@ -327,12 +377,12 @@ public class Entry {
         }
 
 
-        //allWords = new Hashtable<String, Integer>();
-        //orderedWords = new ArrayList<String>();
+    //allWords = new Hashtable<String, Integer>();
+    //orderedWords = new ArrayList<String>();
 
-        // SELECT DISTINCT term  FROM `multilang_be`
-        // Get the terms and IDs for each language (creating new structure)¿?
-        //String szSQL = "SELECT term, id FROM word WHERE 1=1 ORDER BY upper(term)";  
+    // SELECT DISTINCT term  FROM `multilang_be`
+    // Get the terms and IDs for each language (creating new structure)¿?
+    //String szSQL = "SELECT term, id FROM word WHERE 1=1 ORDER BY upper(term)";
     }
 
     /** Generate a random word id (accessing to DB) */
@@ -361,6 +411,10 @@ public class Entry {
         }
         return i;
     }
+
+    /*************************
+     *  DATABASE OPERATIONS  *
+     ************************/
 
     public static int getSizeDB() throws SQLException {
         int iSize = -1;
@@ -409,6 +463,30 @@ public class Entry {
         }
     }
 
+    /********************
+     *   MORPHOLOGY     *
+     ********************/
+    private static void initMorphology() {
+        longMorf = new Hashtable<String, String>();
+        for(int i = 0; i<aMorf.length; i++)
+            longMorf.put(aMorf[i], aLongMorf[i]);
+    }
+
+    static String longMorf(String shortMorf) {
+        if(longMorf == null)
+            initMorphology();
+
+        String result = longMorf.get(shortMorf);
+
+        if(result == null)
+            result = shortMorf;
+
+        return result;
+    }
+
+    /***********************
+     *      GETTERS        *
+     ***********************/
 
     public String getMorfology() {
         return morfology;

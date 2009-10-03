@@ -3,17 +3,34 @@
 	display: none;
 	visibility: hidden;
 }
-div#about {
-	text-align: justify;
+
+.cnt {
+    background-color: #DDD;
+	border: 1px dashed #FFF;
+    font-size:smaller;
+    opacity:0.8;
+    padding: 2px;
+    position:fixed;
 }
+
 a.add {
 	font-size: 75%;
 	text-decoration: none;
 }
 
+abbr {
+    border: none; /* by default border-bottom: 1em dotted */
+	color: blue;
+    cursor: help;
+}
+
 body {
     margin: 20px 0px;
     text-align:center;
+}
+
+div#about {
+	text-align: justify;
 }
 
 div#bar {
@@ -193,7 +210,8 @@ div.result ul li{
 }
 
 div#search {
-	width: 50%;
+    clear: both;
+	margin-bottom: 35px; /** Space for the conextual help */
 }
 
 div#title {
@@ -221,8 +239,4 @@ img#logo {
 p.error {
 	color: red;
 	font-size: smaller;
-}
-
-span.morf {
-	color: blue;
 }
