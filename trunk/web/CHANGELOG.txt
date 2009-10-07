@@ -1,3 +1,16 @@
+0.1.8 Beta
+-----------------
+* Added polisemic words support:
+	- Modified DB structure
+		+ Added table word_definition
+		+ Added column n_def (identifies the number of definition)
+	- Changed the print out format
+		+ A word have multiple definitions with its multilang associated
+		+ CSS modified to highlight only the first morphology (avoid repeats)
+* Improved internationalitation
+	- Added catalan language
+	- Fixed other translations
+
 0.1.7 Beta
 -----------------
 * Updated the database structure to improve the search:

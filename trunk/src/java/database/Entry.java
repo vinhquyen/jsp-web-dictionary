@@ -26,20 +26,17 @@ public class Entry {
     private int id;
     private String word;
     private String morfology;
-    private String definition; // TODO Change definition for a ArrayList<String> to allow polisemic words
-    
-    /** Multilingual params */
-    private String ar;    // @ar aragones
-    private String ca;   // @ca catalan
-    private String es;  // @es spanish
-    private String fr; // @fr french
-
+    private ArrayList<String> definition; // Support of polisemic words (multiple definitions)
+    /** Multilingual attributes  TODO: add ArrayList to support polisemic words */
+    private ArrayList<String> ar;    // @ar aragones
+    private ArrayList<String> ca;   // @ca catalan
+    private ArrayList<String> es;  // @es spanish
+    private ArrayList<String> fr; // @fr french
     /** Morfology */
     private static String aMorf[] = {"adj.", "adv.", "art.", "conj.", "interj.", "f.", "loc. adv.", "m.", "prep.", "pref.", "pron.", "suf.", "v."};
     private static String aLongMorf[] = {"adjetivo", "adverbio", "artículo", "conjunción",
         "interjección", "femenino", "locución adverbial", "masculino", "preposición", "prefijo", "pronombre", "sufijo", "verbo"};
     private static Hashtable<String, String> longMorf;
-
     /** Near word and random auxiliar structures */
     private static Hashtable<String, ArrayList<Entry>> htWords;
 
@@ -56,7 +53,7 @@ public class Entry {
     }
 
     /** Standar constructor */
-    public Entry(int id, String w, String m, String def) {
+    public Entry(int id, String w, String m, ArrayList<String> def) {
         this.id = id;
         this.word = w;
         this.morfology = m;
@@ -66,7 +63,6 @@ public class Entry {
     /***************************************
      * MODIFICATION DEFINITION OPERATIONS  *
      **************************************/
-
     /** Add a new word to the database 
      * @return null: if everything go fine, in another situation return a
      * String which describes the problem
@@ -108,7 +104,6 @@ public class Entry {
         return null;
     }
 
-
     public static String updateWord(String id, String w, String m, String def) throws Exception {
         Connection co = null;
         ResultSet rs = null;
@@ -120,10 +115,10 @@ public class Entry {
             if (w == null || def == null)
                 throw new Exception("You must insert the word and its def");
 
-         /* FIXME: Check the morphology? Perhaps its better don't do in favor of flexibility
+            /* FIXME: Check the morphology? Perhaps its better don't do in favor of flexibility
             List<String> aux = Arrays.asList(aMorf);
             if (!aux.contains(m))
-                throw new Exception("The morfology must be: [" + aux.toString() + "]"); */
+            throw new Exception("The morfology must be: [" + aux.toString() + "]"); */
 
             /*------------ EOF VALIDATION -------------------*/
 
@@ -161,7 +156,6 @@ public class Entry {
     /******************************
      *   SEARCH DEFINITIONS OP    *
      ******************************/
-
     public static ArrayList<Entry> getDefinition(String szWord, String lang) throws Exception {
         ArrayList<Entry> res = new ArrayList<Entry>();
         Connection co = null;
@@ -198,7 +192,7 @@ public class Entry {
 
         return res;
     }
-    
+
     /**
      * Get the definition of  a Word
      * @param id identifier of the word
@@ -214,7 +208,7 @@ public class Entry {
         String szSQL;
 
         try {
-            szSQL = "SELECT term, morf, definition FROM word WHERE id = ?";
+            szSQL = "SELECT term, morf FROM word WHERE id = ?";
 
             co = initConnection();
             st = co.prepareStatement(szSQL);
@@ -226,11 +220,24 @@ public class Entry {
                 result.id = id;
                 result.word = rs.getString("term");
                 result.morfology = rs.getString("morf");
-                result.definition = rs.getString("definition");
-                getMultiLangDef(result);
             }
             else // Control manually modified ID (Cross-scripting)
                 throw new SQLException("This word does not exist in our DB");
+
+            szSQL = "SELECT n_def, definition FROM word_definition WHERE id = ?";
+            st = co.prepareStatement(szSQL);
+            st.setInt(1, id);
+            rs = st.executeQuery();
+
+            result.definition = new ArrayList<String>();
+            result.ar = new ArrayList<String>();
+            result.ca = new ArrayList<String>();
+            result.es = new ArrayList<String>();
+            result.fr = new ArrayList<String>();
+            while (rs.next()) {
+                result.definition.add(rs.getString("definition"));
+                getMultiLangDef(result, rs.getInt("n_def"));
+            }
 
         } finally {
             closeConnection(co, st, rs);
@@ -244,24 +251,25 @@ public class Entry {
      * @throws java.sql.SQLException
      * @throws javax.naming.NamingException
      */
-    private static void getMultiLangDef(Entry e) throws SQLException, NamingException {
+    private static void getMultiLangDef(Entry e, int n) throws SQLException, NamingException {
         Connection co = null;
         ResultSet rs = null;
         PreparedStatement st = null;
         String szSQL;
 
         try {
-            szSQL = "SELECT ar, ca, es, fr FROM multilang WHERE id = ?";
+            szSQL = "SELECT ar, ca, es, fr FROM multilang WHERE id = ? AND n_def = ?";
             co = initConnection();
             st = co.prepareStatement(szSQL);
             st.setInt(1, e.id);
+            st.setInt(2, n);
 
             rs = st.executeQuery();
             if (rs.next()) {
-                e.ar = rs.getString("ar");
-                e.ca = rs.getString("ca");
-                e.es = rs.getString("es");
-                e.fr = rs.getString("fr");
+                e.ar.add(rs.getString("ar"));
+                e.ca.add(rs.getString("ca"));
+                e.es.add(rs.getString("es"));
+                e.fr.add(rs.getString("fr"));
             }
 
         } finally {
@@ -323,7 +331,7 @@ public class Entry {
         try {
             co = initConnection();
             st = co.prepareStatement(szSQL);
-            st.setString(1, "%"+szWord+"%");
+            st.setString(1, "%" + szWord + "%");
             rs = st.executeQuery();
 
             // Get the ID of the searched WORD
@@ -340,7 +348,6 @@ public class Entry {
     /***********************
      *      AUXILIAR OP     *
      ***********************/
-
     /**
      * Initialites the structures that allows find lexicographically near words
      * @param allWords Hashtable that contains all the pair <term, id>
@@ -415,7 +422,6 @@ public class Entry {
     /*************************
      *  DATABASE OPERATIONS  *
      ************************/
-
     public static int getSizeDB() throws SQLException {
         int iSize = -1;
         Connection co = null;
@@ -468,17 +474,17 @@ public class Entry {
      ********************/
     private static void initMorphology() {
         longMorf = new Hashtable<String, String>();
-        for(int i = 0; i<aMorf.length; i++)
+        for (int i = 0; i < aMorf.length; i++)
             longMorf.put(aMorf[i], aLongMorf[i]);
     }
 
     static String longMorf(String shortMorf) {
-        if(longMorf == null)
+        if (longMorf == null)
             initMorphology();
 
         String result = longMorf.get(shortMorf);
 
-        if(result == null)
+        if (result == null)
             result = shortMorf;
 
         return result;
@@ -487,19 +493,17 @@ public class Entry {
     /***********************
      *      GETTERS        *
      ***********************/
-
     public String getMorfology() {
         return morfology;
     }
 
-    public String getDefinition() {
+    public ArrayList<String> getDefinition() {
         return definition;
     }
 
-    public void setDefinition(String def) {
-        this.definition = def;
-    }
-
+    /*    public void setDefinition(String def) {
+    this.definition = def;
+    } */
     public int getId() {
         return id;
     }
@@ -515,28 +519,40 @@ public class Entry {
     /**
      * @return the ar
      */
-    public String getAr() {
-        return ar;
+    public String getAr(int n) {
+        String res = null;
+        if (n < ar.size() && !ar.get(n).isEmpty())
+            res = ar.get(n);
+        return res;
     }
 
     /**
      * @return the ca
      */
-    public String getCa() {
-        return ca;
+    public String getCa(int n) {
+        String res = null;
+        if (n < ca.size() && !ca.get(n).isEmpty())
+            res = ca.get(n);
+        return res;
     }
 
     /**
      * @return the es
      */
-    public String getEs() {
-        return es;
+    public String getEs(int n) {
+        String res = null;
+        if (n < es.size() && !es.get(n).isEmpty())
+            res = es.get(n);
+        return res;
     }
 
     /**
      * @return the fr
      */
-    public String getFr() {
-        return fr;
+    public String getFr(int n) {
+        String res = null;
+        if (n < fr.size() && !fr.get(n).isEmpty())
+            res = fr.get(n);
+        return res;
     }
 }

@@ -23,12 +23,13 @@
             <input type="submit" name="lng" value="fr" onmouseover="setVisibility(this.value);" onmouseout="setVisibility(this.value);"/>
             <input type="submit" name="cnt" value="Contexto" onmouseover="setVisibility('cnt');" onmouseout="setVisibility('cnt');"/>
 
-            <span id="be"  class="hidden cnt">B&uacute;squeda por t&eacute;rmino en benasq&eacute;s (por defecto).</span>
-            <span id="ar"  class="hidden cnt">B&uacute;squeda por t&eacute;rmino en aragon&eacute;s.</span>
-            <span id="ca"  class="hidden cnt">B&uacute;squeda por t&eacute;rmino en catal&aacute;n.</span>
-            <span id="es"  class="hidden cnt">B&uacute;squeda por t&eacute;rmino en espa&ntilde;ol.</span>
-            <span id="fr"  class="hidden cnt">B&uacute;squeda por t&eacute;rmino en franc&eacute;s.</span>
-            <span id="cnt" class="hidden cnt">B&uacute;squeda por contexto: muestra las definiciones que contienen la palabra introducida.</span>
+            <% String szCtx = r.getString("help_lng"); %>
+            <span id="be"  class="hidden cnt"><%= MessageFormat.format(szCtx, r.getString("lng_be")) + " " + r.getString("by_default") %>.</span>
+            <span id="ar"  class="hidden cnt"><%= MessageFormat.format(szCtx, r.getString("lng_ar")) %></span>
+            <span id="ca"  class="hidden cnt"><%= MessageFormat.format(szCtx, r.getString("lng_ca")) %></span>
+            <span id="es"  class="hidden cnt"><%= MessageFormat.format(szCtx, r.getString("lng_es")) %></span>
+            <span id="fr"  class="hidden cnt"><%= MessageFormat.format(szCtx, r.getString("lng_fr")) %></span>
+            <span id="cnt" class="hidden cnt"><%= r.getString("help_cnt") %></span>
         </p>
     </form>
 </div>
@@ -129,10 +130,8 @@
                       </sup>
                     <% } %>
                 </h3>
-                <p><% InOut.printWordDef(e, out, szHighLight); %></p>
-                <% InOut.printWordMultiLang(e, out); %>
-                <%
-                i++;
+                <%  InOut.printWordDef(e, out, szHighLight, r);
+                    i++;
             }
         }
     }

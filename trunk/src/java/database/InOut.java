@@ -1,6 +1,8 @@
 package database;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.jsp.JspWriter;
@@ -20,36 +22,62 @@ public class InOut {
         }
     }
 
-    public static void printWordDef(Entry e, JspWriter out, String szHighLight) {
+    public static void printWordDef(Entry e, JspWriter out, String szHighLight, ResourceBundle r) {
         try {
-            String szDef = e.getDefinition();
+            ArrayList<String> aDef = e.getDefinition();
             String szMorf = e.getMorfology();
-            
-            szMorf = "<abbr class='morf' title='"+Entry.longMorf(szMorf)+"'>"+szMorf+"</abbr> ";
-            
+
+            szMorf = "<abbr class='morf' title='" + Entry.longMorf(szMorf) + "'>" + szMorf + "</abbr> ";
+
             /* Hightlight the results when the words have been found by context search */
-            if( szHighLight != null ) {
-                szDef = szDef.replaceAll(szHighLight, "<span style='background:yellow;'>"+szHighLight+"</span>");
+            if (szHighLight != null)
+                for (String szDef : aDef)
+                    szDef = szDef.replaceAll(szHighLight,
+                            "<span style='background:yellow;'>" + szHighLight +
+                            "</span>");
+
+            if (aDef.size() > 1) {
+                out.print("<ol>");
+                int i = 0;
+                for (String szDef : aDef) {
+                    out.println("<li>" + szMorf + szDef);
+                    InOut.printWordMultiLang(e, i, out, r);
+                    out.println("</li>");
+                    i++;
+                }
+                out.print("</ol>");
             }
-            
-            out.println(szMorf + szDef);
+            else if (!aDef.isEmpty()) {
+                out.print("<p>" + szMorf + aDef.get(0) + "</p>");
+                InOut.printWordMultiLang(e, 0, out, r);
+            }
+            else
+                printError(new Exception("Check the DB consistency of word " + e.getId()), out);
 
         } catch (IOException ex) {
             Logger.getLogger(InOut.class.getName()).log(Level.WARNING, null, ex);
         }
     }
 
-    public static void printWordMultiLang(Entry e, JspWriter out) {
+    public static void printWordMultiLang(Entry e, int nDef, JspWriter out, ResourceBundle r) {
+        String szAr = e.getAr(nDef);
+        String szCa = e.getCa(nDef);
+        String szEs = e.getEs(nDef);
+        String szFr = e.getFr(nDef);
+
+        if (szAr == null && szCa == null && szEs == null && szFr == null)
+            return;
+
         try {
             out.println("<dl>");
-                if(e.getAr() != null && e.getAr().length() > 0)
-                    out.println("<dt title='aragon&eacute;s'>ar.</dt><dd>"+e.getAr()+"</dd>");
-                if(e.getCa() != null && e.getCa().length() > 0)
-                    out.println("<dt title='catal&agrave;'>ca.</dt><dd>"+e.getCa()+"</dd>");
-                if(e.getEs() != null && e.getEs().length() > 0)
-                    out.println("<dt title='castellano'>es.</dt><dd>"+e.getEs()+"</dd>");
-                if(e.getFr() != null && e.getFr().length() > 0)
-                    out.println("<dt title='fran&ccedil;ais'>fr.</dt><dd>"+e.getFr()+"</dd>");
+            if (szAr != null)
+                out.println("<dt title='" + r.getString("lng_ar") + "'>ar.</dt><dd>" + szAr + "</dd>");
+            if (szCa != null)
+                out.println("<dt title='" + r.getString("lng_ca") + "'>ca.</dt><dd>" + szCa + "</dd>");
+            if (szEs != null)
+                out.println("<dt title='" + r.getString("lng_es") + "'>es.</dt><dd>" + szEs + "</dd>");
+            if (szFr != null)
+                out.println("<dt title='" + r.getString("lng_fr") + "'>fr.</dt><dd>" + szFr + "</dd>");
             out.println("</dl>");
         } catch (IOException ex) {
             Logger.getLogger(InOut.class.getName()).log(Level.WARNING, null, ex);
@@ -63,7 +91,7 @@ public class InOut {
      */
     public static String userInputParser(String input) {
         String output;
-       /* Pattern p = Pattern.compile("<*>*</>");
+        /* Pattern p = Pattern.compile("<*>*</>");
         Matcher m = p.matcher(input);
         boolean b = m.matches(); */
 

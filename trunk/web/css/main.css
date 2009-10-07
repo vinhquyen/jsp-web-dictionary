@@ -18,10 +18,14 @@ a.add {
 	text-decoration: none;
 }
 
-abbr {
+abbr { /* Morphology */
     border: none; /* by default border-bottom: 1em dotted */
-	color: blue;
+	color:  gray;
     cursor: help;
+}
+
+p abbr, li:first-child abbr {
+    color: blue;
 }
 
 body {

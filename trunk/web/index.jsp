@@ -54,11 +54,12 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 <!--       <img id="backgr" src="img/bg.png" alt="Header background" /> -->
        <div id="lang">
             <select name="lang" onchange="changeLang(this.value)">
-                <option value="">[idioma]</option>
+                <option value="">[<%=r.getString("lng")%>]</option>
                 <option value="an_ES">aragon&eacute;s</option>
                 <option value="be_ES">benasqu&eacute;s</option>
-                <option value="es">espa&ntilde;ol</option>
+                <option value="ca_ES">catal&agrave;</option>
                 <option value="en">english</option>
+                <option value="es">espa&ntilde;ol</option>
             </select>
        </div>
        <div id="title">
