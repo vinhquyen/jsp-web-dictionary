@@ -30,19 +30,27 @@
 PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<%=r.getLocale() %>" lang="<%=r.getLocale() %>">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <jsp:include page="WEB-INF/jspf/meta_tags.jspf" />
+
     <title><%=szTitle %> <%= r.getString("title")%> / JSP Web Dictionary
                 <%=rConf.getString("version")%></title>
-    <link rel="stylesheet" href="css/main.css" type="text/css" />
-    <!--<link rel="icon" href="favicon.ico" type="image/icon"/>-->
-    <link rel="icon" href="img/favicon.png" type="image/png"/>
+
+    <!-- link language alternate -->
     <%
-    String css = request.getParameter("css");
-    if (css == null || css.compareTo("green") != 0) { %>
-        <link rel="stylesheet" href="css/blue.css" type="text/css" />
-    <% } %>
+    String[] aLanguages = {"an", "ca", "en", "es"};
+    for (String auxLng : aLanguages ) { %>
+        <link rel="alternate" lang="<%=auxLng %>" href="?lang=<%=auxLng %>" /><%
+    }
+    %>
+
+    <link rel="stylesheet" href="css/main.css" type="text/css" />
+    <link rel="stylesheet" href="css/blue.css" type="text/css" />
+
+    <link rel="icon" href="img/favicon.png" type="image/png"/>
+
     <script type="text/javascript" src="js/cookies.js"></script>
     <script type="text/javascript" src="js/hiper.js"></script>
     <script type="text/javascript" src="js/utils.js"></script>
@@ -55,9 +63,9 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
        <div id="lang">
             <select name="lang" onchange="changeLang(this.value)">
                 <option value="">[<%=r.getString("lng")%>]</option>
-                <option value="an_ES">aragon&eacute;s</option>
-                <option value="be_ES">benasqu&eacute;s</option>
-                <option value="ca_ES">catal&agrave;</option>
+                <option value="an">aragon&eacute;s</option>
+                <option value="an_ES_Benasques">benasqu&eacute;s</option>
+                <option value="ca">catal&agrave;</option>
                 <option value="en">english</option>
                 <option value="es">espa&ntilde;ol</option>
             </select>
