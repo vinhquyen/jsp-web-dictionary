@@ -326,7 +326,7 @@ public class Entry {
         PreparedStatement st = null;
 
         /** TODO: search only in the examples: LIKE «?» **/
-        String szSQL = "SELECT id FROM word WHERE definition LIKE ? LIMIT 0 , 10";
+        String szSQL = "SELECT id FROM word_definition WHERE definition LIKE ? LIMIT 0 , 10";
 
         try {
             co = initConnection();

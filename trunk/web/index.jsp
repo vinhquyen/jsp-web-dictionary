@@ -89,7 +89,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
                 <li><strong><a href="#" onclick="setVisibility('help')"><%=r.getString("help") %></a></strong></li>
             </ul>
             <div id="contact" class="hidden">
-                <em>admin947<img src="img/arroba.gif" alt="@" style="border:0; height:10px; width:12px; vertical-align:middle;" />gmail.com</em>
+                <em>admin947<img src="img/arroba.gif" alt="@" class="arroba" />gmail.com</em>
             </div>
        </div>
    </div> <!-- End of HEADER -->

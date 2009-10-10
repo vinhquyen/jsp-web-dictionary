@@ -36,6 +36,13 @@ body {
 div#about {
 	text-align: justify;
 }
+div#about h4 {
+    margin-left: 25px;
+    }
+
+div#about p {
+    margin-left: 50px;
+}
 
 div#bar {
 	float: right;
@@ -224,6 +231,12 @@ div#title {
 /*div {border: 1px dotted white;}
 div:hover {border: 2px solid white;} */
 
+img.arroba {
+    border:0;
+    height:10px;
+    width:12px;
+    vertical-align:middle;
+}
 
 img#gpl_logo {
 	 float:left;
