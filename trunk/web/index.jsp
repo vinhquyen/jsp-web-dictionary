@@ -134,6 +134,14 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
    </div><!-- End of CONTENT -->
        
    <div id="footer">
+       <!-- texty: allows modifications withouth a new publication (In example: small news, etc) -->
+     <% if (request.getParameter("action") == null && request.getParameter("id") == null &&
+                (request.getParameter("word") == null || request.getParameter("word").isEmpty())) { %>
+        <script type="text/javascript"
+            src="http://texty.com/cms/syndicate/25bb24b5-4279-4334-839f-59c04b376eab.js"></script>
+       
+     <% } %>
+        <!-- end texty -->
        <div id="help" class="hidden" onclick="showDiv(this.id)">
            <jsp:include page="WEB-INF/jspf/help.jsp" />
        </div>

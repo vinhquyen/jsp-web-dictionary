@@ -11,7 +11,7 @@
     <h4>... <%=rAbout.getString("h4_bnq")%></h4>
 
     <p>
-        <a href="http://an.wikipedia.org/wiki/Benasqu%C3%A9s" target="_blank">
+        <a href="http://an.wikipedia.org/wiki/Benasqu%C3%A9s" rel="external">
         <%=rAbout.getString("wiki")%></a> (<%=r.getString("lng_be")%>)
     </p>
     <% String szURI = "about/" + rAbout.getString("uri_about") + ".jspf";%>
@@ -29,7 +29,7 @@
     </p>
 
     <p> <%=rAbout.getString("src")%>
-        <a href="http://jsp-web-dictionary.googlecode.com">http://jsp-web-dictionary.googlecode.com</a>
+        <a href="http://jsp-web-dictionary.googlecode.com" rel="external" title="[new window]">http://jsp-web-dictionary.googlecode.com</a>
     </p>
 
     <!-- Contributors -->

@@ -13,6 +13,10 @@
     position:fixed;
 }
 
+a img {
+    border: 0;
+}
+
 a.add {
 	font-size: 75%;
 	text-decoration: none;
@@ -42,6 +46,10 @@ div#about h4 {
 
 div#about p {
     margin-left: 50px;
+}
+/** to override div#about p margin... */
+div#manifest p {
+    margin-left: 0px;
 }
 
 div#bar {
@@ -190,21 +198,23 @@ div#login {
 	right: 5px;
 }
 
-div#help, div#manifest {
+div#manifest, div#help {
     background-color: black;
     color: white;
     font-family:sans-serif;
     font-size: small;
-    padding: 10px 40px 20px 40px;
+    padding: 20px 40px 20px 40px;
     text-align: justify;
-
     position: fixed;
-    bottom: 0;
-    right:0%;
-    margin: 15%;
+    top: 0;
+    left: 0;
+    margin-left: 10%;
+    margin-top: 15%;
     opacity:0.9;
-    width: 70%;
-    }
+/*    height: 70%; */
+    width: 75%;
+}
+
 div#manifest h3 {
     font-variant: small-caps;
     text-align: center;

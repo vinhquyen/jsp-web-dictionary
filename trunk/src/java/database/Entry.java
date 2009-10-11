@@ -128,7 +128,8 @@ public class Entry {
             try {
                 idW = Integer.valueOf(id);
             } catch (Exception ex) {
-                return ("ERROR: There are a problem updating the word<br/>\n" + "The identifier is not valid<br/>\n" + ex.toString());
+                return ("ERROR: There are a problem updating the word<br/>\n" +
+                        "The identifier is not valid<br/>\n" + ex.toString());
             }
 
             /* Update the word values */
@@ -157,6 +158,10 @@ public class Entry {
      *   SEARCH DEFINITIONS OP    *
      ******************************/
     public static ArrayList<Entry> getDefinition(String szWord, String lang) throws Exception {
+        szWord = szWord.trim();
+        if (szWord.isEmpty())
+            return null;
+
         ArrayList<Entry> res = new ArrayList<Entry>();
         Connection co = null;
         ResultSet rs = null;
@@ -285,6 +290,10 @@ public class Entry {
      * @throws java.lang.Exception
      */
     public static LinkedList<Entry> getNearWords(String szWord, String lang) throws Exception {
+        szWord = szWord.trim();
+        if (szWord.isEmpty())
+            return null;
+
         int index, inf, sup;
         LinkedList<Entry> l = new LinkedList<Entry>();
 
@@ -319,6 +328,9 @@ public class Entry {
      * @throws java.sql.SQLException
      */
     public static ArrayList<Entry> getWordInContext(String szWord) throws NamingException, SQLException {
+        szWord = szWord.trim();
+        if (szWord.isEmpty())
+            return null;
 
         ArrayList<Entry> res = new ArrayList<Entry>();
         Connection co = null;
