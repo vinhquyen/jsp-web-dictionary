@@ -1,6 +1,3 @@
-
-<%@ page pageEncoding="UTF-8" %>
-<%-- any content can be specified here e.g.: --%>
 <h3>Ayuda. Uso de este diccionario digital</h3>
 
 <p>Mediante el campo de texto introduzca el t&eacute;rmino cuya definici&oacute;n

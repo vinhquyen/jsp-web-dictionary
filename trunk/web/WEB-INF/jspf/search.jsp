@@ -14,7 +14,7 @@
         <p>
             <label><%= r.getString("searchLab")%></label>
             <input id="input_search" type="text" name="word" tabindex="1" />
-            <input type="image" src="img/arrow.gif" alt="<%= r.getString("submit")%>"
+            <input type="image" src="img/search.jpg" alt="<%= r.getString("submit")%>"
                    style="position:relative; top:8px;" onmouseover="setVisibility('be');" onmouseout="setVisibility('be');"/>
 
             <input type="submit" name="lng" value="ar" onmouseover="setVisibility(this.value);" onmouseout="setVisibility(this.value);"/>
@@ -62,21 +62,21 @@
         } else { // szWord != null
             /** get defition by WORD */
             szWord = szWord.trim();
-                try {
-                    if (lng == null) {
-                        lng = "be"; // Set the default language
-                    }
-                    if (request.getParameter("cnt") != null) {
-                        aDef = Entry.getWordInContext(szWord);
-                        szHighLight = szWord;
-                    } else {
-                        aDef = Entry.getDefinition(szWord, lng);
-                    }
-                } catch (Exception e) {
-                    InOut.printError(e, out);
-                    out.println("</div>");
-                    return;
+            try {
+                if (lng == null) {
+                    lng = "be"; // Set the default language
                 }
+                if (request.getParameter("cnt") != null) {
+                    aDef = Entry.getWordInContext(szWord);
+                    szHighLight = szWord;
+                } else {
+                    aDef = Entry.getDefinition(szWord, lng);
+                }
+            } catch (Exception e) {
+                InOut.printError(e, out);
+                out.println("</div>");
+                return;
+            }
         }
         // TODO: sustituir por JSLT !! o algo mas elegante
         /** Find lexicographically nearest words */
@@ -120,19 +120,30 @@
             for (Entry e : aDef) {
                 szWord = e.getWord();
                 idWord = e.getId();
-        %>
-        <h3><%=szWord%><% if (aDef.size() > 1) {%> <sup><%=i%></sup> <% }
-            if (userLogged) {%>
-            <sup style="font-size:65%;font-weight:100;">
-                <a href="index.jsp?action=4&id=<%=idWord%>">modificar</a>
-            </sup><%
-            }%>
-        </h3>
-            <%
-                InOut.printWordDef(e, out, szHighLight, r);
-                i++;
+
+                if ( i == 1 ) {
+                    out.print("<div class='left'>\n");
+                }
+            %>
+                <div class="definition">
+                    <h3><%=szWord%><% if (aDef.size() > 1) {%> <sup><%=i%></sup> <% }
+                      if (userLogged) {%>
+                        <sup style="font-size:65%;font-weight:100;">
+                            <a href="index.jsp?action=4&id=<%=idWord%>">modificar</a>
+                        </sup><%
+                      }%>
+                    </h3>
+                  <%
+                    InOut.printWordDef(e, out, szHighLight, r);
+                    i++;
+                  %>
+                </div><%
+                
+                if ( i == aDef.size()/2 + 1 )   { out.print("</div>\n<div class='left'>\n"); }
+                if ( i == aDef.size() + 1 )     { out.print("</div>\n"); }
             }
         }
     }
     %>
+    <br clear="both" />
 </div>

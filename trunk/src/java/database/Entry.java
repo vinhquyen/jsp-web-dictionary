@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Enumeration;
 import java.util.Hashtable;
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -33,9 +34,15 @@ public class Entry {
     private ArrayList<String> es;  // @es spanish
     private ArrayList<String> fr; // @fr french
     /** Morfology */
-    private static String aMorf[] = {"adj.", "adv.", "art.", "conj.", "interj.", "f.", "loc. adv.", "m.", "prep.", "pref.", "pron.", "suf.", "v."};
+    private static String aMorf[] = {"adj.", "adv.", "art.", "conj.", "interj.", "f.", 
+        "loc. adv.", "m.", "prep.", "pref.", "pron.", "suf.", "v.", "tr.", "int.",
+        "aux.", "imp.", "unip.", "rec.", "ref.", "indet.", "dem.", " r.", "pl.", 
+        "loc.", "expr."};
     private static String aLongMorf[] = {"adjetivo", "adverbio", "artículo", "conjunción",
-        "interjección", "femenino", "locución adverbial", "masculino", "preposición", "prefijo", "pronombre", "sufijo", "verbo"};
+        "interjección", "femenino", "locución adverbial", "masculino", "preposición", 
+        "prefijo", "pronombre", "sufijo", "verbo", "transitivo", "intransitivo",
+        "auxiliar", "impersonal", "unipersonal", "recíproco", "reflexivo",
+        "indeterminado", "demostrativo", " reflexivo", "plural", "locución", "expresión"};
     private static Hashtable<String, String> longMorf;
     /** Near word and random auxiliar structures */
     private static Hashtable<String, ArrayList<Entry>> htWords;
@@ -158,7 +165,6 @@ public class Entry {
      *   SEARCH DEFINITIONS OP    *
      ******************************/
     public static ArrayList<Entry> getDefinition(String szWord, String lang) throws Exception {
-        szWord = szWord.trim();
         if (szWord.isEmpty())
             return null;
 
@@ -290,7 +296,6 @@ public class Entry {
      * @throws java.lang.Exception
      */
     public static LinkedList<Entry> getNearWords(String szWord, String lang) throws Exception {
-        szWord = szWord.trim();
         if (szWord.isEmpty())
             return null;
 
@@ -328,7 +333,6 @@ public class Entry {
      * @throws java.sql.SQLException
      */
     public static ArrayList<Entry> getWordInContext(String szWord) throws NamingException, SQLException {
-        szWord = szWord.trim();
         if (szWord.isEmpty())
             return null;
 
@@ -490,16 +494,51 @@ public class Entry {
             longMorf.put(aMorf[i], aLongMorf[i]);
     }
 
-    static String longMorf(String shortMorf) {
+    static String longMorf(String morf) {
         if (longMorf == null)
             initMorphology();
 
-        String result = longMorf.get(shortMorf);
+        Enumeration<String> eKeys = longMorf.keys();
+        while(eKeys.hasMoreElements()) {
+            String shortM = eKeys.nextElement();
+            morf = morf.replace(shortM, longMorf.get(shortM));
+        }
+		
+        return replaceHTML(morf);
+    }
 
-        if (result == null)
-            result = shortMorf;
+    static String replaceHTML(String str)
+    {
+        str = str.replace("à" ,"&agrave;");
+        str = str.replace("á" ,"&aacute;");
+        str = str.replace("è" ,"&egrave;");
+        str = str.replace("é" ,"&eacute;");
+        str = str.replace("ì" ,"&igrave;");
+        str = str.replace("í" ,"&iacute;");
+        str = str.replace("ï" ,"&iuml;");
+        str = str.replace("ò" ,"&ograve;");
+        str = str.replace("ó" ,"&oacute;");
+        str = str.replace("ù" ,"&ugrave;");
+        str = str.replace("ú" ,"&uacute;");
+        str = str.replace("ü" ,"&uuml;");
+        str = str.replace("ç" ,"&ccedil;");
+        str = str.replace("·" ,"&middot;");
+        
+        str = str.replace("À" ,"&Agrave;");
+        str = str.replace("Á" ,"&Aacute;");
+        str = str.replace("È" ,"&Egrave;");
+        str = str.replace("É" ,"&Eacute;");
+        str = str.replace("Ì" ,"&Igrave;");
+        str = str.replace("Í" ,"&Iacute;");
+        str = str.replace("Ï" ,"&Iuml;");
+        str = str.replace("Ò" ,"&Ograve;");
+        str = str.replace("Ó" ,"&Oacute;");
+        str = str.replace("Ù" ,"&Ugrave;");
+        str = str.replace("Ú" ,"&Uacute;");
+        str = str.replace("Ü" ,"&Uuml;");
+        str = str.replace("Ç" ,"&Ccedil;");
 
-        return result;
+        return str;
     }
 
     /***********************

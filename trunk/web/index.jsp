@@ -79,6 +79,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
        </div>
        <div id="bar">
             <ul>
+                <li><a href="index.jsp"><img id="home" alt="<%= r.getString("home") %>" src="img/home.png"/> <%= r.getString("home") %></a></li>
              <% if (userLogged) { %>
                 <li><a href="index.jsp?action=1"><%= r.getString("add") %></a></li>
              <% } %>
@@ -132,7 +133,6 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
             %>
             <jsp:include page="<%=szAction %>" />
    </div><!-- End of CONTENT -->
-       
    <div id="footer">
        <!-- texty: allows modifications withouth a new publication (In example: small news, etc) -->
      <% if (request.getParameter("action") == null && request.getParameter("id") == null &&
@@ -143,7 +143,8 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
      <% } %>
         <!-- end texty -->
        <div id="help" class="hidden" onclick="showDiv(this.id)">
-           <jsp:include page="WEB-INF/jspf/help.jsp" />
+           <% String szHelpDiv = "WEB-INF/jspf/"+ r.getString("help_div"); %>
+           <jsp:include page="<%=szHelpDiv%>" />
        </div>
        <div id="counter">
     <%

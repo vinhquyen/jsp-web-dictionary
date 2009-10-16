@@ -71,13 +71,13 @@ public class InOut {
         try {
             out.println("<dl>");
             if (szAr != null)
-                out.println("<dt title='" + r.getString("lng_ar") + "'>ar.</dt><dd>" + szAr + "</dd>");
+                out.println("<dt title='" + r.getString("lng_ar") + "'>ar.</dt><dd>" + szAr + "</dd><br/>");
             if (szCa != null)
-                out.println("<dt title='" + r.getString("lng_ca") + "'>ca.</dt><dd>" + szCa + "</dd>");
+                out.println("<dt title='" + r.getString("lng_ca") + "'>ca.</dt><dd>" + szCa + "</dd><br/>");
             if (szEs != null)
-                out.println("<dt title='" + r.getString("lng_es") + "'>es.</dt><dd>" + szEs + "</dd>");
+                out.println("<dt title='" + r.getString("lng_es") + "'>es.</dt><dd>" + szEs + "</dd><br/>");
             if (szFr != null)
-                out.println("<dt title='" + r.getString("lng_fr") + "'>fr.</dt><dd>" + szFr + "</dd>");
+                out.println("<dt title='" + r.getString("lng_fr") + "'>fr.</dt><dd>" + szFr + "</dd><br/>");
             out.println("</dl>");
         } catch (IOException ex) {
             Logger.getLogger(InOut.class.getName()).log(Level.WARNING, null, ex);

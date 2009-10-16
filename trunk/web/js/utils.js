@@ -182,6 +182,40 @@ function init() {
     cssIE();
 }
 
+function replaceHTML(str)
+{
+ 	str = str.replace(/&agrave;/g,'à');
+ 	str = str.replace(/&aacute;/g,'á');
+ 	str = str.replace(/&egrave;/g,'è');
+ 	str = str.replace(/&eacute;/g,'é');
+ 	str = str.replace(/&igrave;/g,'ì');
+ 	str = str.replace(/&iacute;/g,'í');
+	str = str.replace(/&iuml;/g,'ï');
+ 	str = str.replace(/&ograve;/g,'ò');
+ 	str = str.replace(/&oacute;/g,'ó');
+ 	str = str.replace(/&ugrave;/g,'ù');
+ 	str = str.replace(/&uacute;/g,'ú');
+ 	str = str.replace(/&uuml;/g,'ü');
+	str = str.replace(/&ccedil;/g,'ç');
+	str = str.replace(/&middot;/g,'·');
+
+
+ 	str = str.replace(/&Agrave;/g,'à');
+ 	str = str.replace(/&Aacute;/g,'á');
+ 	str = str.replace(/&Egrave;/g,'è');
+ 	str = str.replace(/&Eacute;/g,'é');
+ 	str = str.replace(/&Igrave;/g,'ì');
+ 	str = str.replace(/&Iacute;/g,'í');
+	str = str.replace(/&Iuml;/g,'ï');
+ 	str = str.replace(/&Ograve;/g,'ò');
+ 	str = str.replace(/&Oacute;/g,'ó');
+ 	str = str.replace(/&Ugrave;/g,'ù');
+ 	str = str.replace(/&Uacute;/g,'ú');
+ 	str = str.replace(/&Uuml;/g,'ü');
+	str = str.replace(/&Ccedil;/g,'ç');
+	return str;
+}
+
 function setVisibility(id) {
     var obj = document.getElementById(id);
     if(obj.style.display == "block" || obj.style.visibility == "visible") {

@@ -225,9 +225,39 @@ div#nearW ul {
 	list-style: none;
 }
 
+div.definition { /** new look */
+    background-color: #fceed1;
+    border: 1px dotted gray;
+    font-family: sans-serif, verdana;
+    margin-left: auto;
+    margin-right: auto;
+    width: 400px;
+    margin-bottom: 10px;
+/*    padding-top: 1px;
+    padding-bottom: 1px; */
+}
+.left { /** new look */
+       float:left;
+       margin-left: 10px;
+}
+
 div.result ul li{
 	font-style: italic;
 	margin-bottom: 3px;
+}
+
+div.result h3 { /** new look */
+    padding-left: 15px;
+    padding-right: 25px;
+}
+div.result p, div.result ul li { /** new look */
+    padding-left: 35px;
+    padding-right: 25px;
+    text-align: justify;
+}
+
+div.result dl {
+    padding-left: 50px;
 }
 
 div#search {
@@ -235,17 +265,30 @@ div#search {
 	margin-bottom: 35px; /** Space for the conextual help */
 }
 
-div#title {
-    margin-bottom: 0px; /* DELME */
-}
 /*div {border: 1px dotted white;}
 div:hover {border: 2px solid white;} */
+
+dt, dd {display: inline;}
+
+dt {
+    font-family: monospace;
+    margin-right: -10px;
+}
 
 img.arroba {
     border:0;
     height:10px;
     width:12px;
     vertical-align:middle;
+}
+
+img#home {
+    background-color: white;
+    
+}
+
+a:hover img#home {
+    background-color: black;
 }
 
 img#gpl_logo {
