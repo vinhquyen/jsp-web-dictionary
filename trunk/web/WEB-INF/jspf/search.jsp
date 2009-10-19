@@ -139,7 +139,7 @@
                   %>
                 </div><%
                 
-                if ( i == aDef.size()/2 + 1 )   { out.print("</div>\n<div class='left'>\n"); }
+                if ( i == Math.ceil((double)aDef.size() / 2) + 1 )   { out.print("</div>\n<div class='left'>\n"); }
                 if ( i == aDef.size() + 1 )     { out.print("</div>\n"); }
             }
         }

@@ -342,12 +342,12 @@ public class Entry {
         PreparedStatement st = null;
 
         /** TODO: search only in the examples: LIKE «?» **/
-        String szSQL = "SELECT id FROM word_definition WHERE definition LIKE ? LIMIT 0 , 10";
+        String szSQL = "SELECT id FROM word_definition WHERE LOWER(definition) REGEXP ? LIMIT 0 , 10";
 
         try {
             co = initConnection();
             st = co.prepareStatement(szSQL);
-            st.setString(1, "%" + szWord + "%");
+            st.setString(1, "[[:<:]]"+ szWord.toLowerCase() + "[[:>:]]" );
             rs = st.executeQuery();
 
             // Get the ID of the searched WORD

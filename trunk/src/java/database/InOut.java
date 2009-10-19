@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.servlet.jsp.JspWriter;
 
 /** 
@@ -30,12 +32,31 @@ public class InOut {
             szMorf = "<abbr class='morf' title='" + Entry.longMorf(szMorf) + "'>" + szMorf + "</abbr> ";
 
             /* Hightlight the results when the words have been found by context search */
-            if (szHighLight != null)
-                for (String szDef : aDef)
-                    szDef = szDef.replaceAll(szHighLight,
-                            "<span style='background:yellow;'>" + szHighLight +
-                            "</span>");
+            if (szHighLight != null) {
+                String szDef, tagBeg, tagEnd;
+                tagBeg = "<span style='background:yellow;'>";
+                tagEnd = "</span>";
+                
+                for (int i = 0; i<aDef.size(); i++) {
+                    Pattern re = Pattern.compile(szHighLight, Pattern.CASE_INSENSITIVE);
+                    Matcher m = re.matcher(aDef.get(i));
+                    String[] pieces = re.split(aDef.get(i));
 
+                    szDef = "";
+                    int j = 0;
+                    while(m.find()) {
+                        szDef += pieces[j] + tagBeg + m.group() + tagEnd;
+                        j++;
+                    }
+                    
+                    if( pieces.length >= j )
+                        szDef += pieces[pieces.length - 1];
+
+                    aDef.set(i, szDef);
+                }
+            }
+            
+            /* Print the definition and multilingual info (if any) */
             if (aDef.size() > 1) {
                 out.print("<ol>");
                 int i = 0;
@@ -47,7 +68,7 @@ public class InOut {
                 }
                 out.print("</ol>");
             }
-            else if (!aDef.isEmpty()) {
+            else if (!aDef.isEmpty()) { /* Check if there are any DB inconsistency */
                 out.print("<p>" + szMorf + aDef.get(0) + "</p>");
                 InOut.printWordMultiLang(e, 0, out, r);
             }
