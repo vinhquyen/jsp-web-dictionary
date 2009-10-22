@@ -74,7 +74,8 @@ div#bar ul { display:inline;}
 
 div#bar ul li{
 	color: white;
-	background-color: green;
+	/*background-color: green;*/
+    background-color: #074c87;
     border-right: 2px solid black;
     border-bottom: 2px solid black;
 	display: inline;
@@ -82,6 +83,9 @@ div#bar ul li{
 	padding-left: 4px;
 	padding-right: 4px;
     padding-top: 4px;
+}
+div#bar ul li{
+
 }
 div#bar ul li:hover {
     /*background-color: orange;*/
@@ -93,14 +97,13 @@ border: 1px solid black;
 }*/
 
 div#bounding_box {
-/*    background:#122; DELME */
-    /*border:1px dashed #333; */
+    /*border-left:1px solid blue; */
 	margin:0px auto;
     min-height: 100%;
-    padding:5px;
+    /*padding:5px;*/
     padding-bottom: 30px;
 	text-align:left;
-    width:900px;
+    width: 900px;
 }
 
 div#contact {
@@ -156,22 +159,31 @@ div#logos img {
 }
 
 div#header {
-	background-color: green;
+/*	background-attachment:fixed;*/
+    background-image: url('../img/bg.png');
+	background-repeat: no-repeat;
+    background-position: right top;
     color: black;
-/*    margin: -22px 0px; */
-    opacity:.85;
     text-align: center;
+}
+
+div#header h1 {
+	color: #bbb;
+	display: inline;
 }
 
 div#header h4 {
 	color: yellow;
-	position: relative;
+    position: relative;
 	top: -20px;
- }
+    left: 15px;
+}
 
 div#lang {
     float: right;
-    /*right: 30px;*/
+    position: relative;
+    top: 5px;
+    right: 7px;
 }
 
 div#license {
@@ -302,8 +314,9 @@ img#logo {
     top: 20px;
     right: 15px;
 	opacity:0.8;
-	width: 120px;
-	height: 55px;
+	width: 175px;
+	height: 80px;
+    vertical-align: sub;
 }
 
 p.error {
