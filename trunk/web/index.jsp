@@ -47,8 +47,6 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
     %>
 
     <link rel="stylesheet" href="css/main.css" type="text/css" />
-    <link rel="stylesheet" href="css/blue.css" type="text/css" />
-
     <link rel="icon" href="img/favicon.png" type="image/png"/>
 
     <script type="text/javascript" src="js/cookies.js"></script>
@@ -71,11 +69,11 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
             </select>
        </div>
        <div id="title">
-                <h1><a href="index.jsp"><img
-                    id="logo" src="img/dict.jpg" alt="home" /></a>
-                    <%= r.getString("title")%>
-                </h1>
-                <h4>JSP-Tech Web Dictionary <%= rConf.getString("version")%></h4>
+            <h1><a href="index.jsp"><img
+                id="logo" src="img/dict.jpg" alt="home" /></a>
+                <%= r.getString("title")%>
+            </h1>
+            <h4>JSP-Tech Web Dictionary <%= rConf.getString("version")%></h4>
        </div>
        <div id="bar">
             <ul>
