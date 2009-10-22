@@ -14,7 +14,7 @@
         <p>
             <label><%= r.getString("searchLab")%></label>
             <input id="input_search" type="text" name="word" tabindex="1" />
-            <input type="image" src="img/search.jpg" alt="<%= r.getString("submit")%>"
+            <input type="image" src="img/search.png" alt="<%= r.getString("submit")%>"
                    style="position:relative; top:8px;" onmouseover="setVisibility('be');" onmouseout="setVisibility('be');"/>
 
             <input type="submit" name="lng" value="ar" onmouseover="setVisibility(this.value);" onmouseout="setVisibility(this.value);"/>
