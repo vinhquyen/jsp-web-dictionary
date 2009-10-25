@@ -158,7 +158,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 
             <jsp:include page='<%=r.getString("licTxt") %>' />
         </div>
-            <!-- %@include file="WEB-INF/jspf/stats.jspf"  %> -->
+            <%@include file="WEB-INF/jspf/stats.jspf"  %>
             
             <p><%
         String szAutor, szCopy, szLib;
