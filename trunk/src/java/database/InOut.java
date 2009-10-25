@@ -38,7 +38,8 @@ public class InOut {
                 tagEnd = "</span>";
                 
                 for (int i = 0; i<aDef.size(); i++) {
-                    Pattern re = Pattern.compile(szHighLight, Pattern.CASE_INSENSITIVE);
+                    // Regex --> \b == word boundary
+                    Pattern re = Pattern.compile("\\b" + szHighLight +"\\b", Pattern.CASE_INSENSITIVE);
                     Matcher m = re.matcher(aDef.get(i));
                     String[] pieces = re.split(aDef.get(i));
 
