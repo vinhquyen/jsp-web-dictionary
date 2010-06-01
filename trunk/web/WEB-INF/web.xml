@@ -15,9 +15,21 @@
 	<resource-env-ref-type>javax.sql.DataSource</resource-env-ref-type>
 </resource-env-ref>
 
+<context-param>
+	<param-name>parameter-encoding</param-name>
+	<param-value>UTF-8</param-value>
+</context-param>
+
+<!--	WRONG? Change in 2010-05-03
 <init-param>
 	<param-name>javaEncoding</param-name>
 	<param-value>UTF-8</param-value>
 </init-param>
+-->
+
+<error-page>
+	<exception-type>java.lang.Exception</exception-type>
+	<location>/error_handler.jsp</location>
+</error-page>
 
 </web-app>

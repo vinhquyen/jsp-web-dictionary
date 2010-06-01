@@ -35,7 +35,8 @@
 </div>
 <div class="result">
     <%
-    request.setCharacterEncoding("UTF-8");
+    String paramEncoding = application.getInitParameter("parameter-encoding");
+    request.setCharacterEncoding(paramEncoding); //"UTF-8" --> Defined in web.xml
 
     ArrayList<Entry> aDef = null;
     String szId = request.getParameter("id");
@@ -45,7 +46,7 @@
     int idWord = 0;
     String szHighLight = null;
 
-    boolean userLogged = (session.getAttribute("user") != null);
+    boolean userLogged = true;//(session.getAttribute("user") != null);
 
     if (szWord != null || szId != null) {
         if (szId != null) {

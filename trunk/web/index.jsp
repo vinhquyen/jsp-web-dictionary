@@ -23,11 +23,10 @@
     else  szTitle += " -";
 
     /** Get if the user is logged */
-    boolean userLogged = (session.getAttribute("user") != null);
+    boolean userLogged = true;//(session.getAttribute("user") != null);
 %>
 
-<!DOCTYPE html 
-PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<%=r.getLocale() %>" lang="<%=r.getLocale() %>">
@@ -55,14 +54,14 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 </head>
 <body onload="init();">
  <div id="bounding_box">
-   <!-- <div id="login">< % @ include file="WEB-INF/jspf/login.jspf"  %> UNCOMMENT </div> -->
+   <div id="login"><%@ include file="WEB-INF/jspf/login.jspf" %></div>
    <div id="header">
-<!--       <img id="backgr" src="img/bg.png" alt="Header background" /> -->
+<!--       <img id="backgr" src="img/bg.png" alt    ="Header background" /> -->
        <div id="lang">
             <select name="lang" onchange="changeLang(this.value)">
                 <option value="">[<%=r.getString("lng")%>]</option>
                 <option value="an">aragon&eacute;s</option>
-                <option value="an_ES_Benasques">benasqu&eacute;s</option>
+                <option value="an_BE">benasqu&eacute;s</option>
                 <option value="ca">catal&agrave;</option>
                 <option value="en">english</option>
                 <option value="es">espa&ntilde;ol</option>
@@ -93,8 +92,9 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
        </div>
    </div> <!-- End of HEADER -->
    <div id="content">
-            <%
-        request.setCharacterEncoding("UTF-8");
+        <%
+        String paramEncoding = application.getInitParameter("parameter-encoding");
+        request.setCharacterEncoding(paramEncoding); //"UTF-8" --> Defined in web.xml
 
         String szAction = request.getParameter("action");
         int iAction = 0;
@@ -158,7 +158,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 
             <jsp:include page='<%=r.getString("licTxt") %>' />
         </div>
-            <%@include file="WEB-INF/jspf/stats.jspf"  %>
+            <!-- %@include file="WEB-INF/jspf/stats.jspf"  %> TODO UNCOMMENT -->
             
             <p><%
         String szAutor, szCopy, szLib;

@@ -6,7 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Hashtable;
@@ -15,7 +14,6 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.Random;
@@ -70,39 +68,52 @@ public class Entry {
     /***************************************
      * MODIFICATION DEFINITION OPERATIONS  *
      **************************************/
-    /** Add a new word to the database 
+    /** Add a new word to the database
+     * @param word the new word to create
+     * @param morf morfology (verb, noun, adjetive...)
+     * @param def definition
      * @return null: if everything go fine, in another situation return a
      * String which describes the problem
      */
-    public static String addWord(String w, String m, String def) throws Exception {
-        // TODO: test addWord
+    public static String addWord(String word, String morf, String def) throws Exception {
+        // TODO: ADD MULTILANG QUESTIONS!!!!!!!!!!!!!!!!!!
         Connection co = null;
         PreparedStatement stInsert = null;
+        String szSQL;
+        int id;
 
         try {
             //TODO --> comprobaciones?? (A nivel de PRESENTACION)
-            if (w == null || def == null)
+            if (word == null || def == null)
                 throw new Exception("You must insert the word and its def");
-
-            List<String> aux = Arrays.asList(aMorf);
-            if (!aux.contains(m))
-                throw new Exception("The morfology must be: [" + aux.toString() + "]");
 
             /*------------ EOF VALIDATION -------------------*/
 
             co = initConnection();
 
-            stInsert = co.prepareStatement("INSERT INTO word(term, morf, definition) VALUES(?,?,?)");
-            stInsert.setString(1, w);
-            stInsert.setString(2, m);
-            stInsert.setString(3, def);
+            stInsert = co.prepareStatement("INSERT INTO word(term, morf) VALUES(?,?)");
+            stInsert.setString(1, word);
+            stInsert.setString(2, morf);
 
-            int n = stInsert.executeUpdate();
-            if (n < 1)
-                throw new SQLException("Entry.java:76, NOT Insert " + w);
+            if (stInsert.executeUpdate() < 1)
+                throw new SQLException("dict.word: " + word + " NOT Inserted");
+
+            /** get the last id (AUTO_INCREMENT) */
+            szSQL = "SELECT MAX(id) FROM word";
+            ResultSet res = co.createStatement().executeQuery(szSQL);
+            if(res.next())
+                id = res.getInt(1);
+            else throw new SQLException("Entry.java:, Unnespected error " + word);
+
+            stInsert = co.prepareStatement("INSERT INTO word_definition(id, definition) VALUES(?,?)");
+            stInsert.setInt(1, id);
+            stInsert.setString(2, def);
+
+            if (stInsert.executeUpdate() < 1)
+                throw new SQLException("dict.word_definition: Definition from " + id + " NOT Inserted");
 
         } catch (SQLException ex) {
-            return ("ERROR: There are a problem inserting the word<br/>\n" + ex.toString());
+            return ("ERROR: There are problems inserting the word<br/>\n" + ex.toString());
         } finally {
             closeConnection(co, stInsert, null);
         }
@@ -124,7 +135,7 @@ public class Entry {
 
             /* FIXME: Check the morphology? Perhaps its better don't do in favor of flexibility
             List<String> aux = Arrays.asList(aMorf);
-            if (!aux.contains(m))
+            if (!aux.contains(morf))
             throw new Exception("The morfology must be: [" + aux.toString() + "]"); */
 
             /*------------ EOF VALIDATION -------------------*/

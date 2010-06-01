@@ -1,6 +1,6 @@
 
 /** Creates a new definition OR example text box into the formulary */
-var numEx = 0;
+/*var numEx = 0;
 var numDef = 0;
 function addNode(type) {
     var node;
@@ -48,7 +48,7 @@ function delNode(idParent, id) {
         numDef -= 1;
     else if(id.cotains("ex"))
         numEx -= 1;
-}
+} */
 
 /** Change the language of the page */
 function changeLang(lang) {
@@ -160,16 +160,6 @@ function cssIE() {
 
             body.appendChild(div);
         }
-    }
-}
-
-
-function displayVerb(morf) {
-    if(morf == "v.") {
-        showDiv("verb", true);
-    }
-    else {
-        showDiv("verb", false);
     }
 }
 

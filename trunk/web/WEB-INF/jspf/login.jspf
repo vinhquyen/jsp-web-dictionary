@@ -1,5 +1,6 @@
 <%-- any content can be specified here e.g.: --%>
 <%@ page pageEncoding="UTF-8" %>
+<%@page import="database.User" %>
 
 <%
 	String szLogin, szError, szUser;
@@ -9,7 +10,8 @@
 		if(szLogin.compareTo("login") == 0) {
 			String user = request.getParameter("user");
 			String pass = request.getParameter("passwd");
-			if(user.compareTo("admin947") == 0 && pass.compareTo("12344321") == 0) {
+
+            if(User.autenticate(pass)) {
 				session.setAttribute("user", user);
 			}
 			else {

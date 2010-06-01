@@ -19,7 +19,8 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
     <body>
         <h2>Inserting new word!</h2>
         <%
-        request.setCharacterEncoding("UTF-8");
+        String paramEncoding = application.getInitParameter("parameter-encoding");
+        request.setCharacterEncoding(paramEncoding); //"UTF-8" --> Defined in web.xml
         
         String id  = request.getParameter("id");
         String wrd = request.getParameter("word");

@@ -1,6 +1,6 @@
 + Import SQL in directory web/_var/DB_creation.sql
-+ JDK >= 5
-+ Tomcat >= 5.5
++ JDK >= 6
++ Tomcat >= 6.0
 + jdbc-mysql-connector.jar (>=5) /usr/share/java
 	- In Ubuntu (or Debian): sudo apt-get install libmysql-java
 
