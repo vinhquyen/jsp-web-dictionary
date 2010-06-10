@@ -11,23 +11,24 @@
 			String user = request.getParameter("user");
 			String pass = request.getParameter("passwd");
 
-            if(User.autenticate(pass)) {
+            if(User.autenticate(user, pass)) {
 				session.setAttribute("user", user);
+                //TODO: AJAX RELOAD MENU!.¿?
 			}
 			else {
 			    szError = "Error de user o password";
 			}
-
 		}
 		else if(szLogin.compareTo("logout") == 0) {
 			session.removeAttribute("user");
+            //TODO: AJAX RELOAD MENU!.¿?
 		}
 	}
 
 	szUser = (String) session.getAttribute("user");
 	if (szUser != null) // User identified
 	{ 
-            %>
+           %>
 		<form method="post">
 			Welcome <i> <%=szUser %> </i>
 			<input type="submit" name="action" value="logout">
@@ -42,6 +43,6 @@
 			</form>
 	<% }
 	if(szError != null) {  
-		out.print("<p class='error' style='text-align: right;'>"+szError+"</p>");
+		out.print("<p class='error' style='text-align:right;'>"+szError+"</p>");
 	}
 %>

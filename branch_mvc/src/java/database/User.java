@@ -25,12 +25,13 @@ public class User {
         this.name = name;
     }
 
-    public static boolean autenticate(String pass) {
-        User u = new User("admin947");
+
+    public static boolean autenticate(String user, String pass) throws Exception{
+        User u = new User(user);
         try {
             MessageDigest algorithm = MessageDigest.getInstance("SHA-256");
-            algorithm.update(pass.getBytes());
-            byte[] hashInput = algorithm.digest();
+
+            byte[] hashInput = algorithm.digest(pass.getBytes());
             byte[] hashReal = u.getHash();
 
             return MessageDigest.isEqual(hashInput, hashReal);
@@ -41,7 +42,7 @@ public class User {
         return false;
     }
 
-    private byte[] getHash() {
+    private byte[] getHash() throws Exception {
         Connection co = null;
         PreparedStatement stQuery = null;
         ResultSet rs = null;
@@ -49,7 +50,7 @@ public class User {
         try {
             co = Entry.initConnection();
 
-            stQuery = co.prepareStatement("SELECT hash FROM users WHERE username = ?)");
+            stQuery = co.prepareStatement("SELECT hash FROM user WHERE username = ?");
             stQuery.setString(1, this.name);
 
             rs = stQuery.executeQuery();
@@ -60,7 +61,7 @@ public class User {
                 return new byte[0]; // User NOT exist in the DB
 
         } catch (Exception ex) {
-            Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
+            //Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             try {
                 Entry.closeConnection(co, stQuery, null);

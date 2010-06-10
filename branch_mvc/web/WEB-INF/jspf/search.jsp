@@ -84,16 +84,21 @@
         if (aDef == null || aDef.isEmpty()) {
             //szWord = InOut.userInputParser(szWord, out);
             szWord = InOut.userInputParser(szWord);
-            String notF = MessageFormat.format(r.getString("notFound"), "''<em>" + szWord + "</em>'' ");
-            if( !szWord.isEmpty() ) { %>
+
+            if(request.getParameter("cnt") != null) { /* contextual search [no results] */ %>
+                <p><%=MessageFormat.format(r.getString("notFoundCtx"), "''<em>" + szWord + "</em>''")%></p> <%
+            }
+            else { /* standar search */
+              String notF = MessageFormat.format(r.getString("notFound"), "''<em>" + szWord + "</em>'' ");
+              if( !szWord.isEmpty() ) { %>
                 <p><%=notF%><br/>
                     <% if (userLogged) { %>
                     <a href='index.jsp?action=1&word=<%=szWord%>'><%=r.getString("addDef")%></a>
                     <% } %>
                 </p> <%
-            }
-            LinkedList<Entry> laux = Entry.getNearWords(szWord, lng);
-            if (laux != null && !laux.isEmpty()) { %>
+              }
+              LinkedList<Entry> laux = Entry.getNearWords(szWord, lng);
+              if (laux != null && !laux.isEmpty()) { %>
                 <div id='nearW'>
                     <h4><%=r.getString("nearWord")%></h4>
                     <div style="float: left;"><ul>
@@ -113,6 +118,7 @@
                     </div>
 
                 </div><br style="clear:both;"/> <%
+              }
             }
             
         } /** Show the definions of the word*/

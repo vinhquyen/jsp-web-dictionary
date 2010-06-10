@@ -1,7 +1,7 @@
 /** @doc Main style sheet */
 .hidden {
-	display: none;
-	visibility: hidden;
+	display: none; /** @display affects to layout */
+	/* visibility: hidden;*/
 }
 
 .cnt {
@@ -106,10 +106,10 @@ div#bounding_box {
     width: 900px;
 }
 
-div#contact {
+#contact {
 	background: orange;
 	border: 1px solid black;
-	color: blue;
+	color: black;
 	font-size: 85%;
     margin-top: 3px;
 	width: 40%;
@@ -164,6 +164,7 @@ div#header {
 	background-repeat: no-repeat;
     background-position: right top;
     color: black;
+    margin-top:30px; /** space to login form */
     text-align: center;
 }
 
