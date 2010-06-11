@@ -4,6 +4,7 @@
                    Author     : chiron
 --%>
 <%@page import="database.*" %>
+<%@page import="java.util.Calendar" %>
 <%@page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
 <%@ include file="WEB-INF/jspf/lang.jspf" %>
@@ -78,10 +79,10 @@
                     <h4>JSP-Tech Web Dictionary <%= rConf.getString("version")%></h4>
                 </div>
                 <div id="bar">
-                    <ul>
+                    <ul id="navigator">
                         <li><a href="index.jsp"><img id="home" alt="<%= r.getString("home")%>" src="img/home.png"/> <%= r.getString("home")%></a></li>
                         <% if (userLogged) {%>
-                        <li><a href="index.jsp?action=1"><%= r.getString("add")%></a></li>
+                        <li><a href="index.jsp?action=4&mod=add&id=0"><%= r.getString("addword")%></a></li>
                         <% }%>
                         <li><a href="index.jsp?action=2"><%=r.getString("rnd")%></a></li>
                         <li><a id="tog-license" href="#"><%=r.getString("license")%></a></li>
@@ -109,11 +110,7 @@
             }
             switch (iAction) {
                 case 1:
-                    if (userLogged) {
-                        szAction = "WEB-INF/jspf/addword.jsp";
-                    } else {
-                        szAction = "WEB-INF/jspf/search.jsp";
-                    }
+                    szAction = "WEB-INF/jspf/search.jsp";
                     break;
                 case 2:
                     String redirectURL = "index.jsp?id=" + Entry.getRandom();
@@ -146,7 +143,7 @@
 
                 <% }%>
                 <!-- end texty -->
-                <div id="help" class="hidden" onclick="showDiv(this.id)">
+                <div id="help" class="hidden" onclick="$('#help').hide(400)">
                     <% String szHelpDiv = "WEB-INF/jspf/" + r.getString("help_div");%>
                     <jsp:include page="<%=szHelpDiv%>" />
                 </div>
@@ -157,9 +154,9 @@
         out.print(szC);
                     %>
                 </div>
-                <div id="license" class="hidden" onclick="showDiv(this.id)">
+                <div id="license" class="hidden" onclick="$('#license').hide(400);">
                     <p><img id="gpl_logo" src="img/gplv3.png" alt="GPL v3 logo"/>
-                        Copyright&copy; Santiago Lamora Subir&aacute; <%=java.util.Calendar.getInstance().get(java.util.Calendar.YEAR)%>
+                        Copyright&copy; Santiago Lamora Subir&aacute; <%=Calendar.getInstance().get(Calendar.YEAR)%>
                     </p>
 
                     <jsp:include page='<%=r.getString("licTxt") %>' />

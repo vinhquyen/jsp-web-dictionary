@@ -7,6 +7,6 @@
     fundamental ta que continue form&aacute;n parte de la nuestra bida. A trab&eacute;s de las nuebas
     tecnoloch&iacute;as, que mos permiten contribu&iacute; a ista fayena, s'ha elaborau ista
     p&aacute;china. Ta m&eacute;s informasi&oacute;n puets llechir el
-    <a href="#" onclick="setVisibility('manifest')">manifiesto</a>.
+    <a href="#" onclick="$('#manifest').show(400);">manifiesto</a>.
 </p>
 

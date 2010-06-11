@@ -22,8 +22,6 @@ if(szOp != null && szOp.equalsIgnoreCase("add")) {
 
     String wrd = request.getParameter("word");
     String mrf = request.getParameter("morfology");
-   
-    
     String[] arrayDef = request.getParameterValues("def");
     
 
@@ -38,8 +36,8 @@ if(szOp != null && szOp.equalsIgnoreCase("add")) {
     if(userLogged /*request.getParameter("secret") != null*/) {
         String res = null;
         try {
-            res = Entry.addWord(wrd, mrf, arrayDef);
-            //DEBUG out.println("Ahora se añadiría la palabra");
+            //DEBUG res = Entry.addWord(wrd, mrf, arrayDef);
+            out.println("Ahora se añadiría la palabra");
         }catch (Exception e){
             InOut.printError(e, out);
             res = "";
@@ -62,7 +60,7 @@ if(szOp != null && szOp.equalsIgnoreCase("add")) {
     //response.setCharacterEncoding("UTF-8");
     // TODO --> encoding when method="post"...
 %>
-<h3><%= r.getString("add")%>:</h3>
+<h3><%= r.getString("addword")%>:</h3>
 <form id="addForm" action="index.jsp" method="get"  accept-charset="UTF-8">
     <p> <label for="word"><%= r.getString("word")%><em>*</em></label>
         <input type="text" name="word" class="required" size="25"/>
@@ -76,12 +74,11 @@ if(szOp != null && szOp.equalsIgnoreCase("add")) {
         <textarea cols="24" rows="6" name="def" class="required" minlength="10"></textarea>
         <a href="#" onclick="addDefinition()">[+]</a>
     </p>
-    <p>
+    <p style="margin-left:14em;">
         <input class="submit" type="submit" value="<%= r.getString("addword")%>"/>
         <!--<input type="reset" value="<%= r.getString("clear")%>"/>-->
     </p>
     <input type="hidden" name="action" value="1" />
     <input type="hidden" name="op" value="add" />
-    <input type="hidden" name="numDef" value="1" />
 </form>
 <%} %>

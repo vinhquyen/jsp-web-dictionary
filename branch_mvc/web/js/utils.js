@@ -98,6 +98,15 @@ function jqueryInit() {
             $('#help').toggle(400);
             return false;
         });
+        /** Hardcoded inline ********
+        $('#help').click(function() {
+            $('#help').hide(400);
+            return false;
+        });
+        $('#license').click(function() {
+            $('#license').hide(400);
+            return false;
+        }); *************************/
 
         //equalHeight($(".definition"));
 
@@ -112,7 +121,7 @@ var definitionBoxDefault = "Otra definición";
 function addDefinition() {
     $('#definitions').append('<div style="margin-top:5px;" id="'+iDef+'"><label>&nbsp;</label>'+
     '<textarea style="color:grey" onfocus="emptyText(this)" onblur="setDefaultText(this)"'+
-    ' cols="24" rows="6" name="def" class="" minlength="10">'+definitionBoxDefault+'</textarea>'+
+    ' cols="24" rows="6" name="def" minlength="10">'+definitionBoxDefault+'</textarea>'+
     '<a style="color:red; margin-left:2px;" href="#" onclick="delDefinition('+iDef+')">[x]</a>'+
     '</div>');
     iDef = iDef + 1;

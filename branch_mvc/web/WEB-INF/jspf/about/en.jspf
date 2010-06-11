@@ -6,5 +6,5 @@
     people, the native speakers, so its diffusion is essential to keep it in our lives.
     New technologies provide powerful tools to achieve this goal, hence the
     aim of this portal. For further information, read the <a href="#"
-    onclick="setVisibility('manifest')">manifest</a> (in benasques language).
+    onclick="$('#manifest').show(400);">manifest</a> (in benasques language).
 </p>

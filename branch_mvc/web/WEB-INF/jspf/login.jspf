@@ -13,7 +13,14 @@
 
             if(User.autenticate(user, pass)) {
 				session.setAttribute("user", user);
-                //TODO: AJAX RELOAD MENU!.¿?
+                //AJAX RELOAD MENU!
+                %>
+                <script type="text/javascript">
+                    $(document).ready(function() {
+                        $("#bar").load("index.jsp #bar ul");
+                    });
+                </script>
+                <%
 			}
 			else {
 			    szError = "Error de user o password";
@@ -21,7 +28,14 @@
 		}
 		else if(szLogin.compareTo("logout") == 0) {
 			session.removeAttribute("user");
-            //TODO: AJAX RELOAD MENU!.¿?
+            //AJAX RELOAD MENU!
+            %>
+            <script type="text/javascript">
+                $(document).ready(function() {
+                    $("#bar").load("index.jsp #bar ul");
+                });
+            </script>
+            <%
 		}
 	}
 
@@ -46,3 +60,4 @@
 		out.print("<p class='error' style='text-align:right;'>"+szError+"</p>");
 	}
 %>
+

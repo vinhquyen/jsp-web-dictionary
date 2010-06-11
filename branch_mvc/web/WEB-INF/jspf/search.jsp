@@ -134,7 +134,7 @@
                     <h3><%=szWord%><% if (aDef.size() > 1) {%> <sup><%=i%></sup> <% }
                       if (userLogged) {%>
                         <sup style="font-size:65%;font-weight:100;">
-                            <a href="index.jsp?action=4&id=<%=idWord%>">modificar</a>
+                            <a href="index.jsp?action=4&mod=modify&id=<%=idWord%>">modificar</a>
                         </sup><%
                       }%>
                     </h3>

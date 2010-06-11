@@ -8,6 +8,6 @@
     de nuestra vida. Las nuevas tecnolog&iacute;as nos proporcionan potentes
     m&eacute;todos para contribuir a esta labor, de aqu&iacute; el origen de
     este portal. Para m&aacute;s informaci&oacute;n puede leer el
-    <a href="#" onclick="setVisibility('manifest')">manifiesto</a> (en benasqu&eacute;s).
+    <a href="#" onclick="$('#manifest').show(400);">manifiesto</a> (en benasqu&eacute;s).
 </p>
 

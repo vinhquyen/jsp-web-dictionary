@@ -48,5 +48,5 @@
 
         /** GLOBAL VARIABLES */
         boolean userLogged; /** Get if the user is logged */
-        userLogged = true;//TODO (session.getAttribute("user") != null);
+        userLogged = true; //TODO DEBUG (session.getAttribute("user") != null);
         %>

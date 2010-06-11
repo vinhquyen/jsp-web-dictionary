@@ -48,7 +48,14 @@ public class Entry {
     /***********************
      *   CONSTRUCTORS      *
      ***********************/
+
+    /** Fake constructor used to have an empty Entry (used when adding a new word) */
     public Entry() {
+        //this.id = -1;
+        this.word = "";
+        this.morfology = "";
+        this.definition = new ArrayList<String>();
+        this.definition.add("");
     }
 
     /** Constructor used to return the list of nearest word */
@@ -71,7 +78,7 @@ public class Entry {
     /** Add a new word to the database
      * @param word the new word to create
      * @param morf morfology (verb, noun, adjetive...)
-     * @param aDef definition
+     * @param aDef definition(s)
      * @return null: if everything go fine, in another situation return a
      * String which describes the problem
      * -- VALIDATION in PRESENTATION TIER -- (JQuery Plugin)
@@ -85,8 +92,6 @@ public class Entry {
         int id;
 
         try {
-            
-
             co = initConnection();
 
             stInsert = co.prepareStatement("INSERT INTO word(term, morf) VALUES(?,?)");
@@ -121,18 +126,23 @@ public class Entry {
         initAllWordsStructs(); // Rebuild structures for random search
         return null;
     }
-
-    public static String updateWord(String id, String w, String m, String def) throws Exception {
+    /** Modify a word from the database
+     * @param word the new word to create
+     * @param morf morfology (verb, noun, adjetive...)
+     * @param aDef definition(s)
+     * @return empty String,  if everything go fine
+     *         Description of the problem, otherwise
+     * -- VALIDATION in PRESENTATION TIER -- (JQuery Plugin)
+     *  Precondition: word not null && aDef.length > 0 )
+     */
+    public static String updateWord(String id, String word, String morf, String[] aDef) throws Exception {
         Connection co = null;
         ResultSet rs = null;
         PreparedStatement stUpdate = null;
         int idW;
+        String res = "";
 
         try {
-            //TODO --> comprobaciones?? (A nivel de PRESENTACION)
-            if (w == null || def == null)
-                throw new Exception("You must insert the word and its def");
-
             /* FIXME: Check the morphology? Perhaps its better don't do in favor of flexibility
             List<String> aux = Arrays.asList(aMorf);
             if (!aux.contains(morf))
@@ -142,7 +152,7 @@ public class Entry {
 
             co = initConnection();
 
-            /* Get the Word IDentifier */
+            /* Get the Word Identifier */
             try {
                 idW = Integer.valueOf(id);
             } catch (Exception ex) {
@@ -151,16 +161,32 @@ public class Entry {
             }
 
             /* Update the word values */
-            stUpdate = co.prepareStatement("UPDATE word SET term=?, morf=?, " +
-                    "definition = ? WHERE id = ?");
-            stUpdate.setString(1, w);
-            stUpdate.setString(2, m);
-            stUpdate.setString(3, def);
-            stUpdate.setInt(4, idW);
+            stUpdate = co.prepareStatement("UPDATE word SET term=?, morf=? WHERE id = ?");
+            stUpdate.setString(1, word);
+            stUpdate.setString(2, morf);
+            stUpdate.setInt(3, idW);
 
-            int n = stUpdate.executeUpdate();
-            if (n < 1)
-                throw new SQLException("Entry.java:125, NOT Update " + w);
+            if (stUpdate.executeUpdate() < 1)
+                res += "ERROR in " + stUpdate.toString() + "<br/>";
+
+            /** UPDATE =  DELETE old definition(s) +  INSERTI new one(s) */
+            stUpdate = co.prepareStatement("DELETE FROM word_definition WHERE id = ?");
+            stUpdate.setInt(1, idW);
+            stUpdate.executeUpdate();
+
+            int numDef = 0;
+            for(String definition:aDef) {
+                stUpdate = co.prepareStatement("INSERT INTO word_definition(id, n_def, definition) VALUES(?,?,?)");
+                stUpdate.setInt(1, idW);
+                stUpdate.setInt(2, numDef);
+                stUpdate.setString(3, definition);
+                if (stUpdate.executeUpdate() < 1)
+                    res+="ERROR in " + stUpdate.toString() + "<br/>";
+                numDef++;
+            }
+
+            if (stUpdate.executeUpdate() < 1)
+                throw new SQLException("dict.word_definition: Definition from " + id + " NOT Inserted");
 
         } catch (SQLException ex) {
             return ("ERROR: There are a problem updating the word<br/>\n" + ex.toString());
@@ -169,7 +195,7 @@ public class Entry {
         }
 
         initAllWordsStructs(); // Rebuild structures for random search
-        return null;
+        return res;
     }
 
     /******************************
