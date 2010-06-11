@@ -1,54 +1,4 @@
 
-/** Creates a new definition OR example text box into the formulary */
-/*var numEx = 0;
-var numDef = 0;
-function addNode(type) {
-    var node;
-    var div		= document.createElement("div");
-    var txtArea = document.createElement("textarea");
-    txtArea.cols = 32;
-    txtArea.rows = 4;
-
-    if(type == "def") {
-        node = document.getElementById("definitions");
-        txtArea.name = "def"+numDef;
-        div.id = "def"+numDef;
-        numDef += 1;
-    }
-    else {
-        node = document.getElementById("examples");
-        txtArea.name = "ex"+numEx;
-        div.id = "def"+numEx;
-        numEx += 1;
-    }
-    //<textarea cols="32" rows="4" name="ex"></textarea>
-    var a = document.createElement("a");
-    a.href = "#";
-    var fDel = "delNode('" + node.id + "', '" + div.id + "')";
-    a.setAttribute("onclick", fDel);
-    a.appendChild(document.createTextNode("[x]"));
-    a.style.position = "relative";
-    a.style.left = "10px";
-    a.style.top	= "-60px";
-
-    //div.style.border = "1px solid red";
-	
-    div.appendChild(txtArea);
-    div.appendChild(a);
-    node.appendChild(div);
-}
-
-function delNode(idParent, id) {
-    var parent = document.getElementById(idParent);
-    var node = document.getElementById(id);
-    parent.removeChild(node);
-	
-    // TODO: TEST --> fix number of new nodes created (num--)
-    if(id.contains("def"))
-        numDef -= 1;
-    else if(id.cotains("ex"))
-        numEx -= 1;
-} */
 
 /** Change the language of the page
  *  @param lang : the new locale */
@@ -150,7 +100,44 @@ function jqueryInit() {
         });
 
         //equalHeight($(".definition"));
+
+        /* Form Validation */
+        $("#addForm").validate(/*{debug: true}*/);
     });
+}
+
+/** Creates a new definition textarea into the formulary */
+var iDef = 1;
+var definitionBoxDefault = "Otra definición";
+function addDefinition() {
+    $('#definitions').append('<div style="margin-top:5px;" id="'+iDef+'"><label>&nbsp;</label>'+
+    '<textarea style="color:grey" onfocus="emptyText(this)" onblur="setDefaultText(this)"'+
+    ' cols="24" rows="6" name="def" class="" minlength="10">'+definitionBoxDefault+'</textarea>'+
+    '<a style="color:red; margin-left:2px;" href="#" onclick="delDefinition('+iDef+')">[x]</a>'+
+    '</div>');
+    iDef = iDef + 1;
+}
+
+/** Removes the definition textarea with identifier = id */
+function delDefinition(id) {
+    $("#" + id).remove();
+}
+
+/** Form.definitions behaviour: modifies CSS and help text */
+function emptyText(obj) {
+    if(obj.value == definitionBoxDefault) {
+        obj.value = "";
+        obj.style.color = "black";
+    }
+}
+
+/** Form.definitions behaviour: modifies CSS and help text */
+function setDefaultText(obj) {
+    //alert(obj.value);
+    if(obj.value == "") {
+        obj.value = definitionBoxDefault;
+        obj.style.color = "grey";
+    }
 }
 
 /** Replace no ascii chars for its HTML code

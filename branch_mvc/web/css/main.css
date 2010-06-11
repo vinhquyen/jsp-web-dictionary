@@ -249,6 +249,11 @@ div.definition { /** new look */
 /*    padding-top: 1px;
     padding-bottom: 1px; */
 }
+
+#addForm label { width: 8em; float: left; margin-left: .5em; }
+#addForm label.error { float: none; color: red; padding-left: .5em; vertical-align: top; }
+#addForm a {color:blue;font-family:monospace; vertical-align:top; text-decoration:none; }
+
 .left { /** new look */
        float:left;
        margin-left: 10px;

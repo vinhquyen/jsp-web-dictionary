@@ -46,8 +46,6 @@
     int idWord = 0;
     String szHighLight = null;
 
-    boolean userLogged = true;//(session.getAttribute("user") != null);
-
     if (szWord != null || szId != null) {
         if (szId != null) {
             /** get definition by ID */

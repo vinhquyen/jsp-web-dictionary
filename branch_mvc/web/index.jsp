@@ -26,8 +26,6 @@
             szTitle += " -";
         }
 
-        /** Get if the user is logged */
-        boolean userLogged = (session.getAttribute("user") != null);
 %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
@@ -41,10 +39,9 @@
         <title><%=szTitle%> <%= r.getString("title")%> / JSP Web Dictionary
         <%=rConf.getString("version")%></title>
 
-        <!-- links language alternate -->
-    <%
+    <% /* links language alternate */
      String[] aLanguages = {"an", "ca", "en", "es"};
-     for (String auxLng : aLanguages) {%>
+     for (String auxLng : aLanguages) { %>
         <link rel="alternate" lang="<%=auxLng%>" href="?lang=<%=auxLng%>" /><%
      }
     %>
@@ -55,6 +52,7 @@
         <!-- [Captura doble-click]
         <script type="text/javascript" src="js/hiper.js"></script>-->
         <script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
+        <script type="text/javascript" src="js/jquery.validate.pack.js"></script>
         <script type="text/javascript" src="js/utils.js"></script>
     </head>
     <body onload="init();">

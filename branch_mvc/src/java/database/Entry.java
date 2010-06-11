@@ -71,11 +71,13 @@ public class Entry {
     /** Add a new word to the database
      * @param word the new word to create
      * @param morf morfology (verb, noun, adjetive...)
-     * @param def definition
+     * @param aDef definition
      * @return null: if everything go fine, in another situation return a
      * String which describes the problem
+     * -- VALIDATION in PRESENTATION TIER -- (JQuery Plugin)
+     *  Precondition: word not null && aDef.length > 0 )
      */
-    public static String addWord(String word, String morf, String def) throws Exception {
+    public static String addWord(String word, String morf, String[] aDef) throws Exception {
         // TODO: ADD MULTILANG QUESTIONS!!!!!!!!!!!!!!!!!!
         Connection co = null;
         PreparedStatement stInsert = null;
@@ -83,11 +85,7 @@ public class Entry {
         int id;
 
         try {
-            //TODO --> comprobaciones?? (A nivel de PRESENTACION)
-            if (word == null || def == null)
-                throw new Exception("You must insert the word and its def");
-
-            /*------------ EOF VALIDATION -------------------*/
+            
 
             co = initConnection();
 
@@ -105,9 +103,11 @@ public class Entry {
                 id = res.getInt(1);
             else throw new SQLException("Entry.java:, Unnespected error " + word);
 
-            stInsert = co.prepareStatement("INSERT INTO word_definition(id, definition) VALUES(?,?)");
-            stInsert.setInt(1, id);
-            stInsert.setString(2, def);
+            for(String definition:aDef) {
+                stInsert = co.prepareStatement("INSERT INTO word_definition(id, definition) VALUES(?,?)");
+                stInsert.setInt(1, id);
+                stInsert.setString(2, definition);
+            }
 
             if (stInsert.executeUpdate() < 1)
                 throw new SQLException("dict.word_definition: Definition from " + id + " NOT Inserted");
@@ -563,8 +563,8 @@ public class Entry {
         return definition;
     }
 
-    /*    public void setDefinition(String def) {
-    this.definition = def;
+    /*    public void setDefinition(String aDef) {
+    this.definition = aDef;
     } */
     public int getId() {
         return id;

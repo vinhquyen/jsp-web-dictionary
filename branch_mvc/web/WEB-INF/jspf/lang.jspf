@@ -5,28 +5,27 @@
 <%@ page pageEncoding="UTF-8" %>
 
 <%
-	Locale curr;
-	ResourceBundle r, rAbout, rCopy, rConf;
+        Locale curr;
+        ResourceBundle r, rAbout, rCopy, rConf;
         String newLang, szLang;
-        
+
         newLang = request.getParameter("lang");
-        if ( newLang != null && newLang.length() > 0 ) {
+        if (newLang != null && newLang.length() > 0) {
             szLang = newLang;
             session.setAttribute("lang", szLang);
-            //out.print("<h1>NEW LANG: " + szLang + "</h1>");
+        //out.print("<h1>NEW LANG: " + szLang + "</h1>");
         } else {
             szLang = (String) session.getAttribute("lang");
-            //out.print("<h1>Session LANG: " + szLang + "</h1>");
-        } 
-        
-	if (szLang == null || szLang.length() == 0) {
-	    curr = Locale.getDefault();
-	    szLang = curr.getLanguage();
+        //out.print("<h1>Session LANG: " + szLang + "</h1>");
+        }
+
+        if (szLang == null || szLang.length() == 0) {
+            curr = Locale.getDefault();
+            szLang = curr.getLanguage();
             session.setAttribute("lang", szLang);
-	}
-	else {
-	    String a[] = szLang.split("_");
-	    switch(a.length) {
+        } else {
+            String a[] = szLang.split("_");
+            switch (a.length) {
                 case 1:
                     curr = new Locale(szLang);
                     break;
@@ -40,10 +39,14 @@
                     curr = Locale.getDefault();
                     szLang = curr.getLanguage();
             }
-	}
-	
-	r = ResourceBundle.getBundle("resources/main", curr);
-	rAbout = ResourceBundle.getBundle("resources/about", curr);
-	rCopy = ResourceBundle.getBundle("resources/copyright", curr);
-    rConf = ResourceBundle.getBundle("resources/config", curr);
-%>
+        }
+
+        r = ResourceBundle.getBundle("resources/main", curr);
+        rAbout = ResourceBundle.getBundle("resources/about", curr);
+        rCopy = ResourceBundle.getBundle("resources/copyright", curr);
+        rConf = ResourceBundle.getBundle("resources/config", curr);
+
+        /** GLOBAL VARIABLES */
+        boolean userLogged; /** Get if the user is logged */
+        userLogged = true;//TODO (session.getAttribute("user") != null);
+        %>
