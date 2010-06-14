@@ -98,18 +98,18 @@
             String res = null;
             try {
                 if (szOp.equalsIgnoreCase("modify")) { /* TODO */
-                    //DEBUG res = Entry.updateWord(id, wrd, mrf, arrayDef);
-                    out.println("Ahora se modificaría la palabra"); //DEBUG
+                    res = Entry.updateWord(id, wrd, mrf, arrayDef);
+                    //out.println("Ahora se modificaría la palabra"); //DEBUG
                 } else if (szOp.equalsIgnoreCase("add")) {
-                    //DEBUG res = Entry.addWord(wrd, mrf, arrayDef);
-                    out.println("Ahora se añadiría la palabra"); //DEBUG
+                    res = Entry.addWord(wrd, mrf, arrayDef);
+                    //out.println("Ahora se añadiría la palabra"); //DEBUG
                 }
             } catch (Exception ex) {
                 InOut.printError(ex, out);
                 res = "";
             }
-            if (res == null) {
-                out.println("<h3>Word added/modified succesfully</h3>");
+            if (res == null || res.length() == 0) {
+                out.println("<h3 id='msg' class='ok'>Word " + szOp + " succesfully</h3>");
             } else {
                 InOut.printError(new Exception(res), out);
             }

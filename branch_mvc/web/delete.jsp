@@ -8,19 +8,19 @@
 <%@ include file="WEB-INF/jspf/lang.jspf" %>
 <%
     if(userLogged) {
-    String res, szId;
-    res = "";
-    szId = request.getParameter("id");
-    
-    if(szId != null && szId.length() > 0) {
-        //DEBUG res = Entry.deleteWord(szId);
-        if(res == "")
-            res = "La palabra " + szId + " ha sido eliminada correctamente.";
+        String res, szId;
+        res = "";
+        szId = request.getParameter("id");
 
-    } else res = "Invalid word Identifier format!";
+        if(szId != null && szId.length() > 0) {
+            res = Entry.deleteWord(szId);
+            if(res == "")
+                res = "La palabra " + szId + " ha sido eliminada correctamente.";
+
+        } else res = "Invalid word Identifier format!";
 %>
 
-    <p id="msg" class="info">
+    <p id="msg" class="ok">
         <%=res %>
     </p>
 
@@ -28,11 +28,4 @@
 } else { %>
     <p id="msg" class="error">You not have rights to perform this action!</p>
  <%
-}
-
-%>
-    <script type="text/javascript">
-        $(document).ready(function() {
-            setTimeout("$('#msg').fadeOut(800)",5000);
-        });
-    </script>
+} %>

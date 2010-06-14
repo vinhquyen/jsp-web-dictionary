@@ -142,18 +142,10 @@ function jqueryInit() {
             $('#help').toggle(400);
             return false;
         });
-        /** Hardcoded inline ********
-        $('#help').click(function() {
-            $('#help').hide(400);
-            return false;
-        });
-        $('#license').click(function() {
-            $('#license').hide(400);
-            return false;
-        }); *************************/
 
-        //equalHeight($(".definition"));
-
+        /** Message fadding out */
+        setTimeout("$('#msg').fadeOut(800)",5000);
+        
         /* Form Validation */
         $("#addForm").validate(/*{debug: true}*/);
     });

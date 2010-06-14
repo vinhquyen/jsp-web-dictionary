@@ -87,7 +87,7 @@ public class Entry {
     public static String addWord(String word, String morf, String[] aDef) throws Exception {
         // TODO: ADD MULTILANG QUESTIONS!!!!!!!!!!!!!!!!!!
         Connection co = null;
-        PreparedStatement stInsert = null;
+        PreparedStatement stMultiLang, stInsert = null;
         String szSQL;
         int id;
 
@@ -108,14 +108,25 @@ public class Entry {
                 id = res.getInt(1);
             else throw new SQLException("Entry.java:, Unnespected error " + word);
 
-            for(String definition:aDef) {
-                stInsert = co.prepareStatement("INSERT INTO word_definition(id, definition) VALUES(?,?)");
-                stInsert.setInt(1, id);
-                stInsert.setString(2, definition);
-            }
+            int numDef = 0;
+            stInsert = co.prepareStatement("INSERT INTO word_definition(id, n_def, definition) VALUES(?,?,?)");
+            stMultiLang = co.prepareStatement("INSERT INTO multilang_be(id, n_def, term) VALUES(?,?,?)");
 
-            if (stInsert.executeUpdate() < 1)
-                throw new SQLException("dict.word_definition: Definition from " + id + " NOT Inserted");
+            for(String definition:aDef) {
+                stInsert.setInt(1, id);
+                stInsert.setInt(2, numDef);
+                stInsert.setString(3, definition);
+                if (stInsert.executeUpdate() < 1)
+                     throw new SQLException("dict.word_definition: Definition from " + id + " NOT Inserted");
+
+                stMultiLang.setInt(1, id);
+                stMultiLang.setInt(2, numDef);
+                stMultiLang.setString(3, word);
+                if (stMultiLang.executeUpdate() < 1)
+                    throw new SQLException("dict.multilang_be: Definition from " + id + " NOT Inserted");
+
+                numDef++;
+            }
 
         } catch (SQLException ex) {
             return ("ERROR: There are problems inserting the word<br/>\n" + ex.toString());
@@ -124,7 +135,7 @@ public class Entry {
         }
 
         initAllWordsStructs(); // Rebuild structures for random search
-        return null;
+        return "";
     }
     /** Modify a word from the database
      * @param word the new word to create
@@ -138,7 +149,7 @@ public class Entry {
     public static String updateWord(String id, String word, String morf, String[] aDef) throws Exception {
         Connection co = null;
         ResultSet rs = null;
-        PreparedStatement stUpdate = null;
+        PreparedStatement stMultiLang, stUpdate = null;
         int idW;
         String res = "";
 
@@ -169,24 +180,34 @@ public class Entry {
             if (stUpdate.executeUpdate() < 1)
                 res += "ERROR in " + stUpdate.toString() + "<br/>";
 
-            /** UPDATE =  DELETE old definition(s) +  INSERTI new one(s) */
+            /** UPDATE =  DELETE old definition(s) +  INSERT new one(s) */
             stUpdate = co.prepareStatement("DELETE FROM word_definition WHERE id = ?");
             stUpdate.setInt(1, idW);
             stUpdate.executeUpdate();
+            
+            stMultiLang = co.prepareStatement("DELETE FROM multilang_be WHERE id = ?");
+            stMultiLang.setInt(1, idW);
+            stMultiLang.executeUpdate();
 
             int numDef = 0;
+            stUpdate = co.prepareStatement("INSERT INTO word_definition(id, n_def, definition) VALUES(?,?,?)");
+            stMultiLang = co.prepareStatement("INSERT INTO multilang_be(id, n_def, term) VALUES(?,?,?)");
+
             for(String definition:aDef) {
-                stUpdate = co.prepareStatement("INSERT INTO word_definition(id, n_def, definition) VALUES(?,?,?)");
                 stUpdate.setInt(1, idW);
                 stUpdate.setInt(2, numDef);
                 stUpdate.setString(3, definition);
                 if (stUpdate.executeUpdate() < 1)
                     res+="ERROR in " + stUpdate.toString() + "<br/>";
+
+                stMultiLang.setInt(1, idW);
+                stMultiLang.setInt(2, numDef);
+                stMultiLang.setString(3, word);
+                if (stMultiLang.executeUpdate() < 1)
+                    res += "dict.multilang_be: Definition from " + id + " NOT Inserted";
+
                 numDef++;
             }
-
-            if (stUpdate.executeUpdate() < 1)
-                throw new SQLException("dict.word_definition: Definition from " + id + " NOT Inserted");
 
         } catch (SQLException ex) {
             return ("ERROR: There are a problem updating the word<br/>\n" + ex.toString());
@@ -215,15 +236,25 @@ public class Entry {
                         "The identifier is not valid<br/>\n" + ex.toString());
             }
 
-            stDelete = co.prepareStatement("DELETE FROM word WHERE id = ?; DELETE FROM word_definition WHERE id = ?");
+            stDelete = co.prepareStatement("DELETE FROM word WHERE id = ?");
             stDelete.setInt(1, idW);
-            stDelete.setInt(2, idW);
+            stDelete.executeUpdate();
 
-            if (stDelete.executeUpdate() < 1)
-                res = "ERROR: There are a problem deleting the word" + id;
+            stDelete = co.prepareStatement("DELETE FROM word_definition WHERE id = ?");
+            stDelete.setInt(1, idW);
+            stDelete.executeUpdate();
+
+            stDelete = co.prepareStatement("DELETE FROM multilang_be WHERE id = ?");
+            stDelete.setInt(1, idW);
+            stDelete.executeUpdate();
 
         } catch (SQLException ex) {
-            return ("ERROR: There are a problem deleting the word<br/>\n" + ex.toString());
+            String error = "";
+            error += "SQLState:  " + ex.getSQLState() + "<br/>";
+            error += "Message:  " + ex.getMessage() + "<br/>";
+            error += "Vendor:  " + ex.getErrorCode() + "<br/>";
+
+            return ("ERROR: There are a problem deleting the word<br/>\n" + error);
         } finally {
             closeConnection(co, stDelete, rs);
         }
@@ -256,7 +287,7 @@ public class Entry {
             throw new SQLException("The lang " + lang + " doesn't exist in our database");
 
         String szSQL; // = "SELECT id FROM word WHERE term = ?";
-        szSQL = "SELECT id FROM multilang_" + lang + " WHERE term = ?";
+        szSQL = "SELECT DISTINCT(id) FROM multilang_" + lang + " WHERE term = ?";
 
         try {
             co = initConnection();
@@ -453,7 +484,7 @@ public class Entry {
         String aLang[] = {"ar", "be", "ca", "es", "fr"};
         for (String lng : aLang) {
             ArrayList<Entry> aux = new ArrayList<Entry>();
-            String szSQL = "SELECT id, term FROM multilang_" + lng; //+" ORDER BY upper(term)";
+            String szSQL = "SELECT DISTINCT(id), term FROM multilang_" + lng; //+" ORDER BY upper(term)";
 
             try {
                 co = initConnection();
