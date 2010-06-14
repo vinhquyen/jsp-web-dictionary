@@ -198,6 +198,40 @@ public class Entry {
         return res;
     }
 
+    public static String deleteWord(String id) throws Exception {
+        Connection co = null;
+        ResultSet rs = null;
+        PreparedStatement stDelete = null;
+        int idW;
+        String res = "";
+        try {
+            co = initConnection();
+
+            /* Get the Word Identifier */
+            try {
+                idW = Integer.valueOf(id);
+            } catch (Exception ex) {
+                return ("ERROR: There are a problem updating the word<br/>\n" +
+                        "The identifier is not valid<br/>\n" + ex.toString());
+            }
+
+            stDelete = co.prepareStatement("DELETE FROM word WHERE id = ?; DELETE FROM word_definition WHERE id = ?");
+            stDelete.setInt(1, idW);
+            stDelete.setInt(2, idW);
+
+            if (stDelete.executeUpdate() < 1)
+                res = "ERROR: There are a problem deleting the word" + id;
+
+        } catch (SQLException ex) {
+            return ("ERROR: There are a problem deleting the word<br/>\n" + ex.toString());
+        } finally {
+            closeConnection(co, stDelete, rs);
+        }
+
+        initAllWordsStructs(); // Rebuild structures for random search
+        return res;
+    }
+
     /******************************
      *   SEARCH DEFINITIONS OP    *
      ******************************/

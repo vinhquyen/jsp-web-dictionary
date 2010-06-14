@@ -173,7 +173,21 @@ function addDefinition() {
 
 /** Removes the definition textarea with identifier = id */
 function delDefinition(id) {
-    $("#" + id).remove();
+    var def = $("#" + id);
+    jConfirm('Are you sure about deleting this definition?', 'Delete confirmation', function(r) {
+        if(r) {
+            def.remove();
+        }
+    });
+}
+
+function deleteWord(id) {
+    jConfirm('Are you sure about deleting this word?\n This action can not be undone', 'Delete word confirmation', function(r) {
+        if(r) {
+            //jAlert('TODO: Ajax JSP petition to DELETE id='+id, 'Confirmation Results');
+            $(".result").load("delete.jsp?id="+id);
+        }
+    });
 }
 
 /** Form.definitions behaviour: modifies CSS and help text */

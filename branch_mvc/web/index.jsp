@@ -47,14 +47,17 @@
      }
     %>
 
-        <link rel="stylesheet" href="css/main.css" type="text/css" />
         <link rel="icon" href="img/favicon.png" type="image/png"/>
+        <link rel="stylesheet" href="css/main.css" type="text/css" />
+        <link rel="stylesheet" href="css/jquery.alerts.css" type="text/css" />
 
         <!-- [Captura doble-click]
         <script type="text/javascript" src="js/hiper.js"></script>-->
-        <script type="text/javascript" src="js/jquery-1.4.2.min.js"></script>
-        <script type="text/javascript" src="js/jquery.validate.pack.js"></script>
-        <script type="text/javascript" src="js/utils.js"></script>
+        <script src="js/jquery-1.4.2.min.js" type="text/javascript"></script>
+        <script src="js/jquery.alerts.js" type="text/javascript"></script>
+        <script src="js/jquery.ui.draggable.js" type="text/javascript"></script>
+        <script src="js/jquery.validate.pack.js" type="text/javascript"></script>
+        <script src="js/utils.js" type="text/javascript"></script>
     </head>
     <body onload="init();">
         <div id="bounding_box">

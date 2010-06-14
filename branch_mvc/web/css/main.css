@@ -13,6 +13,22 @@
     position:fixed;
 }
 
+.error {
+	color: red;
+	font-size: smaller;
+    border:1px dashed #daa;
+    background-color:#fdd;
+    color:#033;
+    padding:0.3em;
+}
+
+.msg {
+    border:1px dashed #ada;
+    background-color:#dfd;
+    color:#303;
+    padding:0.3em;
+}
+
 a img {
     border: 0;
 }
@@ -323,9 +339,4 @@ img#logo {
 	width: 175px;
 	height: 80px;
     vertical-align: sub;
-}
-
-.error {
-	color: red;
-	font-size: smaller;
 }

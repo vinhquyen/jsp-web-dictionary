@@ -135,6 +135,9 @@
                       if (userLogged) {%>
                         <sup style="font-size:65%;font-weight:100;">
                             <a href="index.jsp?action=4&mod=modify&id=<%=idWord%>">modificar</a>
+                        </sup>
+                        <sup style="font-size:65%;font-weight:100;">
+                            <a href="#" onclick="deleteWord('<%=idWord%>')">eliminar</a>
                         </sup><%
                       } %>
                     </h3>
