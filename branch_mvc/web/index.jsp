@@ -138,8 +138,8 @@
             </div><!-- End of CONTENT -->
             <div id="footer">
                 <!-- texty: allows modifications withouth a new publication (In example: small news, etc) -->
-     <% /** TODO remove false from if below */
-        if (false && request.getParameter("action") == null && request.getParameter("id") == null &&
+     <% 
+        if (request.getParameter("action") == null && request.getParameter("id") == null &&
                 (request.getParameter("word") == null || request.getParameter("word").isEmpty())) {%>
                 <script type="text/javascript"
                         src="http://texty.com/cms/syndicate/25bb24b5-4279-4334-839f-59c04b376eab.js"></script>
@@ -164,7 +164,7 @@
 
                     <jsp:include page='<%=r.getString("licTxt") %>' />
                 </div>
-                <!-- %@include file="WEB-INF/jspf/stats.jspf"  %> TODO UNCOMMENT -->
+                
 
                 <p><%
         String szAutor, szCopy, szLib;
@@ -174,6 +174,7 @@
         out.print(MessageFormat.format(rCopy.getString("copydict"), szLib, szAutor, szCopy));
                     %>
                 </p>
+                <%@include file="WEB-INF/jspf/stats.jspf"  %>
             </div>
         </div><!-- End of Bounding Box -->
     </body>

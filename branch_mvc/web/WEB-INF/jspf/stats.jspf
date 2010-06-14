@@ -1,7 +1,7 @@
 <%@ page pageEncoding="UTF-8" %>
 
 <!-- Begin W3Counter Tracking Code -->
-<div id="w3counter" style="float:left; position:relative; top:20px;">
+<div id="w3counter" style="float:right;">
 <script type="text/javascript" src="http://www.w3counter.com/tracker.js"></script>
 <script type="text/javascript">
 	w3counter(17544);
