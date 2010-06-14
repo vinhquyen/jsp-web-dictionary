@@ -40,10 +40,54 @@ function changeLang(lang) {
     location.href = host+pag+params;
 }
 
-/** TODO: funcion que iguale la altura de las dos columnas de
- *  definiciones (aproximadamente) :-)
+/** Iguala la altura de las dos columnas de definiciones moviendo def:
+ *      def = col_left.last   , si col_left > col_right
+ *      def = col_right.first , si col_left < col_right
+ *      def = null            , si dif_heights < def.height()
+ *      
+ *  Perfila el ajustado repartiendo pixeles de relleno entre cada elemento de
+ *  la columna de menor altura
+ *  TODO: ¿crear func auxiliares para código más limpio?
  */
-function equalHeight(group) {
+function adjustColsHeigh() {
+    var aux, def;
+    var cleft_height = $('#col_left').height();
+    var cright_height = $('#col_right').height();
+
+    if(cright_height==0) return;
+
+    var dif_height = cleft_height - cright_height;
+    //alert(dif_height);
+
+    if(dif_height < 0) {
+        def = $('#col_right .definition:first-child');
+        if(def.height() < -dif_height) {
+            def.detach();
+            $('#col_left').append(def);
+            adjustColsHeigh();
+        } else { // Perfilar con vertical-padding
+            aux = -dif_height/$('#col_left .definition').length;
+            $('#col_left .definition').each(function() {
+               $(this).height( $(this).height() + aux);
+            });
+        }
+    } else if (dif_height > 0) {
+        def = $('#col_left .definition:last-child');
+        if(def.height() < dif_height) {
+            def.detach();
+            $('#col_right .definition:first-child').before(def);
+            adjustColsHeigh();
+        } else { // Perfilar con vertical-padding
+            aux = dif_height/$('#col_right .definition').length;
+            $('#col_right .definition').each(function() {
+               $(this).height( $(this).height() + aux);
+            });
+        }
+    }
+    //else {return;}
+}
+
+/*function equalHeight(group) {
     tallest = 0;
     group.each(function() {
         thisHeight = $(this).height();
@@ -52,7 +96,7 @@ function equalHeight(group) {
         }
     });
     group.height(tallest);
-}
+}*/
 
 /** External links --> open new window XHTML compliance */
 function externalLinks() {

@@ -127,16 +127,16 @@
                 idWord = e.getId();
 
                 if ( i == 1 ) {
-                    out.print("<div class='left'>\n");
+                    out.print("<div id='col_left' class='left'>\n");
                 }
             %>
-                <div class="definition">
+                <div id="def<%=i-1 %>" class="definition">
                     <h3><%=szWord%><% if (aDef.size() > 1) {%> <sup><%=i%></sup> <% }
                       if (userLogged) {%>
                         <sup style="font-size:65%;font-weight:100;">
                             <a href="index.jsp?action=4&mod=modify&id=<%=idWord%>">modificar</a>
                         </sup><%
-                      }%>
+                      } %>
                     </h3>
                   <%
                     InOut.printWordDef(e, out, szHighLight, r);
@@ -144,9 +144,10 @@
                   %>
                 </div><%
                 
-                if ( i == Math.ceil((double)aDef.size() / 2) + 1 )   { out.print("</div>\n<div class='left'>\n"); }
+                if ( i == Math.ceil((double)aDef.size() / 2) + 1 )   { out.print("\n</div>\n<div id='col_right' class='left'>\n"); }
                 if ( i == aDef.size() + 1 )     { out.print("</div>\n"); }
             }
+            out.print("<script>adjustColsHeigh();</script>");
         }
     }
     %>
