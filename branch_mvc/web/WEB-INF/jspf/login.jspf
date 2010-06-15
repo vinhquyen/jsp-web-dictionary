@@ -5,7 +5,7 @@
 <%
 	String szLogin, szError, szUser;
 	szError = null;
-	szLogin = request.getParameter("action");
+	szLogin = request.getParameter("log_action");
 	if(szLogin != null) {
 		if(szLogin.compareTo("login") == 0) {
 			String user = request.getParameter("user");
@@ -33,6 +33,7 @@
             <script type="text/javascript">
                 $(document).ready(function() {
                     $("#bar").load("index.jsp #bar ul");
+                    $("#content").load("index.jsp #content")
                 });
             </script>
             <%
@@ -45,7 +46,7 @@
            %>
 		<form method="post">
 			Welcome <i> <%=szUser %> </i>
-			<input type="submit" name="action" value="logout">
+			<input type="submit" name="log_action" value="logout">
 		</form>
             <%	
 	}
@@ -53,7 +54,7 @@
 			<form method="post">
 				<label>user: </label><input name="user" size=10>
 				<label>pass: </label><input type="password" name="passwd" size=10>
-				<input type="submit" name="action" value="login">
+				<input type="submit" name="log_action" value="login">
 			</form>
 	<% }
 	if(szError != null) {  
