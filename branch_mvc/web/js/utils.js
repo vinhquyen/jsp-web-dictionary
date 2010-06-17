@@ -1,4 +1,32 @@
 
+$.extend({
+    /** @return an associative array with the uri params */
+    getUrlVars: function(){
+        var vars = [], hash;
+        var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+        for(var i = 0; i < hashes.length; i++)
+        {
+            hash = hashes[i].split('=');
+            vars.push(hash[0]);
+            vars[hash[0]] = hash[1];
+        }
+        return vars;
+    },
+    /** @param name: the param identifier
+     *  @return value 'name' identified parameter  */
+    getUrlVar: function(name){
+        return $.getUrlVars()[name];
+    },
+    /** @return string with de uri params */
+    getUrlParams: function() {
+        var url_param = "";
+        var aParam = $.getUrlVars();
+        for(var i=0; i < aParam.length; i++) {
+            url_param += aParam[i]+"="+$.getUrlVar(aParam[i])+"&";
+        }
+        return url_param;
+    }
+});
 
 /** Change the language of the page
  *  @param lang : the new locale */
@@ -49,19 +77,24 @@ function changeLang(lang) {
  *  la columna de menor altura
  *  TODO: ¿crear func auxiliares para código más limpio?
  */
+var MIN_DIF = 25;
+var MAX_NUM_ITER = 5; //Chapuza para fijar bug de bucle infinito...
 function adjustColsHeigh() {
+    MAX_NUM_ITER = MAX_NUM_ITER - 1;
     var aux, def;
-    var cleft_height = $('#col_left').height();
-    var cright_height = $('#col_right').height();
+    var cleft_height = $('#col_left').height() - $('#col_left').children("div.definition").length * 10;
+    var cright_height = $('#col_right').height() - $('#col_right').children("div.definition").length * 10;
 
-    if(cright_height==0) return;
+    if(cright_height == 0 || MAX_NUM_ITER == 0)  {
+		if(!MAX_NUM_ITER)alert("Posible bucle infinito:"+MAX_NUM_ITER);
+		return;
+	}
 
-    var dif_height = cleft_height - cright_height;
-    //alert(dif_height);
+    var dif_height = (cleft_height - cright_height);
 
     if(dif_height < 0) {
         def = $('#col_right .definition:first-child');
-        if(def.height() < -dif_height) {
+        if(def.height()+MIN_DIF < -dif_height) {
             def.detach();
             $('#col_left').append(def);
             adjustColsHeigh();
@@ -73,7 +106,7 @@ function adjustColsHeigh() {
         }
     } else if (dif_height > 0) {
         def = $('#col_left .definition:last-child');
-        if(def.height() < dif_height) {
+        if(def.height()+MIN_DIF < dif_height) {
             def.detach();
             $('#col_right .definition:first-child').before(def);
             adjustColsHeigh();
@@ -84,19 +117,9 @@ function adjustColsHeigh() {
             });
         }
     }
+    //alert(cleft_height+"||"+cright_height+"||"+def.height());//DEBUG
     //else {return;}
 }
-
-/*function equalHeight(group) {
-    tallest = 0;
-    group.each(function() {
-        thisHeight = $(this).height();
-        if(thisHeight > tallest) {
-            tallest = thisHeight;
-        }
-    });
-    group.height(tallest);
-}*/
 
 /** External links --> open new window XHTML compliance */
 function externalLinks() {
@@ -144,10 +167,55 @@ function jqueryInit() {
         });
 
         /** Message fadding out */
+        setTimeout("$('p.error').fadeOut(800)",3000);
         setTimeout("$('#msg').fadeOut(800)",5000);
         
         /* Form Validation */
-        $("#addForm").validate(/*{debug: true}*/);
+        $("#addForm").validate({
+            event: "blur",
+            rules: {
+                    'word': "required",
+                    /*'morfology': {
+                        required: false,
+                        remote: {
+                            url: "ajax_handler.jsp",
+                            type: "get",
+                            data: {
+                                word: $('#word').val() ,
+                                morfology: $('#morfology').val()
+                            }
+                        }
+                    },*/
+                    'def': "required"
+            },
+            messages: {
+                    'word': "Por favor ingrese la palabra a definir",
+                    //'morfology': "Ya existe una definición con el par {término, morfología} introducidos.",
+                    'def': "Por favor, ingrese la definición"
+            },
+            errorElement: "label",
+            errorPlacement: function(error, element) {
+                 element.after(error);
+            },
+            submitHandler: function(form) {
+               // do other stuff for a valid form
+               //$('#validate').load('ajax_handler.jsp?word='+$('#word').val()+'&morfology='+$('#morfology').val())
+               $(".ta_def").each(function() {
+                    this.onblur = null;
+                    this.onfocus = null;
+                    emptyText(this);
+               });
+               $.get('ajax_handler.jsp?word='+$('#word').val()+'&morfology='+$('#morfology').val(),null,
+                    function(response){
+                        var error = response.trim() == 0;
+                        if(error) { 
+                            $('#validate').append("<label class='error'>Ya existe una definición con el par {término, morfología} introducidos.</label>");
+                            $('#word').attr("class", "error");
+                            $('#morfology').attr("class", "error");
+                        } else {form.submit()};
+                    });
+           }
+        });
     });
 }
 
@@ -156,8 +224,8 @@ var iDef = 1;
 var definitionBoxDefault = "Otra definición";
 function addDefinition() {
     $('#definitions').append('<div style="margin-top:5px;" id="'+iDef+'"><label>&nbsp;</label>'+
-    '<textarea style="color:grey" onfocus="emptyText(this)" onblur="setDefaultText(this)"'+
-    ' cols="24" rows="6" name="def" minlength="10">'+definitionBoxDefault+'</textarea>'+
+    '<textarea class="ta_def" style="color:grey" onfocus="emptyText(this)" onblur="setDefaultText(this)"'+
+    ' cols="24" rows="6" name="def">'+definitionBoxDefault+'</textarea>'+
     '<a style="color:red; margin-left:2px;" href="#" onclick="delDefinition('+iDef+')">[x]</a>'+
     '</div>');
     iDef = iDef + 1;
@@ -247,6 +315,6 @@ function setVisibility(id) {
     }
     else {
         obj.style.visibility = "visible";
-        obj.style.display = "block";
+        obj.style.display = "inline";
     }
 }

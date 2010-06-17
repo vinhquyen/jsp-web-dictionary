@@ -92,13 +92,15 @@
                         <li><a id="tog-contact" href="#"><%=r.getString("contact")%></a></li>
                         <li><a href="index.jsp?action=3"><%=r.getString("about")%></a></li>
                         <li><strong><a id="tog-help" href="#"><%=r.getString("help")%></a></strong></li>
-                    </ul>
-                    <div id="contact" class="hidden">
+                    </ul><br/>
+                    <label id="contact" class="hidden">
                         <em>admin947<img src="img/arroba.gif" alt="@" class="arroba" />gmail.com</em>
-                    </div>
+                    </label>
                 </div>
             </div> <!-- End of HEADER -->
-            <div id="content">
+            <div style="clear:both;"></div><!-- Avoid problem with previous float stlyes in header -->
+            <div id="content" style="position:relative">
+                <div id="errores" class="error" style="position:absolute;top:0;right:0"></div>
                 <%
         String paramEncoding = application.getInitParameter("parameter-encoding");
         request.setCharacterEncoding(paramEncoding); //"UTF-8" --> Defined in web.xml
@@ -138,8 +140,8 @@
             </div><!-- End of CONTENT -->
             <div id="footer">
                 <!-- texty: allows modifications withouth a new publication (In example: small news, etc) -->
-     <% 
-        if (request.getParameter("action") == null && request.getParameter("id") == null &&
+     <% /** TODO remove false from if below */
+        if (false && request.getParameter("action") == null && request.getParameter("id") == null &&
                 (request.getParameter("word") == null || request.getParameter("word").isEmpty())) {%>
                 <script type="text/javascript"
                         src="http://texty.com/cms/syndicate/25bb24b5-4279-4334-839f-59c04b376eab.js"></script>
@@ -174,8 +176,8 @@
         out.print(MessageFormat.format(rCopy.getString("copydict"), szLib, szAutor, szCopy));
                     %>
                 </p>
-                <%@include file="WEB-INF/jspf/stats.jspf"  %>
-            </div>
+                <!--%@include file="WEB-INF/jspf/stats.jspf"  %> TODO: remove for stats -->
+            </div><!-- End of Footer -->
         </div><!-- End of Bounding Box -->
     </body>
 </html>

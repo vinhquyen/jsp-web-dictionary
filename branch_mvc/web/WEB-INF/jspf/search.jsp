@@ -22,7 +22,8 @@
             <input type="submit" name="lng" value="es" onmouseover="setVisibility(this.value);" onmouseout="setVisibility(this.value);"/>
             <input type="submit" name="lng" value="fr" onmouseover="setVisibility(this.value);" onmouseout="setVisibility(this.value);"/>
             <input type="submit" name="cnt" value="<%=r.getString("context") %>" onmouseover="setVisibility('cnt');" onmouseout="setVisibility('cnt');"/>
-
+        </p>
+        <p style="height:10px;position:relative;top:-12px;z-index:5;">
             <% String szCtx = r.getString("help_lng");%>
             <span id="be"  class="hidden cnt"><%= MessageFormat.format(szCtx, r.getString("lng_be")).replace(".", " ") + r.getString("by_default")%>.</span>
             <span id="ar"  class="hidden cnt"><%= MessageFormat.format(szCtx, r.getString("lng_ar"))%></span>

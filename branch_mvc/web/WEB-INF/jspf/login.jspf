@@ -17,7 +17,9 @@
                 %>
                 <script type="text/javascript">
                     $(document).ready(function() {
+                        $("#bar").fadeOut(200);
                         $("#bar").load("index.jsp #bar ul");
+                        $("#bar").fadeIn(300);
                     });
                 </script>
                 <%
@@ -32,8 +34,10 @@
             %>
             <script type="text/javascript">
                 $(document).ready(function() {
+                    $("#bar").fadeOut(200);
                     $("#bar").load("index.jsp #bar ul");
-                    $("#content").load("index.jsp #content")
+                    $("#content").load("index.jsp?"+$.getUrlParams()+" #content")
+                    $("#bar").fadeIn(300);
                 });
             </script>
             <%
@@ -58,7 +62,6 @@
 			</form>
 	<% }
 	if(szError != null) {  
-		out.print("<p class='error' style='text-align:right;'>"+szError+"</p>");
+		out.print("<p class='error' style='display:inline;position:absolute;right:0;'>"+szError+"</p>");
 	}
 %>
-

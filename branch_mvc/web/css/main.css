@@ -10,15 +10,18 @@
     font-size:smaller;
     opacity:0.8;
     padding: 2px;
-    position:fixed;
+    /*position:fixed;*/
 }
 
 .error {
 	color: red;
-	font-size: smaller;
     border:1px dashed #daa;
     background-color:#fdd;
     color:#033;
+    z-index:5;
+}
+p.error, label.error {
+    font-size: smaller;
     padding:0.3em;
 }
 
@@ -71,9 +74,9 @@ div#manifest p {
 div#bar {
 	float: right;
 	font-size: smaller;
-    margin-top: -8px;
-/*	position: relative; */
-/*	top: -18px; */
+	position: absolute;
+	bottom: 5px;right:5px;
+    /*margin-right: 5px;*/
 }
 
 div#bar a{
@@ -117,8 +120,7 @@ div#bounding_box {
 	margin:0px auto;
     min-height: 100%;
     /*padding:5px;*/
-    padding-bottom: 30px;
-	text-align:left;
+    /*padding-bottom: 30px;*/
     width: 900px;
 }
 
@@ -127,19 +129,15 @@ div#bounding_box {
 	border: 1px solid black;
 	color: black;
 	font-size: 85%;
-    margin-top: 3px;
-	width: 40%;
-	padding-right: 0px;
-	position: relative;
-	right: -60%;
+    float:right;
+    margin-top: 5px;
+	padding: 2px 3px;
 }
 
 div#content {
-/*    background-color: yellow;  DELME*/
-    clear: left;
-	margin-left: 20px;
-    margin-right: 15px;
-    padding-bottom: 200px;
+    clear: both;
+    margin:auto 20px 50px;
+    text-align:left;
 }
 
 div#counter {
@@ -151,17 +149,10 @@ div#counter {
 }
 
 div#footer {
-/*    background-color: red;  DELME*/
-	/*border-top: 1px solid gray; */
-	font-size: 70%;
-    margin-top: -100px;
+    font-size: 0.70em;
     height: 100px;
-	padding-left: 5px;
 	padding-right: 5px;
-	position: relative;
-    bottom: 10px;
 	text-align: right;
-    width: 890px;
 }
 
 div#logos {
@@ -182,23 +173,26 @@ div#header {
     color: black;
     margin-top:30px; /** space to login form */
     text-align: center;
+    height:135px; /** height < bg-image.height (150px) */
+    position:relative;
 }
 
 div#header h1 {
 	color: #bbb;
 	display: inline;
+    margin:0;
 }
 
 div#header h4 {
 	color: yellow;
-    position: relative;
-	top: -20px;
-    left: 15px;
+    margin:0 auto 15px;
+    position:relative;
+    left: 90px; /** header.h1.image.width()/2 */
 }
 
 div#lang {
     float: right;
-    position: relative;
+    position: absolute;
     top: 5px;
     right: 7px;
 }
@@ -258,16 +252,14 @@ div.definition { /** new look */
     background-color: #fceed1;
     border: 1px dotted gray;
     font-family: sans-serif, verdana;
-    margin-left: auto;
-    margin-right: auto;
-    width: 400px;
-    margin-bottom: 10px;
+    margin:0 auto 10px; /*top right&left bottom */
+    width: 410px;
 /*    padding-top: 1px;
     padding-bottom: 1px; */
 }
 
 #addForm label { width: 8em; float: left; margin-left: .5em; }
-#addForm label.error { float: none; color: red; padding-left: .5em; vertical-align: top; }
+#addForm label.error { color: red; vertical-align: top; float:right; width:auto; position:relative;right:8em;}
 #addForm a {color:blue;font-family:monospace; vertical-align:top; text-decoration:none; }
 
 .left { /** new look */
@@ -295,10 +287,10 @@ div.result dl {
 }
 
 div#search {
-    clear: both;
-	margin-bottom: 35px; /** Space for the conextual help */
+	margin-bottom: 15px; /** Space for the conextual help */
 }
 
+div#title {/*height:150px;*/}
 /*div {border: 1px dotted white;}
 div:hover {border: 2px solid white;} */
 

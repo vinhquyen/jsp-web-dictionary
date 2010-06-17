@@ -41,22 +41,22 @@
 <form id="addForm" action="index.jsp" method="get"  accept-charset="UTF-8">
     <input type="hidden" name="id" value="<%=szId%>" />
     <p> <label for="word"><%= r.getString("word")%><em>*</em></label>
-        <input type="text" name="word" class="required" size="25" value="<%=e.getWord()%>"/>
+        <input id="word" type="text" name="word" class="required" size="25" value="<%=e.getWord()%>"/>
     </p>
     <p>
         <label><%= r.getString("morf")%></label>
-        <input type="text" name="morfology"  size="25" value="<%=e.getMorfology()%>"/>
+        <input id="morfology"type="text" name="morfology"  size="25" value="<%=e.getMorfology()%>"/>
     </p>
     <!-- Definitions -->
     <p id="definitions">
         <label for="Definition"><%= r.getString("def")%><em>*</em></label>
-        <textarea cols="24" rows="6" name="def" class="required" minlength="10"><%=e.getDefinition().get(0)%></textarea>
+        <textarea cols="24" rows="6" name="def" class="required"><%=e.getDefinition().get(0)%></textarea>
         <a href="#" onclick="addDefinition()">[+]</a>
 
         <% for (int i = 1; i < e.getDefinition().size(); i++) {%>
-        <div style="margin-top:5px;" id="<%=i%>"><label>&nbsp;</label>
-            <textarea cols="24" rows="6" name="def" minlength="10"><%=e.getDefinition().get(i)%></textarea>
-            <a style="color:red; margin-left:2px;" href="#" onclick="delDefinition(<%=i%>)">[x]</a>
+        <div style="margin-top:5px;position:relative;" id="<%=i%>"><label>&nbsp;</label>
+            <textarea class="ta_def" cols="24" rows="6" name="def"><%=e.getDefinition().get(i)%></textarea>
+            <a style="color:red; margin-left:2px;position:absolute;top:0;right:0" href="#" onclick="delDefinition(<%=i%>)">[x]</a>
         </div>
         <% }%>
 
@@ -68,7 +68,9 @@
     <input type="hidden" name="action" value="4" />
     <input type="hidden" name="op" value="<%=szMod%>"/>
 </form>
-
+<p>* Indica campo obligatorio.</p>
+<a href="#" onclick="$('#validate').load('ajax_handler.jsp?word='+$('#word').val()+'&morfology='+$('#morfology').val())">Validate</a>
+<div id="validate"></div>
 <%
     } else {
         /***************************************************
@@ -90,7 +92,8 @@
         out.println("Morf: " + mrf + "<br/>");
         out.print("Definitions: <ol>");
         for (String aux : arrayDef) {
-            out.println("<li>" + aux + "</li>");
+            if(!aux.isEmpty())
+                out.println("<li>" + aux + "</li>");
         }
         out.println("</ol>");
         /****END DEBUGG MODE *****/

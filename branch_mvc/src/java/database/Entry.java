@@ -113,19 +113,21 @@ public class Entry {
             stMultiLang = co.prepareStatement("INSERT INTO multilang_be(id, n_def, term) VALUES(?,?,?)");
 
             for(String definition:aDef) {
-                stInsert.setInt(1, id);
-                stInsert.setInt(2, numDef);
-                stInsert.setString(3, definition);
-                if (stInsert.executeUpdate() < 1)
-                     throw new SQLException("dict.word_definition: Definition from " + id + " NOT Inserted");
+                if(definition.length()>0) {
+                    stInsert.setInt(1, id);
+                    stInsert.setInt(2, numDef);
+                    stInsert.setString(3, definition);
+                    if (stInsert.executeUpdate() < 1)
+                         throw new SQLException("dict.word_definition: Definition from " + id + " NOT Inserted");
 
-                stMultiLang.setInt(1, id);
-                stMultiLang.setInt(2, numDef);
-                stMultiLang.setString(3, word);
-                if (stMultiLang.executeUpdate() < 1)
-                    throw new SQLException("dict.multilang_be: Definition from " + id + " NOT Inserted");
+                    stMultiLang.setInt(1, id);
+                    stMultiLang.setInt(2, numDef);
+                    stMultiLang.setString(3, word);
+                    if (stMultiLang.executeUpdate() < 1)
+                        throw new SQLException("dict.multilang_be: Definition from " + id + " NOT Inserted");
 
-                numDef++;
+                    numDef++;
+                }
             }
 
         } catch (SQLException ex) {
@@ -266,6 +268,35 @@ public class Entry {
     /******************************
      *   SEARCH DEFINITIONS OP    *
      ******************************/
+
+    public static boolean existDefinition(String szWord, String szMorf) throws Exception {
+        boolean found = false;
+        Connection co = null;
+        ResultSet rs = null;
+        PreparedStatement st = null;
+        try {
+            co = initConnection();
+            st = co.prepareStatement("SELECT id FROM word WHERE term = ? AND morf = ?");
+            st.setString(1, szWord);
+            st.setString(2, szMorf);
+            rs = st.executeQuery();
+
+            //found = rs.next();
+            if(rs.first())
+                found = true;
+
+        } finally {
+            closeConnection(co, st, rs);
+        }
+        return found;
+    }
+
+    /** TODO: complete javadoc
+     * @param szWord
+     * @param lang
+     * @return
+     * @throws java.lang.Exception
+     */
     public static ArrayList<Entry> getDefinition(String szWord, String lang) throws Exception {
         if (szWord.isEmpty())
             return null;
