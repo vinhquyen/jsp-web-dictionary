@@ -85,7 +85,7 @@
                     <ul id="navigator">
                         <li><a href="index.jsp"><img id="home" alt="<%= r.getString("home")%>" src="img/home.png"/> <%= r.getString("home")%></a></li>
                         <% if (userLogged) {%>
-                        <li><a href="index.jsp?action=4&mod=add"><%= r.getString("addword")%></a></li>
+                        <li><a href="index.jsp?action=4&amp;mod=add"><%= r.getString("addword")%></a></li>
                         <% }%>
                         <li><a href="index.jsp?action=2"><%=r.getString("rnd")%></a></li>
                         <li><a id="tog-license" href="#"><%=r.getString("license")%></a></li>

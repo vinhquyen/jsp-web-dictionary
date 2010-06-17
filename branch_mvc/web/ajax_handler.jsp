@@ -7,19 +7,17 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <%
-    int unique = 0;
-    boolean isUnique;
+    int w_id;
+    String id  = request.getParameter("id");
     String wrd = request.getParameter("word");
     String mrf = request.getParameter("morfology");
     try {
-        isUnique = !Entry.existDefinition(wrd, mrf);
+        w_id = Entry.existDefinition(id, wrd, mrf);
         } catch (Exception e) {
             InOut.printError(e, out);
-            isUnique = false;
+            w_id = 0;
         }
-    if(isUnique)
-        unique = 1;
     %>
 
-<%=unique %>
+<%=w_id %>
 

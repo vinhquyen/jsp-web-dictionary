@@ -39,22 +39,21 @@
 
 <h3><%=szTitle%>:</h3>
 <form id="addForm" action="index.jsp" method="get"  accept-charset="UTF-8">
-    <input type="hidden" name="id" value="<%=szId%>" />
     <p> <label for="word"><%= r.getString("word")%><em>*</em></label>
         <input id="word" type="text" name="word" class="required" size="25" value="<%=e.getWord()%>"/>
     </p>
     <p>
         <label><%= r.getString("morf")%></label>
-        <input id="morfology"type="text" name="morfology"  size="25" value="<%=e.getMorfology()%>"/>
+        <input id="morfology" type="text" name="morfology"  size="25" value="<%=e.getMorfology()%>"/>
     </p>
     <!-- Definitions -->
     <p id="definitions">
-        <label for="Definition"><%= r.getString("def")%><em>*</em></label>
+        <label><%= r.getString("def")%><em>*</em></label>
         <textarea cols="24" rows="6" name="def" class="required"><%=e.getDefinition().get(0)%></textarea>
         <a href="#" onclick="addDefinition()">[+]</a>
-
+        
         <% for (int i = 1; i < e.getDefinition().size(); i++) {%>
-        <div style="margin-top:5px;position:relative;" id="<%=i%>"><label>&nbsp;</label>
+        <div style="margin-top:5px;" id="<%=i%>"><label>&nbsp;</label>
             <textarea class="ta_def" cols="24" rows="6" name="def"><%=e.getDefinition().get(i)%></textarea>
             <a style="color:red; margin-left:2px;position:absolute;top:0;right:0" href="#" onclick="delDefinition(<%=i%>)">[x]</a>
         </div>
@@ -64,13 +63,14 @@
     <p  style="margin-left:14em;">
         <input type="submit" value="<%=szTitle%>"/>
         <!--<input type="reset" value="<%= r.getString("clear")%>"/>-->
+        <input type="hidden" id="id" name="id" value="<%=szId%>" />
+        <input type="hidden" name="action" value="4" />
+        <input type="hidden" name="op" value="<%=szMod%>"/>
     </p>
-    <input type="hidden" name="action" value="4" />
-    <input type="hidden" name="op" value="<%=szMod%>"/>
 </form>
 <p>* Indica campo obligatorio.</p>
-<a href="#" onclick="$('#validate').load('ajax_handler.jsp?word='+$('#word').val()+'&morfology='+$('#morfology').val())">Validate</a>
-<div id="validate"></div>
+<div id="validate" ondblclick="$('#validate').load('ajax_handler.jsp?id='+$('#id').val()+'&amp;word='+$('#word').val()+'&amp;morfology='+$('#morfology').val())"
+ style="border:1px dashed black; height:1em;"></div>
 <%
     } else {
         /***************************************************

@@ -167,7 +167,7 @@ function jqueryInit() {
         });
 
         /** Message fadding out */
-        setTimeout("$('p.error').fadeOut(800)",3000);
+        setTimeout("$('p.error').fadeOut(800)",5000);
         setTimeout("$('#msg').fadeOut(800)",5000);
         
         /* Form Validation */
@@ -175,22 +175,10 @@ function jqueryInit() {
             event: "blur",
             rules: {
                     'word': "required",
-                    /*'morfology': {
-                        required: false,
-                        remote: {
-                            url: "ajax_handler.jsp",
-                            type: "get",
-                            data: {
-                                word: $('#word').val() ,
-                                morfology: $('#morfology').val()
-                            }
-                        }
-                    },*/
                     'def': "required"
             },
             messages: {
                     'word': "Por favor ingrese la palabra a definir",
-                    //'morfology': "Ya existe una definición con el par {término, morfología} introducidos.",
                     'def': "Por favor, ingrese la definición"
             },
             errorElement: "label",
@@ -198,21 +186,27 @@ function jqueryInit() {
                  element.after(error);
             },
             submitHandler: function(form) {
-               // do other stuff for a valid form
-               //$('#validate').load('ajax_handler.jsp?word='+$('#word').val()+'&morfology='+$('#morfology').val())
+               // Handle empty definitions
                $(".ta_def").each(function() {
                     this.onblur = null;
                     this.onfocus = null;
                     emptyText(this);
                });
-               $.get('ajax_handler.jsp?word='+$('#word').val()+'&morfology='+$('#morfology').val(),null,
+               // Check UNIQUE(word+term) restriction
+               var w_id = $("#id").val();
+               var w_morf = $('#morfology').val();
+               var w_word = $('#word').val();
+               
+               $.get('ajax_handler.jsp?id='+w_id+'&word='+w_word+'&morfology='+w_morf,null,
                     function(response){
-                        var error = response.trim() == 0;
-                        if(error) { 
-                            $('#validate').append("<label class='error'>Ya existe una definición con el par {término, morfología} introducidos.</label>");
+                        var res_id = response.trim();
+                        if(res_id == 0) { form.submit() }
+                        else {
                             $('#word').attr("class", "error");
                             $('#morfology').attr("class", "error");
-                        } else {form.submit()};
+                            $('#validate').append("<label class='error'>Ya existe una definición con el par {término, morfología} introducidos.</label>");
+                            $('#validate').append("<p class='info'><a href='index.jsp?action=4&mod=modify&id="+res_id+"'>Modifica la palabra</a> si quieres añadir nuevas definiciones.</p>");
+                        }
                     });
            }
         });
@@ -260,7 +254,6 @@ function emptyText(obj) {
 
 /** Form.definitions behaviour: modifies CSS and help text */
 function setDefaultText(obj) {
-    //alert(obj.value);
     if(obj.value == "") {
         obj.value = definitionBoxDefault;
         obj.style.color = "grey";

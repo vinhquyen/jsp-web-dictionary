@@ -294,11 +294,15 @@ div#title {/*height:150px;*/}
 /*div {border: 1px dotted white;}
 div:hover {border: 2px solid white;} */
 
-dt, dd {display: inline;}
-
-dt {
+dt{
+    width:2em;
+    float:left;
     font-family: monospace;
-    margin-right: -10px;
+}
+
+dd{
+    /*margin-left:3em;*/
+    margin-bottom:5px;
 }
 
 img.arroba {

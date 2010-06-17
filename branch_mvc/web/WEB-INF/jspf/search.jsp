@@ -92,7 +92,7 @@
               if( !szWord.isEmpty() ) { %>
                 <p><%=notF%><br/>
                     <% if (userLogged) { %>
-                    <a href='index.jsp?action=1&word=<%=szWord%>'><%=r.getString("addDef")%></a>
+                    <a href='index.jsp?action=1&amp;word=<%=szWord%>'><%=r.getString("addDef")%></a>
                     <% } %>
                 </p> <%
               }
@@ -135,7 +135,7 @@
                     <h3><%=szWord%><% if (aDef.size() > 1) {%> <sup><%=i%></sup> <% }
                       if (userLogged) {%>
                         <sup style="font-size:65%;font-weight:100;">
-                            <a href="index.jsp?action=4&mod=modify&id=<%=idWord%>">modificar</a>
+                            <a href="index.jsp?action=4&amp;mod=modify&amp;id=<%=idWord%>">modificar</a>
                         </sup>
                         <sup style="font-size:65%;font-weight:100;">
                             <a href="#" onclick="deleteWord('<%=idWord%>')">eliminar</a>
@@ -150,10 +150,10 @@
                 
                 if ( i == Math.ceil((double)aDef.size() / 2) + 1 )   { out.print("\n</div>\n<div id='col_right' class='left'>\n"); }
                 if ( i == aDef.size() + 1 )     { out.print("</div>\n"); }
-            }
-            out.print("<script>adjustColsHeigh();</script>");
+            } %>
+            <script type='text/javascript'>adjustColsHeigh();</script><%
         }
     }
     %>
-    <br clear="both" />
+    <br style="clear:both" />
 </div>

@@ -48,18 +48,18 @@
 	if (szUser != null) // User identified
 	{ 
            %>
-		<form method="post">
+		<form action="" method="post">
 			Welcome <i> <%=szUser %> </i>
 			<input type="submit" name="log_action" value="logout">
 		</form>
             <%	
 	}
 	else { %>
-			<form method="post">
-				<label>user: </label><input name="user" size=10>
-				<label>pass: </label><input type="password" name="passwd" size=10>
-				<input type="submit" name="log_action" value="login">
-			</form>
+			<form action="" method="post"><div>
+				<label>user: </label><input name="user" size="10" />
+				<label>pass: </label><input type="password" name="passwd" size="10" />
+				<input type="submit" name="log_action" value="login" />
+			</div></form>
 	<% }
 	if(szError != null) {  
 		out.print("<p class='error' style='display:inline;position:absolute;right:0;'>"+szError+"</p>");
