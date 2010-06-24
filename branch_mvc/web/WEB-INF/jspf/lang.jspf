@@ -1,52 +1,54 @@
 <%-- Allows using ResourceBoundes for internationalization purposses --%>
+<%@ page import="database.User" %>
 <%@ page import="java.util.Locale" %>
 <%@ page import="java.util.ResourceBundle" %>
 <%@ page import="java.text.MessageFormat" %>
 <%@ page pageEncoding="UTF-8" %>
 
 <%
-        Locale curr;
-        ResourceBundle r, rAbout, rCopy, rConf;
-        String newLang, szLang;
+    Locale curr;
+    ResourceBundle r, rAbout, rCopy, rConf;
+    String newLang, szLang;
 
-        newLang = request.getParameter("lang");
-        if (newLang != null && newLang.length() > 0) {
-            szLang = newLang;
-            session.setAttribute("lang", szLang);
-        //out.print("<h1>NEW LANG: " + szLang + "</h1>");
-        } else {
-            szLang = (String) session.getAttribute("lang");
-        //out.print("<h1>Session LANG: " + szLang + "</h1>");
+    newLang = request.getParameter("lang");
+    if (newLang != null && newLang.length() > 0) {
+        szLang = newLang;
+        session.setAttribute("lang", szLang);
+    } else {
+        szLang = (String) session.getAttribute("lang");
+    }
+
+    if (szLang == null || szLang.length() == 0) {
+        curr = Locale.getDefault();
+        szLang = curr.getLanguage();
+        session.setAttribute("lang", szLang);
+    } else {
+        String a[] = szLang.split("_");
+        switch (a.length) {
+            case 1:
+                curr = new Locale(szLang);
+                break;
+            case 2:
+                curr = new Locale(a[0], a[1]);
+                break;
+            case 3:
+                curr = new Locale(a[0], a[1], a[2]);
+                break;
+            default: // Avoid errors or h4ck1ng5
+                curr = Locale.getDefault();
+                szLang = curr.getLanguage();
         }
+    }
 
-        if (szLang == null || szLang.length() == 0) {
-            curr = Locale.getDefault();
-            szLang = curr.getLanguage();
-            session.setAttribute("lang", szLang);
-        } else {
-            String a[] = szLang.split("_");
-            switch (a.length) {
-                case 1:
-                    curr = new Locale(szLang);
-                    break;
-                case 2:
-                    curr = new Locale(a[0], a[1]);
-                    break;
-                case 3:
-                    curr = new Locale(a[0], a[1], a[2]);
-                    break;
-                default: // Avoid errors or h4ck1ng5
-                    curr = Locale.getDefault();
-                    szLang = curr.getLanguage();
-            }
-        }
+    /** GLOBAL VARIABLES */
+    r = ResourceBundle.getBundle("resources/main", curr);
+    rAbout = ResourceBundle.getBundle("resources/about", curr);
+    rCopy = ResourceBundle.getBundle("resources/copyright", curr);
+    rConf = ResourceBundle.getBundle("resources/config", curr);
 
-        r = ResourceBundle.getBundle("resources/main", curr);
-        rAbout = ResourceBundle.getBundle("resources/about", curr);
-        rCopy = ResourceBundle.getBundle("resources/copyright", curr);
-        rConf = ResourceBundle.getBundle("resources/config", curr);
-
-        /** GLOBAL VARIABLES */
-        boolean userLogged; /** Get if the user is logged */
+    /** User management */
+    boolean userLogged; /** Get if the user is logged */
+    if(User.moduleEnabled()) {
         userLogged = true; //TODO DEBUG (session.getAttribute("user") != null);
-        %>
+    } else { userLogged = false; }
+%>

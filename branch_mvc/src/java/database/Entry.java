@@ -6,27 +6,23 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Hashtable;
-import javax.naming.Context;
-import javax.naming.InitialContext;
 import javax.naming.NamingException;
-import javax.sql.DataSource;
-import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import sun.text.Normalizer;
 
 public class Entry {
 
     private int id;
     private String word;
     private String morfology;
-    private ArrayList<String> definition; // Support of polisemic words (multiple definitions)
-    /** Multilingual attributes  TODO: add ArrayList to support polisemic words */
+    private ArrayList<String> definition; //~ ArrayList to support polisemic words
+    /** Multilingual attributes */
     private ArrayList<String> ar;    // @ar aragones
     private ArrayList<String> ca;   // @ca catalan
     private ArrayList<String> es;  // @es spanish
@@ -43,8 +39,6 @@ public class Entry {
         "indeterminado", "demostrativo", " reflexivo", "plural", "locución", "expresión",
         "negación"};
     private static Hashtable<String, String> longMorf;
-    /** Near word and random auxiliar structures */
-    private static Hashtable<String, ArrayList<Entry>> htWords;
 
     /***********************
      *   CONSTRUCTORS      *
@@ -93,7 +87,7 @@ public class Entry {
         int id;
 
         try {
-            co = initConnection();
+            co = DBManager.initConnection();
 
             stInsert = co.prepareStatement("INSERT INTO word(term, morf) VALUES(?,?)");
             stInsert.setString(1, word);
@@ -134,10 +128,10 @@ public class Entry {
         } catch (SQLException ex) {
             return ("ERROR: There are problems inserting the word<br/>\n" + ex.toString());
         } finally {
-            closeConnection(co, stInsert, null);
+            DBManager.closeConnection(co, stInsert, null);
         }
 
-        initAllWordsStructs(); // Rebuild structures for random search
+        NearWordsController.initAllWordsStructs(); // Rebuild structures for random search
         return "";
     }
     /** Modify a word from the database
@@ -164,7 +158,7 @@ public class Entry {
 
             /*------------ EOF VALIDATION -------------------*/
 
-            co = initConnection();
+            co = DBManager.initConnection();
 
             /* Get the Word Identifier */
             try {
@@ -215,10 +209,10 @@ public class Entry {
         } catch (SQLException ex) {
             return ("ERROR: There are a problem updating the word<br/>\n" + ex.toString());
         } finally {
-            closeConnection(co, stUpdate, rs);
+            DBManager.closeConnection(co, stUpdate, rs);
         }
 
-        initAllWordsStructs(); // Rebuild structures for random search
+        NearWordsController.initAllWordsStructs(); // Rebuild structures for random search
         return res;
     }
 
@@ -229,7 +223,7 @@ public class Entry {
         int idW;
         String res = "";
         try {
-            co = initConnection();
+            co = DBManager.initConnection();
 
             /* Get the Word Identifier */
             try {
@@ -259,10 +253,10 @@ public class Entry {
 
             return ("ERROR: There are a problem deleting the word<br/>\n" + error);
         } finally {
-            closeConnection(co, stDelete, rs);
+            DBManager.closeConnection(co, stDelete, rs);
         }
 
-        initAllWordsStructs(); // Rebuild structures for random search
+        NearWordsController.initAllWordsStructs(); // Rebuild structures for random search
         return res;
     }
 
@@ -286,7 +280,7 @@ public class Entry {
         ResultSet rs = null;
         PreparedStatement st = null;
         try {
-            co = initConnection();
+            co = DBManager.initConnection();
             if (szId == null) //Add word checks
                 szId = "0";
 
@@ -304,7 +298,7 @@ public class Entry {
             else id = 0;
 
         } finally {
-            closeConnection(co, st, rs);
+            DBManager.closeConnection(co, st, rs);
         }
         return id;
     }
@@ -315,7 +309,7 @@ public class Entry {
      * @return
      * @throws java.lang.Exception
      */
-    public static ArrayList<Entry> getDefinition(String szWord, String lang) throws Exception {
+    public static ArrayList<Entry> getDefinition(String szWord, String lang, String accentInsensitive) throws Exception {
         if (szWord.isEmpty())
             return null;
 
@@ -332,14 +326,20 @@ public class Entry {
         Matcher m = p.matcher(lang);
 
         /* Input  for avoid injection with invalid params */
-        if (!m.matches())
+        if (!m.matches()) {
             throw new SQLException("The lang " + lang + " doesn't exist in our database");
+        }
 
         String szSQL; // = "SELECT id FROM word WHERE term = ?";
         szSQL = "SELECT DISTINCT(id) FROM multilang_" + lang + " WHERE term = ?";
 
+        if(accentInsensitive != null && accentInsensitive.equalsIgnoreCase("on")) {
+            szSQL = "SELECT DISTINCT(id) FROM multilang_"+lang+" WHERE term = CONVERT(? USING utf8) COLLATE utf8_unicode_ci";
+        }
+
+
         try {
-            co = initConnection();
+            co = DBManager.initConnection();
             st = co.prepareStatement(szSQL);
             st.setString(1, szWord);
             rs = st.executeQuery();
@@ -349,7 +349,7 @@ public class Entry {
                 res.add(getDefinition(rs.getInt("id")));
 
         } finally {
-            closeConnection(co, st, rs);
+            DBManager.closeConnection(co, st, rs);
         }
 
         return res;
@@ -372,7 +372,7 @@ public class Entry {
         try {
             szSQL = "SELECT term, morf FROM word WHERE id = ?";
 
-            co = initConnection();
+            co = DBManager.initConnection();
             st = co.prepareStatement(szSQL);
             st.setInt(1, id);
 
@@ -402,7 +402,7 @@ public class Entry {
             }
 
         } finally {
-            closeConnection(co, st, rs);
+            DBManager.closeConnection(co, st, rs);
         }
         return result;
     }
@@ -421,7 +421,7 @@ public class Entry {
 
         try {
             szSQL = "SELECT ar, ca, es, fr FROM multilang WHERE id = ? AND n_def = ?";
-            co = initConnection();
+            co = DBManager.initConnection();
             st = co.prepareStatement(szSQL);
             st.setInt(1, e.id);
             st.setInt(2, n);
@@ -435,45 +435,10 @@ public class Entry {
             }
 
         } finally {
-            closeConnection(co, st, rs);
+            DBManager.closeConnection(co, st, rs);
         }
     }
 
-    /**
-     * Get the nearest words lexicographycally
-     * @param szWord Word searched (user input)
-     * @param lang Word language (to search near words)
-     * @return List of Entry near lexicographyally
-     * @throws java.lang.Exception
-     */
-    public static LinkedList<Entry> getNearWords(String szWord, String lang) throws Exception {
-        if (szWord.isEmpty())
-            return null;
-
-        int index, inf, sup;
-        LinkedList<Entry> l = new LinkedList<Entry>();
-
-        if (htWords == null)
-            initAllWordsStructs();
-
-        ArrayList<Entry> aux = htWords.get(lang);
-
-        Entry e = new Entry(-1, szWord);
-        aux.add(e);
-
-        Collections.sort(aux, new EntryComparator());
-
-        index = aux.indexOf(e);
-        aux.remove(index); // Delete the word inserted artificial to make the lookup but it does not exist
-
-        inf = Math.max(0, index - 15);
-        sup = Math.min(index + 15, aux.size());
-
-        for (index = inf; index < sup; index++)
-            l.add(aux.get(index));
-
-        return l;
-    }
 
     /**
      * Search the word by context, in other words, given a word it looks for it
@@ -496,7 +461,7 @@ public class Entry {
         String szSQL = "SELECT id FROM word_definition WHERE LOWER(definition) REGEXP ? LIMIT 0 , 10";
 
         try {
-            co = initConnection();
+            co = DBManager.initConnection();
             st = co.prepareStatement(szSQL);
             st.setString(1, "[[:<:]]"+ szWord.toLowerCase() + "[[:>:]]" );
             rs = st.executeQuery();
@@ -506,7 +471,7 @@ public class Entry {
                 res.add(getDefinition(rs.getInt("id")));
 
         } finally {
-            closeConnection(co, st, rs);
+            DBManager.closeConnection(co, st, rs);
         }
 
         return res;
@@ -515,49 +480,6 @@ public class Entry {
     /***********************
      *      AUXILIAR OP     *
      ***********************/
-    /**
-     * Initialites the structures that allows find lexicographically near words
-     * @param allWords Hashtable that contains all the pair <term, id>
-     * @param orderedWords SortedSet that contains the term's ordered
-     */
-    private static void initAllWordsStructs() throws Exception {
-        Connection co = null;
-        ResultSet rs = null;
-        Statement st = null;
-
-        if (htWords == null)
-            htWords = new Hashtable<String, ArrayList<Entry>>();
-        else
-            htWords.clear();
-
-        String aLang[] = {"ar", "be", "ca", "es", "fr"};
-        for (String lng : aLang) {
-            ArrayList<Entry> aux = new ArrayList<Entry>();
-            String szSQL = "SELECT DISTINCT(id), term FROM multilang_" + lng; //+" ORDER BY upper(term)";
-
-            try {
-                co = initConnection();
-                st = co.createStatement();
-                rs = st.executeQuery(szSQL);
-
-                while (rs.next())
-                    aux.add(new Entry(rs.getInt("id"), rs.getString("term")));
-
-            } finally {
-                closeConnection(co, st, rs);
-            }
-
-            htWords.put(lng, aux);
-        }
-
-
-    //allWords = new Hashtable<String, Integer>();
-    //orderedWords = new ArrayList<String>();
-
-    // SELECT DISTINCT term  FROM `multilang_be`
-    // Get the terms and IDs for each language (creating new structure)¿?
-    //String szSQL = "SELECT term, id FROM word WHERE 1=1 ORDER BY upper(term)";
-    }
 
     /** Generate a random word id (accessing to DB) */
     public static int getRandom() throws SQLException {
@@ -567,7 +489,7 @@ public class Entry {
         Statement st = null;
 
         try {
-            co = initConnection();
+            co = DBManager.initConnection();
             st = co.createStatement();
             rs = st.executeQuery("SELECT id FROM word WHERE 1=1");
 
@@ -581,59 +503,9 @@ public class Entry {
             i = 0;
             Logger.getLogger(Entry.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-            closeConnection(co, st, rs);
+            DBManager.closeConnection(co, st, rs);
         }
         return i;
-    }
-
-    /*************************
-     *  DATABASE OPERATIONS  *
-     ************************/
-    public static int getSizeDB() throws SQLException {
-        int iSize = -1;
-        Connection co = null;
-        ResultSet rs = null;
-        Statement st = null;
-
-        try {
-            co = initConnection();
-            st = co.createStatement();
-            rs = st.executeQuery("SELECT COUNT(id) FROM word");
-            rs.first();
-            iSize = rs.getInt("COUNT(id)");
-
-        } catch (Exception ex) {
-            Logger.getLogger(Entry.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            closeConnection(co, st, rs);
-        }
-        return iSize;
-    }
-
-    /** Establish a connection with Database throw JDBC*/
-    public static Connection initConnection() throws NamingException, SQLException {
-        Context initCtx = new InitialContext();
-        Context envCtx = (Context) initCtx.lookup("java:comp/env");
-        DataSource ds = (DataSource) envCtx.lookup("jdbc/jspWebDict");
-
-        return ds.getConnection();
-    }
-
-    /** Try to close cleanly a DB connection releasing Statement and 
-     * ResulSet resources.      */
-    public static void closeConnection(Connection co, Statement st, ResultSet rs) throws SQLException {
-        try {
-            if (rs != null)
-                rs.close();
-        } finally {
-            try {
-                if (st != null)
-                    st.close();
-            } finally {
-                if (co != null)
-                    co.close();
-            }
-        }
     }
 
     /********************

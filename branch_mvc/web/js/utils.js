@@ -199,7 +199,7 @@ function jqueryInit() {
                
                $.get('ajax_handler.jsp?id='+w_id+'&word='+w_word+'&morfology='+w_morf,null,
                     function(response){
-                        var res_id = response.trim();
+                        var res_id = jQuery.trim(response);
                         if(res_id == 0) { form.submit() }
                         else {
                             $('#word').attr("class", "error");
@@ -295,6 +295,13 @@ function replaceHTML(str)
     str = str.replace(/&Uuml;/g,'ü');
     str = str.replace(/&Ccedil;/g,'ç');
     return str;
+}
+
+/** Set the checkbox 'id' to the complementary checked state
+ *  @param id = the id of the checkbox */
+function setChecked(id) {
+    var chkBox = document.getElementById(id);
+    chkBox.checked = !chkBox.checked;
 }
 
 /** DEPRECATED: Use JQuery instead

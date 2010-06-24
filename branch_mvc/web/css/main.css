@@ -32,6 +32,14 @@ p.error, label.error {
     padding:0.3em;
 }
 
+.info { /** TODO: choose good colors */
+    border:1px dashed #e70;
+    background-color:#ff8;
+    color:#007;
+    padding:0.3em;
+    font-size:smaller;
+}
+
 a img {
     border: 0;
 }
@@ -75,8 +83,8 @@ div#bar {
 	float: right;
 	font-size: smaller;
 	position: absolute;
-	bottom: 5px;right:5px;
-    /*margin-right: 5px;*/
+	top: 105px; /* min=100px=header.height()*/
+    right:0px;
 }
 
 div#bar a{
@@ -93,34 +101,16 @@ div#bar ul { display:inline;}
 
 div#bar ul li{
 	color: white;
-	/*background-color: green;*/
     background-color: #074c87;
     border-right: 2px solid black;
     border-bottom: 2px solid black;
 	display: inline;
-/*	margin-left: 1px; */
-	padding-left: 4px;
-	padding-right: 4px;
-    padding-top: 4px;
+    padding:4px 4px 0;
 }
-div#bar ul li{
-
-}
-div#bar ul li:hover {
-    /*background-color: orange;*/
-/*    border-right: 1px solid white;
-    border-bottom: 1px solid white; */
-}
-/*div:hover {
-border: 1px solid black;
-}*/
 
 div#bounding_box {
-    /*border-left:1px solid blue; */
 	margin:0px auto;
     min-height: 100%;
-    /*padding:5px;*/
-    /*padding-bottom: 30px;*/
     width: 900px;
 }
 
@@ -136,7 +126,7 @@ div#bounding_box {
 
 div#content {
     clear: both;
-    margin:auto 20px 50px;
+    margin:25px 20px 50px; /*top left-right bottom */
     text-align:left;
 }
 
@@ -166,35 +156,37 @@ div#logos img {
 }
 
 div#header {
+    margin-top:30px; /** space to login form */
+    position:relative;
+}
+
+div#title {
 /*	background-attachment:fixed;*/
     background-image: url('../img/bg.png');
 	background-repeat: no-repeat;
     background-position: right top;
-    color: black;
-    margin-top:30px; /** space to login form */
+    /*color: black;*/
     text-align: center;
-    height:135px; /** height < bg-image.height (150px) */
+    height:100px; /** height < bg-image.height (150px) */
     position:relative;
 }
 
-div#header h1 {
+div#title h1 {
 	color: #bbb;
-	display: inline;
     margin:0;
 }
 
-div#header h4 {
+div#title h4 {
 	color: yellow;
     margin:0 auto 15px;
-    position:relative;
-    left: 90px; /** header.h1.image.width()/2 */
 }
 
 div#lang {
-    float: right;
+    /*float: right;*/
     position: absolute;
     top: 5px;
     right: 7px;
+    z-index:5;
 }
 
 div#license {
@@ -290,9 +282,6 @@ div#search {
 	margin-bottom: 15px; /** Space for the conextual help */
 }
 
-div#title {/*height:150px;*/}
-/*div {border: 1px dotted white;}
-div:hover {border: 2px solid white;} */
 
 dt{
     width:2em;
@@ -314,7 +303,6 @@ img.arroba {
 
 img#home {
     background-color: white;
-    
 }
 
 a:hover img#home {
@@ -328,11 +316,7 @@ img#gpl_logo {
 
 img#logo {
 	border: 0;
-    position: relative;
-    top: 20px;
-    right: 15px;
 	opacity:0.8;
 	width: 175px;
 	height: 80px;
-    vertical-align: sub;
 }

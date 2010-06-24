@@ -70,7 +70,7 @@
 </form>
 <p>* Indica campo obligatorio.</p>
 <div id="validate" ondblclick="$('#validate').load('ajax_handler.jsp?id='+$('#id').val()+'&amp;word='+$('#word').val()+'&amp;morfology='+$('#morfology').val())"
- style="border:1px dashed black; height:1em;"></div>
+ style="border:1px dashed black; min-height:1em;"></div>
 <%
     } else {
         /***************************************************

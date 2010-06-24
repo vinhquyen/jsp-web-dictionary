@@ -9,6 +9,14 @@
 
 <%@ include file="lang.jspf" %>
 
+<%
+    String caseInsensitive = request.getParameter("insensitive");
+    String szChk = "";
+
+    if(caseInsensitive != null && caseInsensitive.equalsIgnoreCase("on")) {
+        szChk = "checked='on'";
+    }
+%>
 <div id="search">
     <form  id="s_word" action="index.jsp" accept-charset="utf-8">
         <p>
@@ -22,6 +30,8 @@
             <input type="submit" name="lng" value="es" onmouseover="setVisibility(this.value);" onmouseout="setVisibility(this.value);"/>
             <input type="submit" name="lng" value="fr" onmouseover="setVisibility(this.value);" onmouseout="setVisibility(this.value);"/>
             <input type="submit" name="cnt" value="<%=r.getString("context") %>" onmouseover="setVisibility('cnt');" onmouseout="setVisibility('cnt');"/>
+            <input type="checkbox" id="ci" name="insensitive" <%=szChk%> />
+            <label style="font-size:0.8em;" onclick="setChecked('ci')"><%=r.getString("accentInsensitive") %></label>
         </p>
         <p style="height:10px;position:relative;top:-12px;z-index:5;">
             <% String szCtx = r.getString("help_lng");%>
@@ -70,7 +80,7 @@
                     aDef = Entry.getWordInContext(szWord);
                     szHighLight = szWord;
                 } else {
-                    aDef = Entry.getDefinition(szWord, lng);
+                    aDef = Entry.getDefinition(szWord, lng, caseInsensitive);
                 }
             } catch (Exception e) {
                 InOut.printError(e, out);
@@ -96,7 +106,7 @@
                     <% } %>
                 </p> <%
               }
-              LinkedList<Entry> laux = Entry.getNearWords(szWord, lng);
+              LinkedList<Entry> laux = NearWordsController.getNearWords(szWord, lng);
               if (laux != null && !laux.isEmpty()) { %>
                 <div id='nearW'>
                     <h4><%=r.getString("nearWord")%></h4>

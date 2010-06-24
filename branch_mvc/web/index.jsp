@@ -61,9 +61,10 @@
     </head>
     <body onload="init();">
         <div id="bounding_box">
+            <% if(User.moduleEnabled()) { %>
             <div id="login"><%@ include file="WEB-INF/jspf/login.jspf" %></div>
+            <% } %>
             <div id="header">
-                <!--       <img id="backgr" src="img/bg.png" alt    ="Header background" /> -->
                 <div id="lang">
                     <select name="lang" onchange="changeLang(this.value)">
                         <option value="">[<%=r.getString("lng")%>]</option>
@@ -75,11 +76,13 @@
                     </select>
                 </div>
                 <div id="title">
-                    <h1><a href="index.jsp"><img
-                            id="logo" src="img/dict.jpg" alt="home" /></a>
-                        <%= r.getString("title")%>
-                    </h1>
-                    <h4>JSP-Tech Web Dictionary <%= rConf.getString("version")%></h4>
+                    <div style="float:left; margin:10px 10px;">
+                        <a href="index.jsp"><img style="margin-right:30px;"
+                            id="logo" src="img/dict.jpg" alt="home" /></a></div>
+                    <div style="float:left;margin-top:15px;">
+                        <h1><%= r.getString("title")%></h1>
+                        <h4>JSP-Tech Web Dictionary <%= rConf.getString("version")%></h4>
+                    </div>
                 </div>
                 <div id="bar">
                     <ul id="navigator">
@@ -139,10 +142,11 @@
                 <jsp:include page="<%=szAction %>" />
             </div><!-- End of CONTENT -->
             <div id="footer">
-                <!-- texty: allows modifications withouth a new publication (In example: small news, etc) -->
-     <% /** TODO remove false from if below */
-        if (false && request.getParameter("action") == null && request.getParameter("id") == null &&
+     <% /** TODO: ENABLE texty */
+        if (rConf.getString("textyModule").equalsIgnoreCase("enabled") &&
+                request.getParameter("action") == null && request.getParameter("id") == null &&
                 (request.getParameter("word") == null || request.getParameter("word").isEmpty())) {%>
+                <!-- texty: allows modifications withouth a new publication (In example: small news, etc) -->
                 <script type="text/javascript"
                         src="http://texty.com/cms/syndicate/25bb24b5-4279-4334-839f-59c04b376eab.js"></script>
 
@@ -154,7 +158,7 @@
                 </div>
                 <div id="counter">
                     <%
-        int iCount = Entry.getSizeDB();
+        int iCount = DBManager.getSizeDB();
         String szC = MessageFormat.format(r.getString("counter"), iCount);
         out.print(szC);
                     %>
@@ -176,7 +180,9 @@
         out.print(MessageFormat.format(rCopy.getString("copydict"), szLib, szAutor, szCopy));
                     %>
                 </p>
-                <!--%@include file="WEB-INF/jspf/stats.jspf"  %> TODO: remove for stats -->
+                <% if(rConf.getString("statsModule").equalsIgnoreCase("enabled")/*User.moduleEnabled()*/) { %>
+                <%@include file="WEB-INF/jspf/stats.jspf"  %> <!--TODO: ENABLE stats -->
+                <% } %>
             </div><!-- End of Footer -->
         </div><!-- End of Bounding Box -->
     </body>

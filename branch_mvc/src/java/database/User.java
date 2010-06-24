@@ -10,6 +10,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -48,7 +49,7 @@ public class User {
         ResultSet rs = null;
 
         try {
-            co = Entry.initConnection();
+            co = DBManager.initConnection();
 
             stQuery = co.prepareStatement("SELECT hash FROM user WHERE username = ?");
             stQuery.setString(1, this.name);
@@ -64,11 +65,21 @@ public class User {
             //Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             try {
-                Entry.closeConnection(co, stQuery, null);
+                DBManager.closeConnection(co, stQuery, null);
             } catch (SQLException ex) {
                 Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         return new byte[0];
+    }
+    /**
+     * Checks if the User module is enabled (all the modify options are included)
+     * @return  true    ,if the User module is enabled
+     *          false   , otherwise
+     */
+    public static boolean moduleEnabled() {
+        ResourceBundle rConf = ResourceBundle.getBundle("resources/config");
+        String enabled = rConf.getString("userModule");
+        return enabled.equalsIgnoreCase("enabled");
     }
 }
