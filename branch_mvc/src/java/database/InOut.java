@@ -13,7 +13,7 @@ import javax.servlet.jsp.JspWriter;
  * Implements all the InOut operations included in JspWriter and Visitor Stats
  */
 public class InOut {
-
+//TODO: create a list of aplication errors (with code and user-friendly message)
     public static void printError(Exception e, JspWriter out) {
         try {
             out.print("<p class='error'>");
@@ -29,7 +29,7 @@ public class InOut {
             ArrayList<String> aDef = e.getDefinition();
             String szMorf = e.getMorfology();
 
-            szMorf = "<abbr class='morf' title='" + Entry.longMorf(szMorf) + "'>" + szMorf + "</abbr> ";
+            szMorf = "<abbr class='morf' title='" + e.longMorf(r.getLocale()) + "'>" + szMorf + "</abbr> ";
 
             /* Hightlight the results when the words have been found by context search */
             if (szHighLight != null) {
@@ -73,8 +73,9 @@ public class InOut {
                 out.print("<p>" + szMorf + aDef.get(0) + "</p>");
                 InOut.printWordMultiLang(e, 0, out, r);
             }
-            else
+            else {
                 printError(new Exception("Check the DB consistency of word " + e.getId()), out);
+            }
 
         } catch (IOException ex) {
             Logger.getLogger(InOut.class.getName()).log(Level.WARNING, null, ex);
@@ -120,5 +121,43 @@ public class InOut {
         output = input.replaceAll("<", "&lt;").replaceAll(">", "&gt;");
 
         return output;
+    }
+    /**
+     * Replace non ASCII chars with the HTML entity
+     * @param str
+     * @return  String with non ASCII chars html-encoded
+     */
+    static String replaceHTML(String str)
+    {
+        str = str.replace("à" ,"&agrave;");
+        str = str.replace("á" ,"&aacute;");
+        str = str.replace("è" ,"&egrave;");
+        str = str.replace("é" ,"&eacute;");
+        str = str.replace("ì" ,"&igrave;");
+        str = str.replace("í" ,"&iacute;");
+        str = str.replace("ï" ,"&iuml;");
+        str = str.replace("ò" ,"&ograve;");
+        str = str.replace("ó" ,"&oacute;");
+        str = str.replace("ù" ,"&ugrave;");
+        str = str.replace("ú" ,"&uacute;");
+        str = str.replace("ü" ,"&uuml;");
+        str = str.replace("ç" ,"&ccedil;");
+        str = str.replace("·" ,"&middot;");
+
+        str = str.replace("À" ,"&Agrave;");
+        str = str.replace("Á" ,"&Aacute;");
+        str = str.replace("È" ,"&Egrave;");
+        str = str.replace("É" ,"&Eacute;");
+        str = str.replace("Ì" ,"&Igrave;");
+        str = str.replace("Í" ,"&Iacute;");
+        str = str.replace("Ï" ,"&Iuml;");
+        str = str.replace("Ò" ,"&Ograve;");
+        str = str.replace("Ó" ,"&Oacute;");
+        str = str.replace("Ù" ,"&Ugrave;");
+        str = str.replace("Ú" ,"&Uacute;");
+        str = str.replace("Ü" ,"&Uuml;");
+        str = str.replace("Ç" ,"&Ccedil;");
+
+        return str;
     }
 }

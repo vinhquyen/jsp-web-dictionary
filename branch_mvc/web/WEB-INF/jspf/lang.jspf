@@ -49,6 +49,6 @@
     /** User management */
     boolean userLogged; /** Get if the user is logged */
     if(User.moduleEnabled()) {
-        userLogged = true; //TODO DEBUG (session.getAttribute("user") != null);
+        userLogged = (session.getAttribute("user") != null);
     } else { userLogged = false; }
 %>

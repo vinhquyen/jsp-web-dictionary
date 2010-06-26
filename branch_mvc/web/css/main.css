@@ -222,12 +222,13 @@ div#manifest, div#help {
     text-align: justify;
     position: fixed;
     top: 0;
-    left: 0;
+    left:0;
     margin-left: 10%;
     margin-top: 15%;
     opacity:0.9;
 /*    height: 70%; */
     width: 75%;
+    z-index:10;
 }
 
 div#manifest h3 {
@@ -250,9 +251,17 @@ div.definition { /** new look */
     padding-bottom: 1px; */
 }
 
-#addForm label { width: 8em; float: left; margin-left: .5em; }
-#addForm label.error { color: red; vertical-align: top; float:right; width:auto; position:relative;right:8em;}
+#addForm label.name { width: 8em; float: left; margin-left: .5em; }
+#addForm label.error { color: red; vertical-align:top; float:right; margin-right:8em;}
 #addForm a {color:blue;font-family:monospace; vertical-align:top; text-decoration:none; }
+
+#info_morf, #info_word {
+    float:right;
+    font-size:0.7em;
+    max-height:2.5em;
+    max-width:450px;
+    overflow:hidden;
+}
 
 .left { /** new look */
        float:left;

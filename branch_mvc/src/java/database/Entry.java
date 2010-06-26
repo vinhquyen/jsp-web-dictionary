@@ -8,13 +8,13 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Hashtable;
+import java.util.Locale;
 import javax.naming.NamingException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import sun.text.Normalizer;
 
 public class Entry {
 
@@ -32,13 +32,26 @@ public class Entry {
         "loc. adv.", "m.", "prep.", "pref.", "pron.", "suf.", "v.", "tr.", "int.",
         "aux.", "imp.", "unip.", "rec.", "ref.", "indet.", "dem.", " r.", "pl.", 
         "loc.", "expr.", "neg."};
-    private static String aLongMorf[] = {"adjetivo", "adverbio", "artículo", "conjunción",
+    private static String esLongMorf[] = {"adjetivo", "adverbio", "artículo", "conjunción",
         "interjección", "femenino", "locución adverbial", "masculino", "preposición", 
         "prefijo", "pronombre", "sufijo", "verbo", "transitivo", "intransitivo",
         "auxiliar", "impersonal", "unipersonal", "recíproco", "reflexivo",
         "indeterminado", "demostrativo", " reflexivo", "plural", "locución", "expresión",
         "negación"};
-    private static Hashtable<String, String> longMorf;
+    private static String enLongMorf[] = {"adjective", "adverb", "article", "conjunction",
+        "interjection", "female", "adverb", "masculine", "preposition",
+        "prefix", "pronoun", "suffix", "verb", "transitive", "intransitive",
+        "auxiliary", "impersonal", "unipersonal", "reciprocal", "reflective",
+        "indefinite", "demonstration", "reflective", "plural", "phrase", "expression",
+        "negative"};
+    private static String caLongMorf[] = {"adjectiu", "adverbi", "article", "conjunció",
+        "interjecció", "femení", "locució adverbial", "masculí", "preposició",
+        "prefix", "pronom", "sufix", "verb", "transitiu", "intransitiu",
+        "auxiliar", "impersonal", "unipersonal", "recíproc", "reflexiu",
+        "indeterminat", "demostratiu", "reflexiu", "plural", "locució", "expressió",
+        "negació"};
+
+    private static Hashtable<String, Hashtable<String, String>> intTan;
 
     /***********************
      *   CONSTRUCTORS      *
@@ -452,10 +465,16 @@ public class Entry {
         if (szWord.isEmpty())
             return null;
 
+        String szRegExpr = "";
         ArrayList<Entry> res = new ArrayList<Entry>();
         Connection co = null;
         ResultSet rs = null;
         PreparedStatement st = null;
+
+        for(String word : szWord.split(" ")) {
+            szRegExpr += "[[:<:]]"+ word.toLowerCase() + "[[:>:]] ";
+        }
+        szRegExpr = szRegExpr.trim(); // Delete last blank_space = " "
 
         /** TODO: search only in the examples: LIKE «?» **/
         String szSQL = "SELECT id FROM word_definition WHERE LOWER(definition) REGEXP ? LIMIT 0 , 10";
@@ -463,7 +482,7 @@ public class Entry {
         try {
             co = DBManager.initConnection();
             st = co.prepareStatement(szSQL);
-            st.setString(1, "[[:<:]]"+ szWord.toLowerCase() + "[[:>:]]" );
+            st.setString(1, szRegExpr);
             rs = st.executeQuery();
 
             // Get the ID of the searched WORD
@@ -512,56 +531,52 @@ public class Entry {
      *   MORPHOLOGY     *
      ********************/
     private static void initMorphology() {
+        Hashtable<String, String> longMorf;
+        intTan = new Hashtable<String, Hashtable<String, String>>();
+
         longMorf = new Hashtable<String, String>();
-        for (int i = 0; i < aMorf.length; i++)
-            longMorf.put(aMorf[i], aLongMorf[i]);
+        intTan.put("ca", longMorf);
+        for (int i = 0; i < aMorf.length; i++) {
+            longMorf.put(aMorf[i], caLongMorf[i]);
+        }
+
+        longMorf = new Hashtable<String, String>();
+        intTan.put("es", longMorf);
+        for (int i = 0; i < aMorf.length; i++) {
+            longMorf.put(aMorf[i], esLongMorf[i]);
+        }
+        
+        longMorf = new Hashtable<String, String>();
+        intTan.put("en", longMorf);
+        for (int i = 0; i < aMorf.length; i++) {
+            longMorf.put(aMorf[i], enLongMorf[i]);
+        }
     }
 
-    static String longMorf(String morf) {
-        if (longMorf == null)
+    String longMorf(Locale loc) {
+        Hashtable<String, String> longMorf;
+        String lang, morf;
+
+        if (intTan == null)
             initMorphology();
 
+        lang = loc.getLanguage();
+
+        Matcher m = Pattern.compile("ca|es|en").matcher(lang); // {an}
+        // TODO loc.getCountry == "BE" (benasques)
+        // TODO implementar con Resources en vez de arrays de cada lengua
+        // mantener el array the "keys" == shortMorf
+        if (!m.matches()) { lang = "es"; }  //Default language = spanish
+
+        morf = this.getMorfology();
+        longMorf = intTan.get(lang);
         Enumeration<String> eKeys = longMorf.keys();
-        while(eKeys.hasMoreElements()) {
+        while(eKeys.hasMoreElements()) { //TODO: improve efficiency
             String shortM = eKeys.nextElement();
             morf = morf.replace(shortM, longMorf.get(shortM));
         }
 		
-        return replaceHTML(morf);
-    }
-
-    static String replaceHTML(String str)
-    {
-        str = str.replace("à" ,"&agrave;");
-        str = str.replace("á" ,"&aacute;");
-        str = str.replace("è" ,"&egrave;");
-        str = str.replace("é" ,"&eacute;");
-        str = str.replace("ì" ,"&igrave;");
-        str = str.replace("í" ,"&iacute;");
-        str = str.replace("ï" ,"&iuml;");
-        str = str.replace("ò" ,"&ograve;");
-        str = str.replace("ó" ,"&oacute;");
-        str = str.replace("ù" ,"&ugrave;");
-        str = str.replace("ú" ,"&uacute;");
-        str = str.replace("ü" ,"&uuml;");
-        str = str.replace("ç" ,"&ccedil;");
-        str = str.replace("·" ,"&middot;");
-        
-        str = str.replace("À" ,"&Agrave;");
-        str = str.replace("Á" ,"&Aacute;");
-        str = str.replace("È" ,"&Egrave;");
-        str = str.replace("É" ,"&Eacute;");
-        str = str.replace("Ì" ,"&Igrave;");
-        str = str.replace("Í" ,"&Iacute;");
-        str = str.replace("Ï" ,"&Iuml;");
-        str = str.replace("Ò" ,"&Ograve;");
-        str = str.replace("Ó" ,"&Oacute;");
-        str = str.replace("Ù" ,"&Ugrave;");
-        str = str.replace("Ú" ,"&Uacute;");
-        str = str.replace("Ü" ,"&Uuml;");
-        str = str.replace("Ç" ,"&Ccedil;");
-
-        return str;
+        return InOut.replaceHTML(morf);
     }
 
     /***********************
@@ -575,15 +590,8 @@ public class Entry {
         return definition;
     }
 
-    /*    public void setDefinition(String aDef) {
-    this.definition = aDef;
-    } */
     public int getId() {
         return id;
-    }
-
-    public static String[] getMorfologies() {
-        return aMorf;
     }
 
     public String getWord() {

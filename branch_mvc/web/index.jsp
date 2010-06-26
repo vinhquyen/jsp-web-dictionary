@@ -26,7 +26,6 @@
         } else {
             szTitle += " -";
         }
-
 %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
@@ -37,7 +36,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <jsp:include page="WEB-INF/jspf/meta_tags.jspf" />
 
-        <title><%=szTitle%> <%= r.getString("title")%> / JSP Web Dictionary
+        <title><%=szTitle %> <%=r.getString("title") %> / JSP Web Dictionary
         <%=rConf.getString("version")%></title>
 
     <% /* links language alternate */

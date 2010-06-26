@@ -151,8 +151,6 @@ function init() {
  */
 function jqueryInit() {
     $(document).ready(function() {
-        //$('.hidden').hide();
-
         $('a#tog-contact').click(function() {
             $('#contact').toggle(400);
             return false;
@@ -165,6 +163,33 @@ function jqueryInit() {
             $('#help').toggle(400);
             return false;
         });
+
+        /** ModifyWord Contextual Help Labels */
+        $('#morfology').blur(function() {
+            $('#info_morf').hide();
+            return false;
+        });
+        $('#morfology').focus(function() {
+            $('#info_morf').show();
+            return false;
+        });
+        $('#info_morf').mouseover(function() {
+           this.style.maxHeight = "10em";
+           this.style.overflow = "visible";
+        });
+        $('#info_morf').mouseout(function() {
+           this.style.maxHeight = "2.5em";
+           this.style.overflow = "hidden";
+        });
+        $('#word').blur(function() {
+            $('#info_word').hide();
+            return false;
+        });
+        $('#word').focus(function() {
+            $('#info_word').show();
+            return false;
+        });
+        /*** end contextual help ***/
 
         /** Message fadding out */
         setTimeout("$('p.error').fadeOut(800)",5000);
@@ -193,9 +218,9 @@ function jqueryInit() {
                     emptyText(this);
                });
                // Check UNIQUE(word+term) restriction
-               var w_id = $("#id").val();
-               var w_morf = $('#morfology').val();
-               var w_word = $('#word').val();
+               var w_id = jQuery.trim($("#id").val());
+               var w_morf = jQuery.trim($('#morfology').val());
+               var w_word = jQuery.trim($('#word').val());
                
                $.get('ajax_handler.jsp?id='+w_id+'&word='+w_word+'&morfology='+w_morf,null,
                     function(response){
@@ -217,7 +242,7 @@ function jqueryInit() {
 var iDef = 1;
 var definitionBoxDefault = "Otra definición";
 function addDefinition() {
-    $('#definitions').append('<div style="margin-top:5px;" id="'+iDef+'"><label>&nbsp;</label>'+
+    $('#definitions').append('<div style="margin-top:5px;" id="'+iDef+'"><label class="name">&nbsp;</label>'+
     '<textarea class="ta_def" style="color:grey" onfocus="emptyText(this)" onblur="setDefaultText(this)"'+
     ' cols="24" rows="6" name="def">'+definitionBoxDefault+'</textarea>'+
     '<a style="color:red; margin-left:2px;" href="#" onclick="delDefinition('+iDef+')">[x]</a>'+
