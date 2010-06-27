@@ -81,7 +81,7 @@
 <%
     } else {
         /***************************************************
-         *   Try to apply the modifications to thw word    *
+         *   Try to apply the modifications to the word    *
          **************************************************/
         String id  = request.getParameter("id");
         String wrd = request.getParameter("word").trim();

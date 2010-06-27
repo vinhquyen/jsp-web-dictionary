@@ -9,23 +9,9 @@
 
 <%@ include file="WEB-INF/jspf/lang.jspf" %>
 
-<%  /** Show the word searched at the browser title bar **/
-        String szTitle = request.getParameter("word");
-        String idWord = request.getParameter("id");
-        if (szTitle == null) {
-            if (idWord != null) {
-                try {
-                    int id = Integer.parseInt(idWord);
-                    szTitle = Entry.getDefinition(id).getWord() + " -";
-                } catch (Exception e) {
-                    szTitle = "";
-                }
-            } else {
-                szTitle = "";
-            }
-        } else {
-            szTitle += " -";
-        }
+<%  
+    String paramEncoding = application.getInitParameter("parameter-encoding");
+    request.setCharacterEncoding(paramEncoding); //"UTF-8" --> Defined in web.xml
 %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
@@ -36,7 +22,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <jsp:include page="WEB-INF/jspf/meta_tags.jspf" />
 
-        <title><%=szTitle %> <%=r.getString("title") %> / JSP Web Dictionary
+        <title><%=InOut.generateTitle(request) %> <%=r.getString("title") %> / JSP Web Dictionary
         <%=rConf.getString("version")%></title>
 
     <% /* links language alternate */
@@ -60,53 +46,11 @@
     </head>
     <body onload="init();">
         <div id="bounding_box">
-            <% if(User.moduleEnabled()) { %>
-            <div id="login"><%@ include file="WEB-INF/jspf/login.jspf" %></div>
-            <% } %>
-            <div id="header">
-                <div id="lang">
-                    <select name="lang" onchange="changeLang(this.value)">
-                        <option value="">[<%=r.getString("lng")%>]</option>
-                        <option value="an">aragon&eacute;s</option>
-                        <option value="an_BE">benasqu&eacute;s</option>
-                        <option value="ca">catal&agrave;</option>
-                        <option value="en">english</option>
-                        <option value="es">espa&ntilde;ol</option>
-                    </select>
-                </div>
-                <div id="title">
-                    <div style="float:left; margin:10px 10px;">
-                        <a href="index.jsp"><img style="margin-right:30px;"
-                            id="logo" src="img/dict.jpg" alt="home" /></a></div>
-                    <div style="float:left;margin-top:15px;">
-                        <h1><%= r.getString("title")%></h1>
-                        <h4>JSP-Tech Web Dictionary <%= rConf.getString("version")%></h4>
-                    </div>
-                </div>
-                <div id="bar">
-                    <ul id="navigator">
-                        <li><a href="index.jsp"><img id="home" alt="<%= r.getString("home")%>" src="img/home.png"/> <%= r.getString("home")%></a></li>
-                        <% if (userLogged) {%>
-                        <li><a href="index.jsp?action=4&amp;mod=add"><%= r.getString("addword")%></a></li>
-                        <% }%>
-                        <li><a href="index.jsp?action=2"><%=r.getString("rnd")%></a></li>
-                        <li><a id="tog-license" href="#"><%=r.getString("license")%></a></li>
-                        <li><a id="tog-contact" href="#"><%=r.getString("contact")%></a></li>
-                        <li><a href="index.jsp?action=3"><%=r.getString("about")%></a></li>
-                        <li><strong><a id="tog-help" href="#"><%=r.getString("help")%></a></strong></li>
-                    </ul><br/>
-                    <label id="contact" class="hidden">
-                        <em>admin947<img src="img/arroba.gif" alt="@" class="arroba" />gmail.com</em>
-                    </label>
-                </div>
-            </div> <!-- End of HEADER -->
-            <div style="clear:both;"></div><!-- Avoid problem with previous float stlyes in header -->
+            <%@ include file="WEB-INF/jspf/login.jspf" %>
+            <%@ include file="WEB-INF/jspf/header.jspf" %>
             <div id="content" style="position:relative">
                 <div id="errores" class="error" style="position:absolute;top:0;right:0"></div>
                 <%
-        String paramEncoding = application.getInitParameter("parameter-encoding");
-        request.setCharacterEncoding(paramEncoding); //"UTF-8" --> Defined in web.xml
-
         String szAction = request.getParameter("action");
         int iAction = 0;
         if (szAction != null) {
@@ -128,9 +72,14 @@
                     break;
                 case 4:
                     if (userLogged) {
-                        szAction = "WEB-INF/jspf/modifyword.jsp?id=" + request.getParameter("id");
+                        szAction = "WEB-INF/jspf/modifyword.jsp";
                         break;
-                    }
+                    } else { szAction="error_handler.jsp?code=401"; break;}
+                /*case 5:
+                    if (userLogged) {
+                        szAction = "WEB-INF/jspf/delete_word.jsp";
+                        break;
+                    } else { szAction="error_handler.jsp?code=401"; break;}*/
                 default:
                     szAction = "WEB-INF/jspf/search.jsp";
             }
@@ -140,49 +89,7 @@
                 %>
                 <jsp:include page="<%=szAction %>" />
             </div><!-- End of CONTENT -->
-            <div id="footer">
-     <% /** TODO: ENABLE texty */
-        if (rConf.getString("textyModule").equalsIgnoreCase("enabled") &&
-                request.getParameter("action") == null && request.getParameter("id") == null &&
-                (request.getParameter("word") == null || request.getParameter("word").isEmpty())) {%>
-                <!-- texty: allows modifications withouth a new publication (In example: small news, etc) -->
-                <script type="text/javascript"
-                        src="http://texty.com/cms/syndicate/25bb24b5-4279-4334-839f-59c04b376eab.js"></script>
-
-                <% }%>
-                <!-- end texty -->
-                <div id="help" class="hidden" onclick="$('#help').hide(400)">
-                    <% String szHelpDiv = "WEB-INF/jspf/" + r.getString("help_div");%>
-                    <jsp:include page="<%=szHelpDiv%>" />
-                </div>
-                <div id="counter">
-                    <%
-        int iCount = DBManager.getSizeDB();
-        String szC = MessageFormat.format(r.getString("counter"), iCount);
-        out.print(szC);
-                    %>
-                </div>
-                <div id="license" class="hidden" onclick="$('#license').hide(400);">
-                    <p><img id="gpl_logo" src="img/gplv3.png" alt="GPL v3 logo"/>
-                        Copyright&copy; Santiago Lamora Subir&aacute; <%=Calendar.getInstance().get(Calendar.YEAR)%>
-                    </p>
-
-                    <jsp:include page='<%=r.getString("licTxt") %>' />
-                </div>
-                
-
-                <p><%
-        String szAutor, szCopy, szLib;
-        szLib = "<span style='text-decoration:underline;'>Diccionario del Benasqu&eacute;s</span>";
-        szAutor = "&Aacute;ngel Ballar&iacute;n Cornel";
-        szCopy = "Copyright&copy; " + szAutor + ", Zaragoza, 1978";
-        out.print(MessageFormat.format(rCopy.getString("copydict"), szLib, szAutor, szCopy));
-                    %>
-                </p>
-                <% if(rConf.getString("statsModule").equalsIgnoreCase("enabled")/*User.moduleEnabled()*/) { %>
-                <%@include file="WEB-INF/jspf/stats.jspf"  %> <!--TODO: ENABLE stats -->
-                <% } %>
-            </div><!-- End of Footer -->
+            <%@ include file="WEB-INF/jspf/footer.jspf" %>
         </div><!-- End of Bounding Box -->
     </body>
 </html>

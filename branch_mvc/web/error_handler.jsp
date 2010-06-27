@@ -12,21 +12,32 @@
 
 <%@ include file="WEB-INF/jspf/lang.jspf" %>
 
+<%
+    String errorCode = request.getParameter("code");
+    String errorMsg  = rError.getString(errorCode);
+%>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Web Dictionary <%=rConf.getString("version")%> - ERROR</title>
+        <title>JSP Web Dictionary <%=rConf.getString("version")%> - ERROR <%=errorCode %></title>
+        <!--TODO <link rel="stylesheet" href="css/error.css" type="text/css" />-->
     </head>
     <body>
-        <h1>Sorry</h1>
+        <h1>Error <%=errorCode %></h1>
         <p>We have some problems to handle your request,
             please try again later</p>
+        <p class="error"><%=errorMsg %></p>
+            <!-- TODO implementar ERROR_CODE y mostra mensaje user-friendly 
+            401 = Unauthorized | You not have rights to perform this action! Please, log in.
+            -->
 
-
-        <% if (exception != null) { %>
+        <% 
+        boolean DEBUG = rConf.getString("debug").equalsIgnoreCase("true");
+        if (DEBUG) {
+            if (exception != null) { %>
         La excepci&oacute;n causante del error ha sido:
         <%
             StringWriter sw = new StringWriter();
@@ -59,5 +70,8 @@
           } // del while
         %>
         </ul>
+        <%
+        } // end_if_DEBUG
+        %>
     </body>
 </html>

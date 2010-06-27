@@ -7,13 +7,36 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspWriter;
 
 /** 
  * Implements all the InOut operations included in JspWriter and Visitor Stats
  */
 public class InOut {
-//TODO: create a list of aplication errors (with code and user-friendly message)
+    /**
+     * Show the word searched at the browser title bar
+     * @param request
+     * @return
+     */
+    public static String generateTitle(HttpServletRequest request) {
+        String szTitle = request.getParameter("word");
+        String idWord = request.getParameter("id");
+        if (szTitle == null)
+            if (idWord != null)
+                try {
+                    int id = Integer.parseInt(idWord);
+                    szTitle = Entry.getDefinition(id).getWord() + " -";
+                } catch (Exception e) {
+                    szTitle = "";
+                }
+            else
+                szTitle = "";
+        else
+            szTitle += " -";
+        return szTitle;
+    }
+    //TODO: create a list of aplication errors (with code and user-friendly message)
     public static void printError(Exception e, JspWriter out) {
         try {
             out.print("<p class='error'>");

@@ -7,7 +7,7 @@
 
 <%
     Locale curr;
-    ResourceBundle r, rAbout, rCopy, rConf;
+    ResourceBundle r, rAbout, rCopy, rConf, rError;
     String newLang, szLang;
 
     newLang = request.getParameter("lang");
@@ -45,10 +45,11 @@
     rAbout = ResourceBundle.getBundle("resources/about", curr);
     rCopy = ResourceBundle.getBundle("resources/copyright", curr);
     rConf = ResourceBundle.getBundle("resources/config", curr);
+    rError = ResourceBundle.getBundle("resources/error", curr);
 
     /** User management */
     boolean userLogged; /** Get if the user is logged */
     if(User.moduleEnabled()) {
-        userLogged = (session.getAttribute("user") != null);
+        userLogged = true; //TODO DEBUG (session.getAttribute("user") != null);
     } else { userLogged = false; }
 %>

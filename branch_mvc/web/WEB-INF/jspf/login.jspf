@@ -2,6 +2,8 @@
 <%@ page pageEncoding="UTF-8" %>
 <%@page import="database.User" %>
 
+<% if(User.moduleEnabled()) { %>
+<div id="login">
 <%
 	String szLogin, szError, szUser;
 	szError = null;
@@ -63,5 +65,6 @@
 	<% }
 	if(szError != null) {  
 		out.print("<p class='error' style='display:inline;position:absolute;right:0;'>"+szError+"</p>");
-	}
-%>
+	} %>
+</div>
+<% } %>

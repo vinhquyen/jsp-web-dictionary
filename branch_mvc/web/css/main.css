@@ -251,6 +251,8 @@ div.definition { /** new look */
     padding-bottom: 1px; */
 }
 
+div.definition a {background-color:inherit;color:blue;}
+
 #addForm label.name { width: 8em; float: left; margin-left: .5em; }
 #addForm label.error { color: red; vertical-align:top; float:right; margin-right:8em;}
 #addForm a {color:blue;font-family:monospace; vertical-align:top; text-decoration:none; }

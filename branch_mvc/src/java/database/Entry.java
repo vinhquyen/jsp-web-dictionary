@@ -22,11 +22,13 @@ public class Entry {
     private String word;
     private String morfology;
     private ArrayList<String> definition; //~ ArrayList to support polisemic words
+
     /** Multilingual attributes */
     private ArrayList<String> ar;    // @ar aragones
     private ArrayList<String> ca;   // @ca catalan
     private ArrayList<String> es;  // @es spanish
     private ArrayList<String> fr; // @fr french
+
     /** Morfology */
     private static String aMorf[] = {"adj.", "adv.", "art.", "conj.", "interj.", "f.", 
         "loc. adv.", "m.", "prep.", "pref.", "pron.", "suf.", "v.", "tr.", "int.",
@@ -276,45 +278,6 @@ public class Entry {
     /******************************
      *   SEARCH DEFINITIONS OP    *
      ******************************/
-    /**
-     * Checks if exist a definition with w_term = szWord AND w_morf = szMorf
-     * and w_id <> szId (cause its an UPDATE situtation)
-     * @param szId  an w_id (UPDATE) or null (ADD/INSERT)
-     * @param szWord The word term
-     * @param szMorf The word morfology
-     * @return word ID , if exist
-     *         0 (zero), otherwise
-     * @throws java.lang.Exception
-     */
-    public static int existDefinition(String szId, String szWord, String szMorf) throws Exception {
-        int id;
-        String szSel, szSQL;
-        Connection co = null;
-        ResultSet rs = null;
-        PreparedStatement st = null;
-        try {
-            co = DBManager.initConnection();
-            if (szId == null) //Add word checks
-                szId = "0";
-
-            szSel = "SELECT id FROM word WHERE term = ? AND morf = ?";
-            szSQL = "SELECT id FROM ("+szSel+") AS w WHERE NOT w.id = ? OR w.id IS NULL";
-
-            st = co.prepareStatement(szSQL);            
-            st.setString(1, szWord);
-            st.setString(2, szMorf);
-            st.setString(3, szId);
-            rs = st.executeQuery();
-
-            if(rs.first())
-                id = rs.getInt(1);
-            else id = 0;
-
-        } finally {
-            DBManager.closeConnection(co, st, rs);
-        }
-        return id;
-    }
 
     /** TODO: complete javadoc
      * @param szWord
@@ -499,8 +462,51 @@ public class Entry {
     /***********************
      *      AUXILIAR OP     *
      ***********************/
+    /**
+     * Checks if exist a definition with w_term = szWord AND w_morf = szMorf
+     * and w_id <> szId (cause its an UPDATE situtation)
+     * @param szId  an w_id (UPDATE) or null (ADD/INSERT)
+     * @param szWord The word term
+     * @param szMorf The word morfology
+     * @return word ID , if exist
+     *         0 (zero), otherwise
+     * @throws java.lang.Exception
+     */
+    public static int existDefinition(String szId, String szWord, String szMorf) throws Exception {
+        int id;
+        String szSel, szSQL;
+        Connection co = null;
+        ResultSet rs = null;
+        PreparedStatement st = null;
+        try {
+            co = DBManager.initConnection();
+            if (szId == null) //Add word checks
+                szId = "0";
 
-    /** Generate a random word id (accessing to DB) */
+            szSel = "SELECT id FROM word WHERE term = ? AND morf = ?";
+            szSQL = "SELECT id FROM ("+szSel+") AS w WHERE NOT w.id = ? OR w.id IS NULL";
+
+            st = co.prepareStatement(szSQL);
+            st.setString(1, szWord);
+            st.setString(2, szMorf);
+            st.setString(3, szId);
+            rs = st.executeQuery();
+
+            if(rs.first())
+                id = rs.getInt(1);
+            else id = 0;
+
+        } finally {
+            DBManager.closeConnection(co, st, rs);
+        }
+        return id;
+    }
+    
+    /**
+     * Generate a random word id (accessing to DB)
+     * @return random entry identifier
+     * @throws java.sql.SQLException
+     */
     public static int getRandom() throws SQLException {
         int i;
         Connection co = null;
