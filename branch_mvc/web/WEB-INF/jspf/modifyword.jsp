@@ -38,11 +38,11 @@
 %>
 
     <h3><%=szTitle%>:</h3>
-    <form id="addForm" action="index.jsp" method="get"  accept-charset="UTF-8">
+    <form id="addForm" action="index.jsp" method="post"  accept-charset="UTF-8">
         <p> <label class="name"><%= r.getString("word")%><em>*</em></label>
             <input id="word" type="text" name="word" class="required" size="25" value="<%=e.getWord()%>"/>
             <label id="info_word" class="info hidden">
-                La palabra a definir.
+                Tenga en cuenta que el par {término, morfología} no puede repetirse.
             </label>
         </p>
         <p>
@@ -88,19 +88,8 @@
         String mrf = request.getParameter("morfology").trim();
         String[] arrayDef = request.getParameterValues("def");
 
-        /*** DEBUG MODE ***/
-        out.println("<p>Id: " + id + "<br/>");
-        out.println("Word: " + wrd + "<br/>");
-        out.println("Morf: " + mrf + "<br/>");
-        out.print("Definitions: <ol>");
-        for (String aux : arrayDef) {
-            if(!aux.isEmpty())
-                out.println("<li>" + aux + "</li>");
-        }
-        out.println("</ol>");
-        /****END DEBUGG MODE *****/
         if (userLogged) {
-            String res = null;
+            int res = 0;
             try {
                 if (szOp.equalsIgnoreCase("modify")) {
                     res = Entry.updateWord(id, wrd, mrf, arrayDef);
@@ -111,12 +100,25 @@
                 }
             } catch (Exception ex) {
                 InOut.printError(ex, out);
-                res = "";
+                res = 0;
             }
-            if (res == null || res.length() == 0) {
+            //if (res == null || res.length() == 0) { //TODO decide the @return Entry.add/update/delete
+            if (res != -1 ) {
                 out.println("<h3 id='msg' class='ok'>Word " + szOp + " succesfully</h3>");
+                /*** DEBUG MODE ***/
+                out.println("<p>Id: " + res + "<br/>");
+                out.println("Word: " + wrd + "<br/>");
+                out.println("Morf: " + mrf + "<br/>");
+                out.print("Definitions: <ol>");
+                for (String aux : arrayDef) {
+                    if(!aux.isEmpty())
+                        out.println("<li>" + aux + "</li>");
+                }
+                out.println("</ol>");
+                /****END DEBUGG MODE *****/
             } else {
-                InOut.printError(new Exception(res), out);
+                //InOut.printError(new Exception(res), out);
+                InOut.statusInfo(out); // TODO: test me
             }
         } else {%>
         <h3 class="error">Sorry but you are not allowed to add/modify a word</h3>

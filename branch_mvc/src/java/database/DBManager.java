@@ -1,10 +1,4 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package database;
-
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -18,14 +12,24 @@ import javax.naming.NamingException;
 import javax.sql.DataSource;
 
 /**
- *
  * @author chiron
- */
+
+ *************************
+ *  DATABASE OPERATIONS  *
+ ************************/
+
 public class DBManager {
-    /*************************
-     *  DATABASE OPERATIONS  *
-     ************************/
+    private static int iCacheSizeDB = -1;
+
+    /**
+     * Get the number of words contained in the DB
+     * @return DB.word.size()
+     * @throws java.sql.SQLException
+     */
     public static int getSizeDB() throws SQLException {
+        if(iCacheSizeDB != -1) {
+            return iCacheSizeDB;
+        }
         int iSize = -1;
         Connection co = null;
         ResultSet rs = null;
@@ -43,10 +47,17 @@ public class DBManager {
         } finally {
             closeConnection(co, st, rs);
         }
+
+        iCacheSizeDB = iSize;
         return iSize;
     }
 
-    /** Establish a connection with Database throw JDBC*/
+    /**
+     * Establish a connection with Database throw JDBC
+     * @return established connection
+     * @throws javax.naming.NamingException
+     * @throws java.sql.SQLException
+     */
     public static Connection initConnection() throws NamingException, SQLException {
         Context initCtx = new InitialContext();
         Context envCtx = (Context) initCtx.lookup("java:comp/env");
@@ -55,8 +66,13 @@ public class DBManager {
         return ds.getConnection();
     }
 
-    /** Try to close cleanly a DB connection releasing Statement and
-     * ResulSet resources.      */
+    /**
+     * Try to close cleanly a DB connection releasing Statement and ResulSet resources.
+     * @param co : connection to close
+     * @param st : statement to close
+     * @param rs : resultset to close
+     * @throws java.sql.SQLException
+     */
     public static void closeConnection(Connection co, Statement st, ResultSet rs) throws SQLException {
         try {
             if (rs != null)

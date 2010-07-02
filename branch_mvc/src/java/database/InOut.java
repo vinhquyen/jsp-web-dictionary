@@ -14,11 +14,19 @@ import javax.servlet.jsp.JspWriter;
  * Implements all the InOut operations included in JspWriter and Visitor Stats
  */
 public class InOut {
-    /**
-     * Show the word searched at the browser title bar
-     * @param request
-     * @return
-     */
+    public final static int ERROR_DB = 20;
+    public final static int ERROR_PARAM = 10;
+
+
+    private static int statusCode;
+    private static String statusMsg;
+
+
+/**
+ * Show the word searched at the browser title bar
+ * @param request
+ * @return
+ */
     public static String generateTitle(HttpServletRequest request) {
         String szTitle = request.getParameter("word");
         String idWord = request.getParameter("id");
@@ -39,14 +47,38 @@ public class InOut {
     //TODO: create a list of aplication errors (with code and user-friendly message)
     public static void printError(Exception e, JspWriter out) {
         try {
-            out.print("<p class='error'>");
-            out.print(e.toString());
-            out.print("</p>");
+            out.println("<p class='error'>");
+            out.println(e.toString());
+            out.println("</p>");
         } catch (IOException ex) {
             Logger.getLogger(InOut.class.getName()).log(Level.WARNING, null, ex);
         }
     }
 
+    public static void printError(int errorCode, String szMsg, JspWriter out) {
+        try {
+            out.println("<p class='error'>");
+            out.println("ERROR " + errorCode + ": " + szMsg);
+            out.println("</p>");
+        } catch (IOException ex) {
+            Logger.getLogger(InOut.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public static void printInfoMsg(String szMsg, JspWriter out) {
+        try {
+            out.println("<p id='msg' class='ok'>\n"+ szMsg + "\n</p>");
+        } catch (IOException ex) {
+            Logger.getLogger(InOut.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+/**
+ * Print an Entry in a html human readable format
+ * @param e : Entry to be printed
+ * @param out : The JspWriter output
+ * @param szHighLight : The keywords to highlight (only in ContextSearch mode)
+ * @param r : ResourceBundle (internationalization question)
+ */
     public static void printWordDef(Entry e, JspWriter out, String szHighLight, ResourceBundle r) {
         try {
             ArrayList<String> aDef = e.getDefinition();
@@ -125,6 +157,27 @@ public class InOut {
             if (szFr != null)
                 out.println("<dt title='" + r.getString("lng_fr") + "'>fr.</dt><dd>" + szFr + "</dd>");
             out.println("</dl>");
+        } catch (IOException ex) {
+            Logger.getLogger(InOut.class.getName()).log(Level.WARNING, null, ex);
+        }
+    }
+
+    static void setStatus(int code, String msg) {
+        statusCode = code;
+        statusMsg = msg;
+    }
+
+    public static void statusInfo(JspWriter out) {
+        String szClass;
+        if(statusCode == 0) {
+            szClass = "info";
+        } else {
+            szClass = "error";
+        }
+        try {
+            out.println("<p class='"+ szClass +"'>"+ statusMsg +"</p>");
+            statusCode = 0;
+            statusMsg = "";
         } catch (IOException ex) {
             Logger.getLogger(InOut.class.getName()).log(Level.WARNING, null, ex);
         }

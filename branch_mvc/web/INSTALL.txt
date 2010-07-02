@@ -1,32 +1,25 @@
 + Import SQL in directory web/_var/DB_creation.sql
 + JDK >= 6
-+ Tomcat >= 6.0
++ Tomcat >= 5.5
 + jdbc-mysql-connector.jar (>=5) /usr/share/java
 	- In Ubuntu (or Debian): sudo apt-get install libmysql-java
 
-+ /etc/tomcat5.5/policy.d/04webapps.policy
++ /etc/tomcat5.5/policy.d/04webapps.policy   | $CATALINA_HOME
 	grant codeBase "file:/usr/share/tomcat5.5-webapps/jspWebDict/-" {
 	   permission java.net.SocketPermission "localhost:3306", "connect,resolve";
    };
    
-   // Add java policy to allo the acess
-   //[This is an insecure trick, DON'T if you DON'T KNOW what are you doing]
-   grant {
-   	permission java.security.AllPermission;
-   };
-
-
-+ Add URIEncoding="UTF-8" in /etc/tomcat6/server.xml --> Connector 8180 or 8080 (Debian)
-
-+ Configure user and password (to grant access to DB) in META-INF/context.xml
-
-+ Add to the policy file  /etc/tomcat6/policy.d/04webapps.policy 
-
 	// WebApps permission to run DBCP 
 	grant {
 	  permission java.lang.RuntimePermission 
 	  	"accessClassInPackage.org.apache.tomcat.dbcp.*";
 	};
+
++ Add URIEncoding="UTF-8" in /etc/tomcat6/server.xml --> Connector 8180 or 8080 (Debian)
+NOTE: If you use the mod_jk connector (Tomcat<-->Apache) you should modify this connector too.
+
++ Configure user and password (to grant access to DB) in META-INF/context.xml
+
 
 ###################
 # COMMON PROBLEMS #
@@ -48,11 +41,21 @@ org.apache.tomcat.dbcp.dbcp.BasicDataSourceFactory]
 	link in /usr/share/tomcat5.5/common/lib
 	#> ln -s /usr/share/java/mysql-connector-java.jar mysql-connector-java.jar
 
+3) java.security.AccessControlException: access denied (java.lang.RuntimePermission accessClassInPackage.org.apache.tomcat.dbcp.pool.impl)
 
-3) Cannot create PoolableConnectionFactory (Communications link failure Last 
+ -> Solution: add to the policy file  /etc/tomcat6/policy.d/04webapps.policy 
+
+	// WebApps permission to run DBCP 
+	grant {
+	  permission java.lang.RuntimePermission 
+	  	"accessClassInPackage.org.apache.tomcat.dbcp.*";
+	};
+
+4) Cannot create PoolableConnectionFactory (Communications link failure Last 
 	packet sent to the server was 0 ms ago.)
 
  -> Solution: Add to the policy file  /etc/tomcat6/policy.d/04webapps.policy:
+  [$CATALINA_HOME_WEBAPPS = /var/lib/tomcat5.5/webapps/]
 	 grant codeBase "file:/var/lib/tomcat5.5/webapps/jspWebDict/-" {
        permission java.net.SocketPermission "localhost:3306", "connect,resolve";
 	 };

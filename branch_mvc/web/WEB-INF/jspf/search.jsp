@@ -23,15 +23,16 @@
             <label><%= r.getString("searchLab")%></label>
             <input id="input_search" type="text" name="word" tabindex="1" />
             <input type="image" src="img/search.png" alt="<%= r.getString("submit")%>"
-                   style="position:relative; top:8px;" onmouseover="setVisibility('be');" onmouseout="setVisibility('be');"/>
+                   style="position:relative; top:8px;" onmouseover="show('be');" onmouseout="hide('be');"/>
 
-            <input type="submit" name="lng" value="ar" onmouseover="setVisibility(this.value);" onmouseout="setVisibility(this.value);"/>
-            <input type="submit" name="lng" value="ca" onmouseover="setVisibility(this.value);" onmouseout="setVisibility(this.value);"/>
-            <input type="submit" name="lng" value="es" onmouseover="setVisibility(this.value);" onmouseout="setVisibility(this.value);"/>
-            <input type="submit" name="lng" value="fr" onmouseover="setVisibility(this.value);" onmouseout="setVisibility(this.value);"/>
-            <input type="submit" name="cnt" value="<%=r.getString("context") %>" onmouseover="setVisibility('cnt');" onmouseout="setVisibility('cnt');"/>
+            <input type="submit" name="lng" value="ar" onmouseover="show(this.value);" onmouseout="hide(this.value);"/>
+            <input type="submit" name="lng" value="ca" onmouseover="show(this.value);" onmouseout="hide(this.value);"/>
+            <input type="submit" name="lng" value="es" onmouseover="show(this.value);" onmouseout="hide(this.value);"/>
+            <input type="submit" name="lng" value="fr" onmouseover="show(this.value);" onmouseout="hide(this.value);"/>
+            <input type="submit" name="cnt" value="<%=r.getString("context") %>" onmouseover="show('cnt');" onmouseout="hide('cnt');"/>
             <input type="checkbox" id="ci" name="insensitive" <%=szChk%> />
-            <label style="font-size:0.8em;" onclick="setChecked('ci')"><%=r.getString("accentInsensitive") %></label>
+            <label style="font-size:0.8em;" onclick="setChecked('ci')" onmouseover="show('help_ci')"
+                onmouseout="hide('help_ci')"><%=r.getString("accentInsensitive") %></label>
         </p>
         <p style="height:10px;position:relative;top:-12px;z-index:5;">
             <% String szCtx = r.getString("help_lng");%>
@@ -41,6 +42,7 @@
             <span id="es"  class="hidden cnt"><%= MessageFormat.format(szCtx, r.getString("lng_es"))%></span>
             <span id="fr"  class="hidden cnt"><%= MessageFormat.format(szCtx, r.getString("lng_fr"))%></span>
             <span id="cnt" class="hidden cnt"><%= r.getString("help_cnt")%></span>
+            <span id="help_ci"  class="hidden cnt"><%= r.getString("help_ci")%></span>
         </p>
     </form>
 </div>
@@ -100,11 +102,7 @@
             else { /* standar search */
               String notF = MessageFormat.format(r.getString("notFound"), "''<em>" + szWord + "</em>'' ");
               if( !szWord.isEmpty() ) { %>
-                <p><%=notF%><br/>
-                    <% if (userLogged) { %>
-                    <a href='index.jsp?action=1&amp;word=<%=szWord%>'><%=r.getString("addDef")%></a>
-                    <% } %>
-                </p> <%
+                <p><%=notF%></p> <%
               }
               LinkedList<Entry> laux = NearWordsController.getNearWords(szWord, lng);
               if (laux != null && !laux.isEmpty()) { %>

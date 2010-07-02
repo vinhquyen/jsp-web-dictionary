@@ -9,11 +9,6 @@
 
 <%@ include file="WEB-INF/jspf/lang.jspf" %>
 
-<%  
-    String paramEncoding = application.getInitParameter("parameter-encoding");
-    request.setCharacterEncoding(paramEncoding); //"UTF-8" --> Defined in web.xml
-%>
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 
@@ -39,8 +34,10 @@
         <!-- [Captura doble-click]
         <script type="text/javascript" src="js/hiper.js"></script>-->
         <script src="js/jquery-1.4.2.min.js" type="text/javascript"></script>
+        <script src="js/jquery.ui.draggable.js" type="text/javascript"></script><!--TODO: ON Publish -->
+        <!--script src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js" type="text/javascript"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/jquery-ui.min.js" type="text/javascript"></script-->
         <script src="js/jquery.alerts.js" type="text/javascript"></script>
-        <script src="js/jquery.ui.draggable.js" type="text/javascript"></script>
         <script src="js/jquery.validate.pack.js" type="text/javascript"></script>
         <script src="js/utils.js" type="text/javascript"></script>
     </head>
@@ -49,7 +46,6 @@
             <%@ include file="WEB-INF/jspf/login.jspf" %>
             <%@ include file="WEB-INF/jspf/header.jspf" %>
             <div id="content" style="position:relative">
-                <div id="errores" class="error" style="position:absolute;top:0;right:0"></div>
                 <%
         String szAction = request.getParameter("action");
         int iAction = 0;
@@ -75,11 +71,11 @@
                         szAction = "WEB-INF/jspf/modifyword.jsp";
                         break;
                     } else { szAction="error_handler.jsp?code=401"; break;}
-                /*case 5:
+                case 5:
                     if (userLogged) {
                         szAction = "WEB-INF/jspf/delete_word.jsp";
                         break;
-                    } else { szAction="error_handler.jsp?code=401"; break;}*/
+                    } else { szAction="error_handler.jsp?code=401"; break;}
                 default:
                     szAction = "WEB-INF/jspf/search.jsp";
             }

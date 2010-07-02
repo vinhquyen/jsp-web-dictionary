@@ -89,12 +89,12 @@ public class Entry {
      * @param word the new word to create
      * @param morf morfology (verb, noun, adjetive...)
      * @param aDef definition(s)
-     * @return null: if everything go fine, in another situation return a
-     * String which describes the problem
+     * @return id inserted word,  if everything go fine
+     *         -1, otherwise
      * -- VALIDATION in PRESENTATION TIER -- (JQuery Plugin)
      *  Precondition: word not null && aDef.length > 0 )
      */
-    public static String addWord(String word, String morf, String[] aDef) throws Exception {
+    public static int addWord(String word, String morf, String[] aDef) throws NamingException, SQLException {
         // TODO: ADD MULTILANG QUESTIONS!!!!!!!!!!!!!!!!!!
         Connection co = null;
         PreparedStatement stMultiLang, stInsert = null;
@@ -114,10 +114,13 @@ public class Entry {
             /** get the last id (AUTO_INCREMENT) */
             szSQL = "SELECT MAX(id) FROM word";
             ResultSet res = co.createStatement().executeQuery(szSQL);
-            if(res.next())
+            if(res.next()) {
                 id = res.getInt(1);
-            else throw new SQLException("Entry.java:, Unnespected error " + word);
-
+            } else {
+                InOut.setStatus(InOut.ERROR_DB, "ERROR: No word.id returned after the INSERT INTO word" + word);
+                return -1;
+            }
+            
             int numDef = 0;
             stInsert = co.prepareStatement("INSERT INTO word_definition(id, n_def, definition) VALUES(?,?,?)");
             stMultiLang = co.prepareStatement("INSERT INTO multilang_be(id, n_def, term) VALUES(?,?,?)");
@@ -127,43 +130,45 @@ public class Entry {
                     stInsert.setInt(1, id);
                     stInsert.setInt(2, numDef);
                     stInsert.setString(3, definition);
-                    if (stInsert.executeUpdate() < 1)
-                         throw new SQLException("dict.word_definition: Definition from " + id + " NOT Inserted");
+                    if (stInsert.executeUpdate() < 1) {
+                         InOut.setStatus(InOut.ERROR_DB, "ERROR: dict.word_definition: Definition from " + id + " NOT Inserted");
+                         return -1;
+                    }
 
                     stMultiLang.setInt(1, id);
                     stMultiLang.setInt(2, numDef);
                     stMultiLang.setString(3, word);
-                    if (stMultiLang.executeUpdate() < 1)
-                        throw new SQLException("dict.multilang_be: Definition from " + id + " NOT Inserted");
-
+                    if (stMultiLang.executeUpdate() < 1) {
+                        InOut.setStatus(InOut.ERROR_DB, "ERROR: dict..multilang_be: Definition from " + id + " NOT Inserted");
+                         return -1;
+                    }
                     numDef++;
                 }
             }
 
         } catch (SQLException ex) {
-            return ("ERROR: There are problems inserting the word<br/>\n" + ex.toString());
+            InOut.setStatus(ex.getErrorCode(), "ERROR: There are problems inserting the word<br/>\n" + ex.toString());
+            id = -1;
         } finally {
             DBManager.closeConnection(co, stInsert, null);
         }
-
-        NearWordsController.initAllWordsStructs(); // Rebuild structures for random search
-        return "";
+        if(id > 0) NearWordsController.initAllWordsStructs(); // Rebuild structures for random search
+        return id;
     }
     /** Modify a word from the database
      * @param word the new word to create
      * @param morf morfology (verb, noun, adjetive...)
      * @param aDef definition(s)
-     * @return empty String,  if everything go fine
-     *         Description of the problem, otherwise
+     * @return id updated word,  if everything go fine
+     *         -1, otherwise
      * -- VALIDATION in PRESENTATION TIER -- (JQuery Plugin)
      *  Precondition: word not null && aDef.length > 0 )
      */
-    public static String updateWord(String id, String word, String morf, String[] aDef) throws Exception {
+    public static int updateWord(String id, String word, String morf, String[] aDef) throws NamingException, SQLException {
         Connection co = null;
         ResultSet rs = null;
         PreparedStatement stMultiLang, stUpdate = null;
         int idW;
-        String res = "";
 
         try {
             /* FIXME: Check the morphology? Perhaps its better don't do in favor of flexibility
@@ -178,9 +183,10 @@ public class Entry {
             /* Get the Word Identifier */
             try {
                 idW = Integer.valueOf(id);
-            } catch (Exception ex) {
-                return ("ERROR: There are a problem updating the word<br/>\n" +
-                        "The identifier is not valid<br/>\n" + ex.toString());
+            } catch (NumberFormatException numberFormatException) {
+                InOut.setStatus(InOut.ERROR_PARAM, "ERROR: There are a problem " +
+                        "updating the word. The identifier must be an integer<br/>\n");
+                return -1;
             }
 
             /* Update the word values */
@@ -189,9 +195,10 @@ public class Entry {
             stUpdate.setString(2, morf);
             stUpdate.setInt(3, idW);
 
-            if (stUpdate.executeUpdate() < 1)
-                res += "ERROR in " + stUpdate.toString() + "<br/>";
-
+            if (stUpdate.executeUpdate() < 1) {
+                InOut.setStatus(InOut.ERROR_DB, "ERROR in '"+ stUpdate.toString() +"'");
+                return -1;
+            }
             /** UPDATE =  DELETE old definition(s) +  INSERT new one(s) */
             stUpdate = co.prepareStatement("DELETE FROM word_definition WHERE id = ?");
             stUpdate.setInt(1, idW);
@@ -209,70 +216,91 @@ public class Entry {
                 stUpdate.setInt(1, idW);
                 stUpdate.setInt(2, numDef);
                 stUpdate.setString(3, definition);
-                if (stUpdate.executeUpdate() < 1)
-                    res+="ERROR in " + stUpdate.toString() + "<br/>";
+                if (stUpdate.executeUpdate() < 1) {
+                    InOut.setStatus(InOut.ERROR_DB, "ERROR in '"+ stUpdate.toString() +"'");
+                    return -1;
+                }
 
                 stMultiLang.setInt(1, idW);
                 stMultiLang.setInt(2, numDef);
                 stMultiLang.setString(3, word);
-                if (stMultiLang.executeUpdate() < 1)
-                    res += "dict.multilang_be: Definition from " + id + " NOT Inserted";
+                if (stMultiLang.executeUpdate() < 1) {
+                    InOut.setStatus(InOut.ERROR_DB, "dict.multilang_be: Definition from " + id + " NOT updated");
+                    return -1;
+                }
 
                 numDef++;
             }
 
         } catch (SQLException ex) {
-            return ("ERROR: There are a problem updating the word<br/>\n" + ex.toString());
+            InOut.setStatus(InOut.ERROR_DB, "ERROR: There are a problem updating the word<br/>\n" + ex.toString());
+            idW = -1;
         } finally {
             DBManager.closeConnection(co, stUpdate, rs);
         }
 
         NearWordsController.initAllWordsStructs(); // Rebuild structures for random search
-        return res;
+        return idW;
     }
-
-    public static String deleteWord(String id) throws Exception {
+/**
+ * Delete a word from the database
+ * @param id : identifier of the word
+ * @return id deleted word,  if everything go fine
+     *         -1, otherwise
+ * @throws java.lang.Exception
+ */
+    public static int deleteWord(String id) throws NamingException, SQLException {
         Connection co = null;
         ResultSet rs = null;
         PreparedStatement stDelete = null;
         int idW;
-        String res = "";
+        int[] iRes = {0,0,0};
+
         try {
             co = DBManager.initConnection();
 
             /* Get the Word Identifier */
             try {
                 idW = Integer.valueOf(id);
-            } catch (Exception ex) {
-                return ("ERROR: There are a problem updating the word<br/>\n" +
-                        "The identifier is not valid<br/>\n" + ex.toString());
+            } catch (NumberFormatException numberFormatException) {
+                throw new IllegalArgumentException("The identifier '" + id + "' must be an integer");
             }
 
             stDelete = co.prepareStatement("DELETE FROM word WHERE id = ?");
             stDelete.setInt(1, idW);
-            stDelete.executeUpdate();
+            iRes[0] = stDelete.executeUpdate();
 
             stDelete = co.prepareStatement("DELETE FROM word_definition WHERE id = ?");
             stDelete.setInt(1, idW);
-            stDelete.executeUpdate();
+            iRes[1] = stDelete.executeUpdate();
 
             stDelete = co.prepareStatement("DELETE FROM multilang_be WHERE id = ?");
             stDelete.setInt(1, idW);
-            stDelete.executeUpdate();
+            iRes[2] = stDelete.executeUpdate();
+
+            for(int aux : iRes) {
+                if(aux == 0) {
+                    InOut.setStatus(InOut.ERROR_DB, "The word cannot be delete. Posible cause: it doesn't exist.");
+                    iRes[0] = -1;
+                    break;
+                }
+            }
 
         } catch (SQLException ex) {
-            String error = "";
-            error += "SQLState:  " + ex.getSQLState() + "<br/>";
-            error += "Message:  " + ex.getMessage() + "<br/>";
-            error += "Vendor:  " + ex.getErrorCode() + "<br/>";
+            StringBuffer error = new StringBuffer();
+            error.append("ERROR: There are a problem deleting the word<br/>\n");
+            error.append("SQLState: ").append(ex.getSQLState()).append("<br/>");
+            error.append("Message: ").append(ex.getMessage()).append("<br/>");
+            error.append("Vendor: ").append(ex.getErrorCode()).append("<br/>");
 
-            return ("ERROR: There are a problem deleting the word<br/>\n" + error);
+            InOut.setStatus(InOut.ERROR_DB, error.toString());
+            iRes[0] = -1;
         } finally {
             DBManager.closeConnection(co, stDelete, rs);
         }
 
         NearWordsController.initAllWordsStructs(); // Rebuild structures for random search
-        return res;
+        return iRes[0];
     }
 
     /******************************
@@ -285,7 +313,7 @@ public class Entry {
      * @return
      * @throws java.lang.Exception
      */
-    public static ArrayList<Entry> getDefinition(String szWord, String lang, String accentInsensitive) throws Exception {
+    public static ArrayList<Entry> getDefinition(String szWord, String lang, String accentInsensitive) throws SQLException, NamingException {
         if (szWord.isEmpty())
             return null;
 
@@ -303,7 +331,7 @@ public class Entry {
 
         /* Input  for avoid injection with invalid params */
         if (!m.matches()) {
-            throw new SQLException("The lang " + lang + " doesn't exist in our database");
+            throw new IllegalArgumentException("The lang " + lang + " doesn't exist in our database");
         }
 
         String szSQL; // = "SELECT id FROM word WHERE term = ?";
@@ -359,8 +387,11 @@ public class Entry {
                 result.word = rs.getString("term");
                 result.morfology = rs.getString("morf");
             }
-            else // Control manually modified ID (Cross-scripting)
-                throw new SQLException("This word does not exist in our DB");
+            else { // Control manually modified ID (Cross-scripting)
+                if(DBManager.getSizeDB() == 0)
+                    throw new IllegalArgumentException("Our DB is empty. This action cannot be performed!");
+                throw new IllegalArgumentException("This word does not exist in our DB");
+            }
 
             szSQL = "SELECT n_def, definition FROM word_definition WHERE id = ?";
             st = co.prepareStatement(szSQL);
@@ -389,7 +420,7 @@ public class Entry {
      * @throws java.sql.SQLException
      * @throws javax.naming.NamingException
      */
-    private static void getMultiLangDef(Entry e, int n) throws SQLException, NamingException {
+    private static void getMultiLangDef(Entry e, int n) throws NamingException, SQLException {
         Connection co = null;
         ResultSet rs = null;
         PreparedStatement st = null;

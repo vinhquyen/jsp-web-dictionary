@@ -129,7 +129,7 @@ function externalLinks() {
         var anchor = anchors[i];
         if (anchor.getAttribute("href") &&
             anchor.getAttribute("rel") == "external") {
-            anchor.target = "_blank";
+            //anchor.target = "_blank"; //The User decides where open the link
             anchor.innerHTML += "<img src='img/new_window.gif' alt='new window' />";
         }
     }
@@ -192,8 +192,8 @@ function jqueryInit() {
         /*** end contextual help ***/
 
         /** Message fadding out */
-        setTimeout("$('p.error').fadeOut(800)",5000);
-        setTimeout("$('#msg').fadeOut(800)",5000);
+        //setTimeout("$('p.error').fadeOut(800)",5000);
+        //setTimeout("$('#msg').fadeOut(800)",5000);
         
         /* Form Validation */
         $("#addForm").validate({
@@ -264,7 +264,10 @@ function deleteWord(id) {
     jConfirm('Are you sure about deleting this word?\n This action can not be undone', 'Delete word confirmation', function(r) {
         if(r) {
             //jAlert('TODO: Ajax JSP petition to DELETE id='+id, 'Confirmation Results');
-            $(".result").load("delete.jsp?id="+id);
+            //$(".result").load("delete.jsp?id="+id);
+            //$(".result").load("index.jsp?action=5&id="+id);
+            //location.href = "index.jsp?action=5&id="+id;
+            $("#content").load("index.jsp?action=5&id="+id+" #content");
         }
     });
 }
@@ -330,9 +333,10 @@ function setChecked(id) {
 }
 
 /** DEPRECATED: Use JQuery instead
- *  Hidde or show and element
+ *  Hidde or show an element
  *  @param id : identificator of the element */
 function setVisibility(id) {
+    alert("Deprecated use ID:" + id);
     var obj = document.getElementById(id);
     if(obj.style.visibility == "visible") {
         obj.style.visibility = "hidden";
@@ -342,4 +346,22 @@ function setVisibility(id) {
         obj.style.visibility = "visible";
         obj.style.display = "inline";
     }
+}
+
+/** Hidde an element
+ *  @param id : identificator of the element */
+function hide(id) {
+    $('#'+id).hide();
+    /*var obj = document.getElementById(id);
+    obj.style.visibility = "hidden";
+    obj.style.display = "none";*/
+}
+
+/** Show a hidden an element
+ *  @param id : identificator of the element */
+function show(id) {
+    $('#'+id).show();
+    /*var obj = document.getElementById(id);
+    obj.style.visibility = "visible";
+    obj.style.display = "inline";*/
 }

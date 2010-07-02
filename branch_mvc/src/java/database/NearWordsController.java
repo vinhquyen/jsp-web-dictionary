@@ -7,11 +7,13 @@ package database;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Hashtable;
 import java.util.LinkedList;
+import javax.naming.NamingException;
 
 /**
  *
@@ -28,7 +30,7 @@ public class NearWordsController {
      * @return List of Entry near lexicographyally
      * @throws java.lang.Exception
      */
-    public static LinkedList<Entry> getNearWords(String szWord, String lang) throws Exception {
+    public static LinkedList<Entry> getNearWords(String szWord, String lang) throws NamingException, SQLException  {
         if (szWord.isEmpty())
             return null;
 
@@ -62,7 +64,7 @@ public class NearWordsController {
      * @param allWords Hashtable that contains all the pair <term, id>
      * @param orderedWords SortedSet that contains the term's ordered
      */
-    static void initAllWordsStructs() throws Exception {
+    static void initAllWordsStructs() throws NamingException, SQLException  {
         Connection co = null;
         ResultSet rs = null;
         Statement st = null;

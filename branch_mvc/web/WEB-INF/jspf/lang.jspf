@@ -6,6 +6,12 @@
 <%@ page pageEncoding="UTF-8" %>
 
 <%
+    /** Character Encoding **/
+    String charSet = application.getInitParameter("parameter-encoding");
+    request.setCharacterEncoding(charSet); //"UTF-8" --> Defined in web.xml
+    response.setCharacterEncoding(charSet);
+
+    /** ResourceBundles */
     Locale curr;
     ResourceBundle r, rAbout, rCopy, rConf, rError;
     String newLang, szLang;
@@ -50,6 +56,6 @@
     /** User management */
     boolean userLogged; /** Get if the user is logged */
     if(User.moduleEnabled()) {
-        userLogged = true; //TODO DEBUG (session.getAttribute("user") != null);
+        userLogged = (session.getAttribute("user") != null);
     } else { userLogged = false; }
 %>
