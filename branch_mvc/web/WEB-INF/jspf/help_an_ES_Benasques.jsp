@@ -15,6 +15,6 @@ catal&aacute;n, español y frans&eacute;s.</p>
 automaticamen salr&aacute; una paraula a l'azar; d'ista manera coneixer&aacute;s
 de nuebas.</p>
 
-<p>Si cuan estigas bed&eacute;n una definisi&oacute;n yey bella paraula que no
+<!--p>Si cuan estigas bed&eacute;n una definisi&oacute;n yey bella paraula que no
 coneixes, donas un doplle-click a ista y se t'amostrar&aacute;
-la definisi&oacute;n.</p>
+la definisi&oacute;n.</p-->

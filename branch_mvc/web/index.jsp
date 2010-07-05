@@ -33,10 +33,10 @@
 
         <!-- [Captura doble-click]
         <script type="text/javascript" src="js/hiper.js"></script>-->
-        <script src="js/jquery-1.4.2.min.js" type="text/javascript"></script>
-        <script src="js/jquery.ui.draggable.js" type="text/javascript"></script><!--TODO: ON Publish -->
-        <!--script src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js" type="text/javascript"></script>
-        <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/jquery-ui.min.js" type="text/javascript"></script-->
+        <!--script src="js/jquery-1.4.2.min.js" type="text/javascript"></script>
+        <script src="js/jquery.ui.draggable.js" type="text/javascript"></script>-->
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js" type="text/javascript"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/jquery-ui.min.js" type="text/javascript"></script>
         <script src="js/jquery.alerts.js" type="text/javascript"></script>
         <script src="js/jquery.validate.pack.js" type="text/javascript"></script>
         <script src="js/utils.js" type="text/javascript"></script>

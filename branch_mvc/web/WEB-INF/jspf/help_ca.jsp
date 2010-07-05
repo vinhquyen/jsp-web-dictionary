@@ -14,5 +14,5 @@ a l'aragon&egrave;s, el catal&agrave;, el castell&agrave; i el franc&egrave;s, r
 de manera autom&agrave;tica es mostrar&agrave; una definici&oacute; a l'atzar; d'aquesta manera
 podr&agrave; con&egrave;ixer noves paraules.</p>
 
-<p>Si quan est&agrave; visualitzant una definici&oacute; es troba a un terme que desconeix,
-pot arrivar a la seva definici&oacute; fent doble click sobre aquest.</p>
+<!--p>Si quan est&agrave; visualitzant una definici&oacute; es troba a un terme que desconeix,
+pot arrivar a la seva definici&oacute; fent doble click sobre aquest.</p-->

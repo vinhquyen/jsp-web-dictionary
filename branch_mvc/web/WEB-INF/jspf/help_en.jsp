@@ -13,5 +13,5 @@ relation to Aragones, Catalan, Spanish and French, respectively.</p>
 <p>In addition you can make a random search, in other words, a definition will be
 shown automatically, and by this way you can know new terms.</p>
 
-<p>If while you are reading a definition there are any unknown word, with a
-double-click on it you will get its meaning.</p>
+<!--p>If while you are reading a definition there are any unknown word, with a
+double-click on it you will get its meaning.</p-->

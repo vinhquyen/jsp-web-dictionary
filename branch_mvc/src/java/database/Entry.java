@@ -456,21 +456,20 @@ public class Entry {
      * @throws java.sql.SQLException
      */
     public static ArrayList<Entry> getWordInContext(String szWord) throws NamingException, SQLException {
-        if (szWord.isEmpty())
+        if (szWord == null || szWord.trim().isEmpty())
             return null;
 
-        String szRegExpr = "";
+        String szRegExpr;
         ArrayList<Entry> res = new ArrayList<Entry>();
         Connection co = null;
         ResultSet rs = null;
         PreparedStatement st = null;
 
-        for(String word : szWord.split(" ")) {
-            szRegExpr += "[[:<:]]"+ word.toLowerCase() + "[[:>:]] ";
-        }
-        szRegExpr = szRegExpr.trim(); // Delete last blank_space = " "
+        // [[:<:]], [[:>:]]  These markers stand for word boundaries (match beginning and end words, respectively
+        szRegExpr = "([[:<:]]|«)"; //Begin
+        szRegExpr += szWord.toLowerCase();
+        szRegExpr += "(»|[[:>:]])"; //End
 
-        /** TODO: search only in the examples: LIKE «?» **/
         String szSQL = "SELECT id FROM word_definition WHERE LOWER(definition) REGEXP ? LIMIT 0 , 10";
 
         try {

@@ -17,6 +17,6 @@ al franc&eacute;s, respectivamente.</p>
 es decir, autom&aacute;ticamente se le mostrar&aacute; una entrada al azar;
 de este modo podr&aacute; conocer nuevos vocablos.</p>
 
-<p>Si cuando est&aacute; visualizando una definici&oacute;n existe alg&uacute;n
+<!--p>Si cuando est&aacute; visualizando una definici&oacute;n existe alg&uacute;n
 t&eacute;rmino del cual desconoce su significado, mediante un doble click sobre
-&eacute;ste se le mostrar&aacute; la definici&oacute;n.</p>
+&eacute;ste se le mostrar&aacute; la definici&oacute;n.</p-->
