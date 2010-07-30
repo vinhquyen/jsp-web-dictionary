@@ -2,9 +2,11 @@
 <%@ page pageEncoding="UTF-8" %>
 <%@page import="database.User" %>
 
-<% if(User.moduleEnabled()) { %>
+<% if(User.moduleEnabled()) {
+%>
+<h3>Login</h3>
 <div id="login">
-<%
+    <%
 	String szLogin, szError, szUser;
 	szError = null;
 	szLogin = request.getParameter("log_action");
@@ -13,7 +15,7 @@
 			String user = request.getParameter("user");
 			String pass = request.getParameter("passwd");
 
-            if(User.autenticate(user, pass)) {
+            if(User.authenticate(user, pass)) {
 				session.setAttribute("user", user);
                 //AJAX RELOAD MENU!
                 %>
@@ -48,23 +50,23 @@
 
 	szUser = (String) session.getAttribute("user");
 	if (szUser != null) // User identified
-	{ 
-           %>
-		<form action="" method="post" accept-charset="UTF-8">
-			Welcome <i> <%=szUser %> </i>
-			<input type="submit" name="log_action" value="logout">
-		</form>
-            <%	
+	{
+        %>
+        Welcome back, <i> <%=szUser %> </i>
+        <%
 	}
-	else { %>
-			<form action="" method="post"><div>
+	else {
+        %>
+			<form action="index.jsp?action=6" method="post"><div>
 				<label>user: </label><input name="user" size="10" />
-				<label>pass: </label><input type="password" name="passwd" size="10" />
+				<label>password: </label><input type="password" name="passwd" size="10" />
 				<input type="submit" name="log_action" value="login" />
 			</div></form>
 	<% }
-	if(szError != null) {  
+	if(szError != null) {
 		out.print("<p class='error' style='display:inline;position:absolute;right:0;'>"+szError+"</p>");
 	} %>
 </div>
+<% } else { %>
+    <h3>El m&oacute;dulo de login est&aacute; desactivado.</h3>
 <% } %>

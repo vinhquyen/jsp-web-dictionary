@@ -164,7 +164,7 @@ public class Entry {
      * -- VALIDATION in PRESENTATION TIER -- (JQuery Plugin)
      *  Precondition: word not null && aDef.length > 0 )
      */
-    public static int updateWord(String id, String word, String morf, String[] aDef) throws NamingException, SQLException {
+    public static int modifyWord(String id, String word, String morf, String[] aDef) throws NamingException, SQLException {
         Connection co = null;
         ResultSet rs = null;
         PreparedStatement stMultiLang, stUpdate = null;
@@ -313,7 +313,7 @@ public class Entry {
      * @return
      * @throws java.lang.Exception
      */
-    public static ArrayList<Entry> getDefinition(String szWord, String lang, String accentInsensitive) throws SQLException, NamingException {
+    public static ArrayList<Entry> searchDefinition(String szWord, String lang, String accentInsensitive) throws SQLException, NamingException {
         if (szWord.isEmpty())
             return null;
 
@@ -350,7 +350,7 @@ public class Entry {
 
             // Get the ID of the searched WORD
             while (rs.next())
-                res.add(getDefinition(rs.getInt("id")));
+                res.add(searchDefinition(rs.getInt("id")));
 
         } finally {
             DBManager.closeConnection(co, st, rs);
@@ -366,7 +366,7 @@ public class Entry {
      * @throws java.sql.SQLException
      * @throws javax.naming.NamingException
      */
-    public static Entry getDefinition(int id) throws SQLException, NamingException {
+    public static Entry searchDefinition(int id) throws SQLException, NamingException {
         Entry result = null;
         Connection co = null;
         ResultSet rs = null;
@@ -480,7 +480,7 @@ public class Entry {
 
             // Get the ID of the searched WORD
             while (rs.next())
-                res.add(getDefinition(rs.getInt("id")));
+                res.add(searchDefinition(rs.getInt("id")));
 
         } finally {
             DBManager.closeConnection(co, st, rs);

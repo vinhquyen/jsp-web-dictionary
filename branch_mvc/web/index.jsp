@@ -33,17 +33,14 @@
 
         <!-- [Captura doble-click]
         <script type="text/javascript" src="js/hiper.js"></script>-->
-        <!--script src="js/jquery-1.4.2.min.js" type="text/javascript"></script>
-        <script src="js/jquery.ui.draggable.js" type="text/javascript"></script>-->
-        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js" type="text/javascript"></script>
-        <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/jquery-ui.min.js" type="text/javascript"></script>
+        <script src="js/jquery-1.4.2.min.js" type="text/javascript"></script>
+        <script src="js/jquery.ui.draggable.js" type="text/javascript"></script>
         <script src="js/jquery.alerts.js" type="text/javascript"></script>
         <script src="js/jquery.validate.pack.js" type="text/javascript"></script>
         <script src="js/utils.js" type="text/javascript"></script>
     </head>
     <body onload="init();">
         <div id="bounding_box">
-            <%@ include file="WEB-INF/jspf/login.jspf" %>
             <%@ include file="WEB-INF/jspf/header.jspf" %>
             <div id="content" style="position:relative">
                 <%
@@ -70,12 +67,27 @@
                     if (userLogged) {
                         szAction = "WEB-INF/jspf/modifyword.jsp";
                         break;
-                    } else { szAction="error_handler.jsp?code=401"; break;}
+                    } else { 
+                        szAction="error_handler.jsp?code=401";
+                        //szAction = "WEB-INF/jspf/login.jsp?service=iAction";
+                        break;
+                    }
                 case 5:
                     if (userLogged) {
                         szAction = "WEB-INF/jspf/delete_word.jsp";
                         break;
-                    } else { szAction="error_handler.jsp?code=401"; break;}
+                    } else {
+                        szAction="error_handler.jsp?code=401";
+                        //szAction = "WEB-INF/jspf/login.jsp?service=iAction";
+                        break;
+                    }
+                case 6:
+                    String logAction = request.getParameter("log_action");
+                    if(!request.isSecure() && logAction == null) {
+                        InOut.switchSecureMode(request, response);
+                    }
+                    szAction = "WEB-INF/jspf/login.jsp";
+                    break;
                 default:
                     szAction = "WEB-INF/jspf/search.jsp";
             }

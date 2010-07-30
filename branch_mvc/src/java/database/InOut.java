@@ -8,6 +8,7 @@ import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.jsp.JspWriter;
 
 /** 
@@ -16,7 +17,6 @@ import javax.servlet.jsp.JspWriter;
 public class InOut {
     public final static int ERROR_DB = 20;
     public final static int ERROR_PARAM = 10;
-
 
     private static int statusCode;
     private static String statusMsg;
@@ -34,7 +34,7 @@ public class InOut {
             if (idWord != null)
                 try {
                     int id = Integer.parseInt(idWord);
-                    szTitle = Entry.getDefinition(id).getWord() + " -";
+                    szTitle = Entry.searchDefinition(id).getWord() + " -";
                 } catch (Exception e) {
                     szTitle = "";
                 }
@@ -180,6 +180,52 @@ public class InOut {
             statusMsg = "";
         } catch (IOException ex) {
             Logger.getLogger(InOut.class.getName()).log(Level.WARNING, null, ex);
+        }
+    }
+/**
+ *
+ * @param request
+ * @param response
+ * @return
+// NOT USED --> if the user wants to leave the secure mode, it must do manually
+    public static String leaveSecureMode(HttpServletRequest request, HttpServletResponse response) {
+        ResourceBundle rConf = ResourceBundle.getBundle("resources/config");
+        String unsecure = String.valueOf(rConf.getString("tomcat_standar_port"));
+        String secure = String.valueOf(rConf.getString("tomcat_secure_port"));
+        
+        String path = request.getRequestURL().toString();
+        path = path.replace("https://", "http://");
+        path = path.replace(secure, unsecure);
+        path = path + "?" + request.getQueryString();
+
+        try {
+            response.sendRedirect(path);
+        } catch (IOException ex) {
+            Logger.getLogger(InOut.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return path;
+    } */
+/**
+ * Force a request to switch to a HTTPSecure conection.
+ * WORKS usin a sendRedirect.
+ * IMPORTANT: NOT works if invoked from an included page due to JSP specification.
+ * @param request: the request
+ * @param response: the generated response
+ */
+    public static void switchSecureMode(HttpServletRequest request, HttpServletResponse response) {
+        ResourceBundle rConf = ResourceBundle.getBundle("resources/config");
+        String unsecure = String.valueOf(rConf.getString("tomcat_standar_port"));
+        String secure = String.valueOf(rConf.getString("tomcat_secure_port"));
+        
+        String path = request.getRequestURL().toString();
+        path = path.replace("http://", "https://");
+        path = path.replace(unsecure, secure);
+        path = path + "?" + request.getQueryString();
+        
+        try {
+            response.sendRedirect(path);
+        } catch (IOException ex) {
+            Logger.getLogger(InOut.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

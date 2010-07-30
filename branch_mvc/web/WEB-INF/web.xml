@@ -9,7 +9,11 @@
 		<welcome-file>index.jsp</welcome-file>
 	</welcome-file-list>
 
-	<resource-env-ref>
+
+
+
+
+    <resource-env-ref>
 		<description>DB Connection</description>
 		<resource-env-ref-name>jdbc/jspWebDict</resource-env-ref-name>
 		<resource-env-ref-type>javax.sql.DataSource</resource-env-ref-type>

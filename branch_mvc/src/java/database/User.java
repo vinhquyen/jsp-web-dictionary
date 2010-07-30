@@ -27,7 +27,7 @@ public class User {
     }
 
 
-    public static boolean autenticate(String user, String pass) throws Exception{
+    public static boolean authenticate(String user, String pass) throws Exception{
         User u = new User(user);
         try {
             MessageDigest algorithm = MessageDigest.getInstance("SHA-256");
@@ -35,7 +35,7 @@ public class User {
             byte[] hashInput = algorithm.digest(pass.getBytes());
             byte[] hashReal = u.getHash();
 
-            return MessageDigest.isEqual(hashInput, hashReal);
+            return MessageDigest.isEqual(hashInput, hashReal); //FIXME: http://codahale.com/a-lesson-in-timing-attacks/
 
         } catch (NoSuchAlgorithmException ex) {
             Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);

@@ -29,7 +29,7 @@
                 szTitle = r.getString("modifyword");
                 try {
                     int id = Integer.valueOf(szId);
-                    e = Entry.getDefinition(id);
+                    e = Entry.searchDefinition(id);
                 } catch (Exception ex) {
                     InOut.printError(ex, out);
                     return;
@@ -92,7 +92,7 @@
             int res = 0;
             try {
                 if (szOp.equalsIgnoreCase("modify")) {
-                    res = Entry.updateWord(id, wrd, mrf, arrayDef);
+                    res = Entry.modifyWord(id, wrd, mrf, arrayDef);
                     //out.println("Ahora se modificaría la palabra"); //DEBUG
                 } else if (szOp.equalsIgnoreCase("add")) {
                     res = Entry.addWord(wrd, mrf, arrayDef);

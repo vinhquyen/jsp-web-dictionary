@@ -1,6 +1,20 @@
 <%-- any content can be specified here e.g.: --%>
 <%@ page pageEncoding="UTF-8" %>
 
+<%
+    StringBuffer loginPath = request.getRequestURL().append("?action=6");
+    //loginPath.insert(4, "s");
+    //loginPath.replace(8180, 8443)
+    String szLogAction;
+    if (userLogged) {
+       szLogAction = "Log Out";
+       loginPath.append("&log_action=logout");
+       } else {
+        szLogAction = "Log In";
+    }
+    //DEBUG out.print(loginPath);
+%>
+
 <div id="header">
     <div id="lang">
         <select name="lang" onchange="changeLang(this.value)">
@@ -32,6 +46,7 @@
             <li><a id="tog-contact" href="#"><%=r.getString("contact")%></a></li>
             <li><a href="index.jsp?action=3"><%=r.getString("about")%></a></li>
             <li><strong><a id="tog-help" href="#"><%=r.getString("help")%></a></strong></li>
+            <li><a href="<%=loginPath %>"><%=szLogAction%></a></li>
         </ul><br/>
         <label id="contact" class="hidden">
             <em>admin947<img src="img/arroba.gif" alt="@" class="arroba" />gmail.com</em>

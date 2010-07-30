@@ -65,7 +65,7 @@
             try {
                 idWord = Integer.valueOf(szId);
                 aDef = new ArrayList<Entry>();
-                aDef.add(Entry.getDefinition(idWord));
+                aDef.add(Entry.searchDefinition(idWord));
             } catch (Exception e) {
                 InOut.printError(e, out);
                 out.println("</div>");
@@ -82,7 +82,7 @@
                     aDef = Entry.getWordInContext(szWord);
                     szHighLight = szWord;
                 } else {
-                    aDef = Entry.getDefinition(szWord, lng, caseInsensitive);
+                    aDef = Entry.searchDefinition(szWord, lng, caseInsensitive);
                 }
             } catch (Exception e) {
                 InOut.printError(e, out);
