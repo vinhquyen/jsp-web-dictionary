@@ -17,8 +17,8 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <jsp:include page="WEB-INF/jspf/meta_tags.jspf" />
 
-        <title><%=InOut.generateTitle(request) %> <%=r.getString("title") %> / JSP Web Dictionary
-        <%=rConf.getString("version")%></title>
+        <title><%=r.getString("title") %> <%=InOut.generateTitle(request) %>
+        </title>
 
     <% /* links language alternate */
      String[] aLanguages = {"an", "ca", "en", "es"};
@@ -82,12 +82,14 @@
                         break;
                     }
                 case 6:
-                    String logAction = request.getParameter("log_action");
-                    if(!request.isSecure() && logAction == null) {
-                        InOut.switchSecureMode(request, response);
+                    if(User.moduleEnabled()) {
+                        String logAction = request.getParameter("log_action");
+                        if(!request.isSecure() && logAction == null) {
+                            InOut.switchSecureMode(request, response);
+                        }
+                        szAction = "WEB-INF/jspf/login.jsp";
+                        break;
                     }
-                    szAction = "WEB-INF/jspf/login.jsp";
-                    break;
                 default:
                     szAction = "WEB-INF/jspf/search.jsp";
             }

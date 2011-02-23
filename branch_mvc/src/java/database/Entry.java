@@ -314,7 +314,7 @@ public class Entry {
      * @throws java.lang.Exception
      */
     public static ArrayList<Entry> searchDefinition(String szWord, String lang, String accentInsensitive) throws SQLException, NamingException {
-        if (szWord.isEmpty())
+        if (szWord.length() == 0)
             return null;
 
         ArrayList<Entry> res = new ArrayList<Entry>();
@@ -456,7 +456,7 @@ public class Entry {
      * @throws java.sql.SQLException
      */
     public static ArrayList<Entry> getWordInContext(String szWord) throws NamingException, SQLException {
-        if (szWord == null || szWord.trim().isEmpty())
+        if (szWord == null || szWord.trim().length() == 0)
             return null;
 
         String szRegExpr;
@@ -639,7 +639,7 @@ public class Entry {
      */
     public String getAr(int n) {
         String res = null;
-        if (n < ar.size() && !ar.get(n).isEmpty())
+        if (n < ar.size() && ar.get(n).length() > 0)
             res = ar.get(n);
         return res;
     }
@@ -649,7 +649,7 @@ public class Entry {
      */
     public String getCa(int n) {
         String res = null;
-        if (n < ca.size() && !ca.get(n).isEmpty())
+        if (n < ca.size() && ca.get(n).length() > 0)
             res = ca.get(n);
         return res;
     }
@@ -659,7 +659,7 @@ public class Entry {
      */
     public String getEs(int n) {
         String res = null;
-        if (n < es.size() && !es.get(n).isEmpty())
+        if (n < es.size() && es.get(n).length() > 0)
             res = es.get(n);
         return res;
     }
@@ -669,7 +669,7 @@ public class Entry {
      */
     public String getFr(int n) {
         String res = null;
-        if (n < fr.size() && !fr.get(n).isEmpty())
+        if (n < fr.size() && fr.get(n).length() > 0)
             res = fr.get(n);
         return res;
     }

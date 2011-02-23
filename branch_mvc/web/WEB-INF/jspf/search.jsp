@@ -74,6 +74,8 @@
         } else { // szWord != null
             /** get defition by WORD */
             szWord = szWord.trim();
+            //TODO if(szWord contains caracteres raros) // hacer esto de abajo...
+            szWord = new String(szWord.getBytes("8859_1"), "utf-8");
             try {
                 if (lng == null) {
                     lng = "be"; // Set the default language
@@ -92,7 +94,7 @@
         }
         // TODO: sustituir por JSLT !! o algo mas elegante
         /** Find lexicographically nearest words */
-        if (aDef == null || aDef.isEmpty()) {
+        if (aDef == null || aDef.size() == 0) {
             //szWord = InOut.userInputParser(szWord, out);
             szWord = InOut.userInputParser(szWord);
 
@@ -101,11 +103,11 @@
             }
             else { /* standar search */
               String notF = MessageFormat.format(r.getString("notFound"), "''<em>" + szWord + "</em>'' ");
-              if( !szWord.isEmpty() ) { %>
+              if( szWord.length() > 0 ) { %>
                 <p><%=notF%></p> <%
               }
               LinkedList<Entry> laux = NearWordsController.getNearWords(szWord, lng);
-              if (laux != null && !laux.isEmpty()) { %>
+              if (laux != null && laux.size() > 0) { %>
                 <div id='nearW'>
                     <h4><%=r.getString("nearWord")%></h4>
                     <div style="float: left;"><ul>

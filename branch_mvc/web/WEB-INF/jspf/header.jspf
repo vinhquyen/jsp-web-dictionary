@@ -46,7 +46,9 @@
             <li><a id="tog-contact" href="#"><%=r.getString("contact")%></a></li>
             <li><a href="index.jsp?action=3"><%=r.getString("about")%></a></li>
             <li><strong><a id="tog-help" href="#"><%=r.getString("help")%></a></strong></li>
+        <% if(User.moduleEnabled()) { %>
             <li><a href="<%=loginPath %>"><%=szLogAction%></a></li>
+        <% } %>
         </ul><br/>
         <label id="contact" class="hidden">
             <em>admin947<img src="img/arroba.gif" alt="@" class="arroba" />gmail.com</em>

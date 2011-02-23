@@ -11,7 +11,7 @@
         int res;
         String szId = request.getParameter("id");
 
-        if(szId == null || szId.isEmpty()) {
+        if(szId == null || szId.length() == 0) {
             InOut.printError(InOut.ERROR_PARAM, "Illegal Parameter Error", out);
         }
         else {

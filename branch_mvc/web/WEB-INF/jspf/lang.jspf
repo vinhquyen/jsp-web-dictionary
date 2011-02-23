@@ -25,7 +25,7 @@
     }
 
     if (szLang == null || szLang.length() == 0) {
-        curr = Locale.getDefault();
+        curr = request.getLocale(); // get Client Locale
         szLang = curr.getLanguage();
         session.setAttribute("lang", szLang);
     } else {
@@ -41,7 +41,7 @@
                 curr = new Locale(a[0], a[1], a[2]);
                 break;
             default: // Avoid errors or h4ck1ng5
-                curr = Locale.getDefault();
+                curr = request.getLocale(); // get Client Locale
                 szLang = curr.getLanguage();
         }
     }

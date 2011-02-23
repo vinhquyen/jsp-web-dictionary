@@ -31,7 +31,7 @@ public class NearWordsController {
      * @throws java.lang.Exception
      */
     public static LinkedList<Entry> getNearWords(String szWord, String lang) throws NamingException, SQLException  {
-        if (szWord.isEmpty())
+        if (szWord.length() == 0)
             return null;
 
         int index, inf, sup;

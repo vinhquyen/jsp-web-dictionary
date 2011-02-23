@@ -111,7 +111,7 @@
                 out.println("Morf: " + mrf + "<br/>");
                 out.print("Definitions: <ol>");
                 for (String aux : arrayDef) {
-                    if(!aux.isEmpty())
+                    if(!aux.length() == 0)
                         out.println("<li>" + aux + "</li>");
                 }
                 out.println("</ol>");
