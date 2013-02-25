@@ -1,0 +1,25 @@
+<%@ page pageEncoding="UTF-8" %>
+
+<nav id="menu" class="grid_3">
+    <div class="menu-item"><a class="<%=active[1] %>" href="index.jsp"><%= r.getString("home")%></a></div>
+    <% if (userLogged) {%>
+    <div class="menu-item">
+        <a href="index.jsp?action=4&amp;mod=add"><%= r.getString("addword")%></a>
+    </div>
+    <% }%>
+    <div class="menu-item">
+        <a href="index.jsp?action=2"><%=r.getString("rnd")%></a>
+    </div>
+    <div class="menu-item">
+        <a class="helpers" data-id="license" href="#"><%=r.getString("license")%></a>
+    </div>
+    <div class="menu-item">
+        <a class="<%=active[3] %>" href="index.jsp?action=3"><%=r.getString("about")%></a>
+    </div>
+    <div class="menu-item">
+        <strong><a class="helpers" data-id="help" href="#"><%=r.getString("help")%></a></strong>
+    </div>
+    <% if(User.moduleEnabled()) { %>
+    <div class="menu-item"><a href="<%=loginPath %>"><%=szLogAction%></a></div>
+    <% } %>
+</nav>

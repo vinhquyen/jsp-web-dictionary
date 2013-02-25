@@ -92,10 +92,10 @@ public class InOut {
 
             szMorf = "<abbr class='morf' title='" + e.longMorf(r.getLocale()) + "'>" + szMorf + "</abbr> ";
 
-            /* Hightlight the results when the words have been found by context search */
+            /* Highlight the results when the words have been found by context search */
             if (szHighLight != null) {
                 String szDef, tagBeg, tagEnd;
-                tagBeg = "<span style='background:yellow;'>";
+                tagBeg = "<span class='highlight'>";
                 tagEnd = "</span>";
 
                 for (int i = 0; i < aDef.size(); i++) {

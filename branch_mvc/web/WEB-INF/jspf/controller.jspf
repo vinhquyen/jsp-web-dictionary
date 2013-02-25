@@ -1,0 +1,62 @@
+<%-- any content can be specified here e.g.: --%>
+<%@ page pageEncoding="UTF-8" %>
+
+<%
+    String szDefaultAction = "WEB-INF/jspf/texty.jsp";
+    String szAction = request.getParameter("action");
+    int iAction = 1;
+    if (szAction != null) {
+        try {
+            iAction = Integer.valueOf(szAction);
+        } catch (Exception e) {
+            //iAction = 1;
+        }
+        switch (iAction) {
+            case 1:
+                szAction = szDefaultAction;
+                break;
+            case 2:
+                String redirectURL = "index.jsp?id=" + Entry.getRandom();
+                response.sendRedirect(redirectURL);
+                break;
+            case 3:
+                szAction = "WEB-INF/jspf/about.jsp";
+                break;
+            case 4:
+                if (userLogged) {
+                    szAction = "WEB-INF/jspf/modifyword.jsp";
+                    break;
+                } else {
+                    szAction = "error_handler.jsp?code=401";
+                    //szAction = "WEB-INF/jspf/login.jsp?service=iAction";
+                    break;
+                }
+            case 5:
+                if (userLogged) {
+                    szAction = "WEB-INF/jspf/delete_word.jsp";
+                    break;
+                } else {
+                    szAction = "error_handler.jsp?code=401";
+                    //szAction = "WEB-INF/jspf/login.jsp?service=iAction";
+                    break;
+                }
+            case 6:
+                if (User.moduleEnabled()) {
+                    String logAction = request.getParameter("log_action");
+                    if (!request.isSecure() && logAction == null) {
+                        InOut.switchSecureMode(request, response);
+                    }
+                    szAction = "WEB-INF/jspf/login.jsp";
+                    break;
+                }
+            default:
+                szAction = szDefaultAction;
+        }
+    } else {
+        szAction = szDefaultAction;
+    }
+    String active[] = new String[6];
+    Arrays.fill(active, "");
+    active[iAction] = "active";
+%>
+

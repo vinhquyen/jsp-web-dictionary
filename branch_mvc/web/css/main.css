@@ -1,333 +1,186 @@
-/** @doc Main style sheet */
-.hidden {
-	display: none; /** @display affects to layout */
-	/* visibility: hidden;*/
+/* 
+    Document   : main
+    Created on : 21-feb-2013, 17:44:14
+    Author     : chiron
+    Description:
+        s2dict main stylesheet
+*/
+html,body {
+    height:100%; /* needed for container min-height */
 }
+ #main-container {height:100%;}
+ #main-content {min-height: 100%;}
+/******/
 
-.cnt {
-    background-color: #DDD;
-	border: 1px dashed #FFF;
-    font-size:smaller;
-    opacity:0.8;
-    padding: 2px;
-    /*position:fixed;*/
-}
-
-.error {
-	color: red;
-    border:1px dashed #daa;
-    background-color:#fdd;
-    color:#033;
-    z-index:5;
-}
-p.error, label.error {
-    font-size: smaller;
-    padding:0.3em;
-}
-
-.ok {
-    border:1px dashed #ada;
-    background-color:#dfd;
-    color:#303;
-    padding:0.3em;
-}
-
-.info { /** TODO: choose good colors */
-    border:1px dashed #e70;
-    background-color:#ff8;
-    color:#007;
-    padding:0.3em;
-    font-size:smaller;
-}
-
-a img {
-    border: 0;
-}
-
-a.add {
-	font-size: 75%;
-	text-decoration: none;
-}
-
-abbr { /* Morphology */
-    border: none; /* by default border-bottom: 1em dotted */
-	color:  gray;
-    cursor: help;
-}
-
-p abbr, li:first-child abbr {
-    color: blue;
+a {
+    color: #f77a01;
+    text-decoration: none;
 }
 
 body {
-    margin: 20px 0px;
-    text-align:center;
+    font-family: 'Roboto', sans-serif;
+    font-size: 62.5%; /** trick 1em == 10px **/
+    font-weight: 300;
 }
 
-div#about {
-	text-align: justify;
+header#main-header {
+    background: url('../images/header_bg.png');
+    height: 115px;
+    margin-bottom: -45px;
+    padding-bottom: 45px;
+    
+    font-family: 'Roboto', sans-serif;
+    font-weight: 100;
 }
-div#about h4 {
-    margin-left: 25px;
-    }
-
-div#about p {
-    margin-left: 50px;
-}
-/** to override div#about p margin... */
-div#manifest p {
-    margin-left: 0px;
-}
-
-div#bar {
-	float: right;
-	font-size: smaller;
-	position: absolute;
-	top: 105px; /* min=100px=header.height()*/
-    right:0px;
-}
-
-div#bar a{
-	color: white;
-	text-decoration: none;
-}
-
-div#bar a:active { 	color: yellow; }
-div#bar a:link {}
-div#bar a:hover {color: black}
-div#bar a:visited {}
-
-div#bar ul { display:inline;}
-
-div#bar ul li{
-	color: white;
-    background-color: #074c87;
-    border-right: 2px solid black;
-    border-bottom: 2px solid black;
-	display: inline;
-    padding:4px 4px 0;
-}
-
-div#bounding_box {
-	margin:0px auto;
-    min-height: 100%;
-    width: 900px;
-}
-
-#contact {
-	background: orange;
-	border: 1px solid black;
-	color: black;
-	font-size: 85%;
-    float:right;
-    margin-top: 5px;
-	padding: 2px 3px;
-}
-
-div#content {
-    clear: both;
-    margin:25px 20px 50px; /*top left-right bottom */
-    text-align:left;
-}
-
-div#counter {
-    border-bottom: 1px solid gray;
-    color: gray;
-	font-size: larger;
-	text-align: right;
-	width: auto;
-}
-
-div#footer {
-    font-size: 0.70em;
-    height: 100px;
-	padding-right: 5px;
-	text-align: right;
-}
-
-div#logos {
+header#main-header #s2-header-title {
+    color: #1f1f1f;
+    font-size: 5em;
+    line-height: 115px;
     text-align: right;
+    text-transform: uppercase;
 }
 
-div#logos img {
-	height: 60px;
-	/*width: 80px;*/
-	margin-left: 12px;
+#main-container {
+    background: /*url('../images/book_img.png') no-repeat 10% 90%,*/ url('../images/bg.png');
+    color: whitesmoke;
+    padding-top: 30px;
+    font-size: 1.6em;
+    position: relative;
 }
 
-div#header {
-    margin-top:30px; /** space to login form */
-    position:relative;
+#main-container #main-content {
+    margin: 2em auto 8em;
 }
 
-div#title {
-/*	background-attachment:fixed;*/
-    background-image: url('../img/bg.png');
-	background-repeat: no-repeat;
-    background-position: right top;
-    /*color: black;*/
-    text-align: center;
-    height:100px; /** height < bg-image.height (150px) */
-    position:relative;
-}
-
-div#title h1 {
-	color: #bbb;
-    margin:0;
-}
-
-div#title h4 {
-	color: yellow;
-    margin:0 auto 15px;
-}
-
-div#lang {
-    /*float: right;*/
+#pilcrow {
+    background: url('../images/pilcrow.png') no-repeat center;
+    margin-bottom: 50px;
     position: absolute;
-    top: 5px;
-    right: 7px;
-    z-index:5;
+    bottom:0;
+    width: 100%;
+    height: 52px;
 }
 
-div#license {
-	background-color: #F7FFCE;
-	border: 1px dashed #AECF00;
-	font-family: courier, serif;
-	font-size: small;
-	position: fixed;
-	right: 3%;
-	bottom: 5%;
-	padding: 10px;
-	text-align: justify;
-	width: 80%;
-	opacity:0.9;
-	z-index: 1;
+/* *****************************
+ *         footer              *
+ *******************************/
+#main-footer {
+    background: url('../images/footer_bg.png');
+    color: whitesmoke;
+    height: 128px;
 }
-
-div#login {
-	/*border-bottom: 1px solid #2222BB;
-	font-size: smaller;
-	height: 22px;
-	position: absolute;
-	top: 1px;
-	right: 5px;*/
+#main-footer #s2-footer {
+    position: relative;
 }
-
-div#manifest, div#help {
-    background-color: black;
-    color: white;
-    font-family:sans-serif;
-    font-size: small;
-    padding: 20px 40px 20px 40px;
-    text-align: justify;
-    position: fixed;
+#main-footer #s2-footer-copy {
+    margin-top: 60px;
+}
+#main-footer #s2-footer-flag {
+    background: url('../images/footer_flag.png');
+    position: absolute;
+    right: 20px;
     top: 0;
-    left:0;
-    margin-left: 10%;
-    margin-top: 15%;
-    opacity:0.9;
-/*    height: 70%; */
-    width: 75%;
-    z-index:10;
-}
-
-div#manifest h3 {
-    font-variant: small-caps;
+    overflow: hidden;
+    
+    padding: 15px 12px 20px;
+    width: 96px;
+    height: 59px;
+    
     text-align: center;
-    margin-bottom: 20px;
 }
 
-div#nearW ul {
-	list-style: none;
+/** menu **/
+#menu .menu-item {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 1.4em;
+    line-height: 1em;
+    text-transform: uppercase;
 }
 
-div.definition { /** new look */
-    background-color: #fceed1;
-    border: 1px dotted gray;
-    font-family: sans-serif, verdana;
-    margin:0 auto 10px; /*top right&left bottom */
-    width: 410px;
-/*    padding-top: 1px;
-    padding-bottom: 1px; */
+#menu .menu-item a {
+    color: #636363;
+    text-decoration: none;
 }
 
-div.definition a {background-color:inherit;color:blue;}
-
-#addForm label.name { width: 8em; float: left; margin-left: .5em; }
-#addForm label.error { color: red; vertical-align:top; float:right; margin-right:8em;}
-#addForm a {color:blue;font-family:monospace; vertical-align:top; text-decoration:none; }
-
-#info_morf, #info_word {
-    float:right;
-    font-size:0.7em;
-    max-height:2.5em;
-    max-width:450px;
-    overflow:hidden;
+#menu .menu-item a.active {
+    color: #f77a01;
 }
 
-.left { /** new look */
-       float:left;
-       margin-left: 10px;
+/** form staff **/
+#search_bar {
+    background: url('../images/search_divisor.jpg') repeat-x right bottom;
+    text-align: right;
+    padding-bottom: 25px;
+}
+#search_bar label.ui-state-default {
+    font-weight: 300; /* @override jqueryui */
+}
+#id_q {
+    background: url('../images/search_form.png');
+    border: 0;
+    outline: 0;
+    
+    padding-left: 25px;
+    padding-right: 60px;
+    height: 60px;
+    width: 245px;
 }
 
-div.result ul li{
-	font-style: italic;
-	margin-bottom: 3px;
+#mode {
+    display: inline-block;
 }
 
-div.result h3 { /** new look */
+/** dictionary search results definitions **/
+ .definition {
+    font-family: "Times New Roman", Times, serif;
+    margin-bottom: 1em;
+ }
+
+.definition h3 {
+    font-size: 1.2em;
     padding-left: 15px;
     padding-right: 25px;
 }
-div.result p, div.result ul li { /** new look */
+.definition p, .definition ul li {
     padding-left: 35px;
     padding-right: 25px;
     text-align: justify;
 }
 
-div.result dl {
+.definition dl {
     padding-left: 50px;
 }
 
-div#search {
-	margin-bottom: 15px; /** Space for the conextual help */
+.definition dt {
+    float: left;
+    margin-right: 1em;
+    font-weight: bold;
+}
+.definition .example {
+    font-style:italic;
+}
+.definition .highlight {
+    background: #f77a01;
 }
 
-
-dt{
-    width:2em;
-    float:left;
-    font-family: monospace;
+/** about **/
+#about h3 {
+    margin-top: 1.2em;
+    margin-bottom: 0.5em;
+}
+#about h4 {
+    margin-top: 1.2em;
+}
+#about h3 + h4 {
+    margin-top: 0.5em;
 }
 
-dd{
-    /*margin-left:3em;*/
-    margin-bottom:5px;
+#about p {
+    margin-bottom: 0.6em;
 }
 
-img.arroba {
-    border:0;
-    height:10px;
-    width:12px;
-    vertical-align:middle;
-}
-
-img#home {
-    background-color: white;
-}
-
-a:hover img#home {
-    background-color: black;
-}
-
-img#gpl_logo {
-	 float:left;
-	 padding-right: 5px;
-}
-
-img#logo {
-	border: 0;
-	opacity:0.8;
-	width: 175px;
-	height: 80px;
+#w3counter {
+    float: right;
+    margin-right: 30px;
+    margin-top: 24px;
 }

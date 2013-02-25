@@ -1,5 +1,6 @@
 package database;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -455,7 +456,7 @@ public class Entry {
      * @throws javax.naming.NamingException
      * @throws java.sql.SQLException
      */
-    public static ArrayList<Entry> getWordInContext(String szWord) throws NamingException, SQLException {
+    public static ArrayList<Entry> getWordInContext(String szWord, int page, javax.servlet.jsp.JspWriter out) throws NamingException, SQLException, IOException {
         if (szWord == null || szWord.trim().length() == 0)
             return null;
 
@@ -465,13 +466,15 @@ public class Entry {
         ResultSet rs = null;
         PreparedStatement st = null;
 
+        int n_reg = 10;
+        int start = page * n_reg;
+
         // [[:<:]], [[:>:]]  These markers stand for word boundaries (match beginning and end words, respectively
         szRegExpr = "([[:<:]]|«)"; //Begin
         szRegExpr += szWord.toLowerCase();
         szRegExpr += "(»|[[:>:]])"; //End
 
-        String szSQL = "SELECT id FROM word_definition WHERE LOWER(definition) REGEXP ? LIMIT 0 , 10";
-
+        String szSQL = "SELECT id FROM word_definition WHERE LOWER(definition) REGEXP ? LIMIT " + start + "," + n_reg;
         try {
             co = DBManager.initConnection();
             st = co.prepareStatement(szSQL);
@@ -481,6 +484,27 @@ public class Entry {
             // Get the ID of the searched WORD
             while (rs.next())
                 res.add(searchDefinition(rs.getInt("id")));
+
+            szSQL = "SELECT COUNT(id) as count FROM word_definition WHERE LOWER(definition) REGEXP ?";
+            st = co.prepareStatement(szSQL);
+            st.setString(1, szRegExpr);
+            rs = st.executeQuery();
+            rs.next();
+            
+            int iCount = rs.getInt("count");
+            int maxPage = (int) Math.ceil(iCount/n_reg);
+
+            out.println("<div id='navbar' style='text-align:center;margin-bottom:1em'>");
+            if(page > 0) out.println("<a href='index.jsp?word="+szWord+"&amp;cnt=Contextual&amp;pag="+(page-1)+"'>&lt;</a>");
+            for(int i=0; i <= maxPage; i++) {
+                if(i == page) {
+                    out.print(" [" + (i+1) + "] ");
+                } else {
+                    out.println("<a href='index.jsp?word="+szWord+"&amp;cnt=Contextual&amp;pag="+i+"'>"+(i+1)+"</a>");
+                }
+            }
+            if(page < maxPage) out.println("<a href='index.jsp?word="+szWord+"&amp;cnt=Contextual&amp;pag="+(page+1)+"'>&gt;</a>");
+            out.println("</div>");
 
         } finally {
             DBManager.closeConnection(co, st, rs);

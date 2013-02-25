@@ -4,7 +4,7 @@
     Author     : chiron
 --%>
 <%@ page pageEncoding="UTF-8" %>
-<div id="manifest" class="hidden" onclick="$('#manifest').hide(400);">
+<div id="manifest" class="ui-helper-hidden">
     <h3>Manifiesto: presentasión del dicsionari dichital</h3>
 
     <p>Iste treball que hem feto, de puy&aacute; al m&oacute;n dichital el dicsionari del

@@ -15,7 +15,8 @@
     //DEBUG out.print(loginPath);
 %>
 
-<div id="header">
+<header id="main-header">
+  <div id="s2-header" class="container_16">
     <div id="lang">
         <select name="lang" onchange="changeLang(this.value)">
             <option value="">[<%=r.getString("lng")%>]</option>
@@ -26,33 +27,14 @@
             <option value="es">espa&ntilde;ol</option>
         </select>
     </div>
-    <div id="title">
-        <div style="float:left; margin:10px 10px;">
-            <a href="index.jsp"><img style="margin-right:30px;"
-                                 id="logo" src="img/dict.jpg" alt="home" /></a></div>
-        <div style="float:left;margin-top:15px;">
-            <h1><%= r.getString("title")%></h1>
-            <h4>JSP-Tech Web Dictionary <%= rConf.getString("version")%></h4>
-        </div>
+    <div id="s2-header-logo" class="grid_3">
+        <a href="index.jsp">
+            <img id="logo" alt="dictionary logo" src="images/logo.jpg" />
+         </a>
     </div>
-    <div id="bar">
-        <ul id="navigator">
-            <li><a href="index.jsp"><img id="home" alt="<%= r.getString("home")%>" src="img/home.png"/> <%= r.getString("home")%></a></li>
-            <% if (userLogged) {%>
-            <li><a href="index.jsp?action=4&amp;mod=add"><%= r.getString("addword")%></a></li>
-            <% }%>
-            <li><a href="index.jsp?action=2"><%=r.getString("rnd")%></a></li>
-            <li><a id="tog-license" href="#"><%=r.getString("license")%></a></li>
-            <li><a id="tog-contact" href="#"><%=r.getString("contact")%></a></li>
-            <li><a href="index.jsp?action=3"><%=r.getString("about")%></a></li>
-            <li><strong><a id="tog-help" href="#"><%=r.getString("help")%></a></strong></li>
-        <% if(User.moduleEnabled()) { %>
-            <li><a href="<%=loginPath %>"><%=szLogAction%></a></li>
-        <% } %>
-        </ul><br/>
-        <label id="contact" class="hidden">
-            <em>admin947<img src="img/arroba.gif" alt="@" class="arroba" />gmail.com</em>
-        </label>
+    <div id="s2-header-title" class="grid_13">
+            <%= r.getString("title")%>
+            <%--<h4>JSP-Tech Web Dictionary <%= rConf.getString("version")%></h4> --%>
     </div>
-</div> <!-- End of HEADER -->
-<div style="clear:both;"></div><!-- Avoid problem with previous float stlyes in header -->
+  </div> <!-- End of HEADER -->
+</header>

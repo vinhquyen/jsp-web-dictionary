@@ -1,0 +1,45 @@
+<%@page pageEncoding="UTF-8" %>
+<%@page import="java.util.HashMap" %>
+<%@page import="java.util.Arrays" %>
+
+<%  // keep previous search options
+    String caseInsensitive = request.getParameter("insensitive");
+    String szChk = "";
+
+    if(caseInsensitive != null && caseInsensitive.equalsIgnoreCase("on")) {
+        szChk = "checked";
+    }
+
+    String modeOpt = request.getParameter("mode");
+    HashMap<String, String> mode = new HashMap<String, String>();
+    String[] langs = {"be", "es", "fr", "ar", "ca"};
+    if(modeOpt == null || !Arrays.asList(langs).contains(modeOpt)) {
+        modeOpt = "be";
+    }
+    
+    mode.put(modeOpt, "checked");
+
+%>
+<div id="search_bar">
+    <form  id="s_word" action="index.jsp" accept-charset="utf-8">
+
+        <div id="mode">
+            <input type="radio" id="mode1" name="mode" value="be" <%=mode.get("be") %>>
+            <label for="mode1" title="búsqueda en benasques">be</label>
+            <input type="radio" id="mode2" name="mode" value="es" <%=mode.get("es") %>>
+            <label for="mode2" title="búsqueda en español">es</label>
+            <input type="radio" id="mode3" name="mode" value="fr" <%=mode.get("fr") %>>
+            <label for="mode3" title="búsqueda en francés">fr</label>
+            <input type="radio" id="mode4" name="mode" value="ar" <%=mode.get("ar") %>>
+            <label for="mode4" title="búsqueda en aragonés">ar</label>
+            <input type="radio" id="mode5" name="mode" value="ca" <%=mode.get("ca") %>>
+            <label for="mode5" title="búsqueda en catalán">ca</label>
+            <input type="radio" id="mode6" name="mode" value="context" <%=mode.get("context") %>>
+            <label for="mode6" title="búsqueda contextual">context</label>
+        </div>
+
+        <input id="id_q" type="text" name="word" tabindex="1" /><br/>
+        <label for="ci"><%=r.getString("accentInsensitive") %></label>
+        <input type="checkbox" id="ci" name="insensitive" <%=szChk%> />
+    </form>
+</div>

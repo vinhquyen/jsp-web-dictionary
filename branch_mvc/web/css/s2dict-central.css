@@ -1,0 +1,20 @@
+/* 
+    Document   : s2dict-central
+    Created on : 21-feb-2013, 17:44:14
+    Author     : chiron
+    Description:
+        For prototyping and working with several, reusable stylesheets, YAML
+        uses central stylesheets that import all other stylesheets. 
+*/
+
+/* Google Font API 
+@import url("http://fonts.googleapis.com/css?family=Droid+Serif");
+@import url("http://fonts.googleapis.com/css?family=Droid+Sans:700"); */
+
+/* import 960gs */
+@import url("960gs/960.css");
+@import url("960gs/reset.css");
+
+/* import project stuff */
+@import url("main.css");
+@import url("fonts.css");

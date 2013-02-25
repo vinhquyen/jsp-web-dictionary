@@ -22,7 +22,7 @@
     <p>
         <%=MessageFormat.format(rAbout.getString("author") + " ", rAbout.getString("uri_guayen"))%>
         <%
-        String mail = "<strong>admin947<img src='img/arroba.gif' alt='@' class='arroba'" +
+        String mail = "<strong>admin947<img src='images/arroba.gif' alt='@' class='arroba'" +
                 " />gmail.com</strong>";%>
         <%=MessageFormat.format(rAbout.getString("colaborate"), mail)%>
 
@@ -38,10 +38,10 @@
 
     <!-- Logos sponsors -->
     <div id="logos">
-        <img src="img/guayen.png" alt="Asociaci&oacute;n Guayente" />
-        <img src="img/tomcat.gif" alt="Powered by Tomcat" />
-        <img src="img/mysql.png" alt="MySQL Powered" />
-        <img src="img/java.jpg" alt="Java Powered" />
+        <img src="images/guayen.png" alt="Asociaci&oacute;n Guayente" />
+        <img src="images/tomcat.png" alt="Powered by Tomcat" />
+        <img src="images/mysql.png" alt="MySQL Powered" />
+        <img src="images/java.png" alt="Java Powered" />
     </div>
 
     <!-- Benasque's manifest -->

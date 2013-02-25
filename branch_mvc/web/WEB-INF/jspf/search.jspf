@@ -6,46 +6,8 @@
 <%@page import="database.*" %>
 <%@page import="java.text.MessageFormat" %>
 <%@page import="java.util.*" %>
+<%@page import="java.util.HashMap" %>
 
-<%@ include file="lang.jspf" %>
-
-<%
-    String caseInsensitive = request.getParameter("insensitive");
-    String szChk = "";
-
-    if(caseInsensitive != null && caseInsensitive.equalsIgnoreCase("on")) {
-        szChk = "checked='on'";
-    }
-%>
-<div id="search">
-    <form  id="s_word" action="index.jsp" accept-charset="utf-8">
-        <p>
-            <label><%= r.getString("searchLab")%></label>
-            <input id="input_search" type="text" name="word" tabindex="1" />
-            <input type="image" src="img/search.png" alt="<%= r.getString("submit")%>"
-                   style="position:relative; top:8px;" onmouseover="show('be');" onmouseout="hide('be');"/>
-
-            <input type="submit" name="lng" value="ar" onmouseover="show(this.value);" onmouseout="hide(this.value);"/>
-            <input type="submit" name="lng" value="ca" onmouseover="show(this.value);" onmouseout="hide(this.value);"/>
-            <input type="submit" name="lng" value="es" onmouseover="show(this.value);" onmouseout="hide(this.value);"/>
-            <input type="submit" name="lng" value="fr" onmouseover="show(this.value);" onmouseout="hide(this.value);"/>
-            <input type="submit" name="cnt" value="<%=r.getString("context") %>" onmouseover="show('cnt');" onmouseout="hide('cnt');"/>
-            <input type="checkbox" id="ci" name="insensitive" <%=szChk%> />
-            <label style="font-size:0.8em;" onclick="setChecked('ci')" onmouseover="show('help_ci')"
-                onmouseout="hide('help_ci')"><%=r.getString("accentInsensitive") %></label>
-        </p>
-        <p style="height:10px;position:relative;top:-12px;z-index:5;">
-            <% String szCtx = r.getString("help_lng");%>
-            <span id="be"  class="hidden cnt"><%= MessageFormat.format(szCtx, r.getString("lng_be")).replace(".", " ") + r.getString("by_default")%>.</span>
-            <span id="ar"  class="hidden cnt"><%= MessageFormat.format(szCtx, r.getString("lng_ar"))%></span>
-            <span id="ca"  class="hidden cnt"><%= MessageFormat.format(szCtx, r.getString("lng_ca"))%></span>
-            <span id="es"  class="hidden cnt"><%= MessageFormat.format(szCtx, r.getString("lng_es"))%></span>
-            <span id="fr"  class="hidden cnt"><%= MessageFormat.format(szCtx, r.getString("lng_fr"))%></span>
-            <span id="cnt" class="hidden cnt"><%= r.getString("help_cnt")%></span>
-            <span id="help_ci"  class="hidden cnt"><%= r.getString("help_ci")%></span>
-        </p>
-    </form>
-</div>
 <div class="result">
     <%
     String paramEncoding = application.getInitParameter("parameter-encoding");
@@ -54,7 +16,7 @@
     ArrayList<Entry> aDef = null;
     String szId = request.getParameter("id");
     String szWord = request.getParameter("word");
-    String lng = request.getParameter("lng");
+    String lng = request.getParameter("mode");
 
     int idWord = 0;
     String szHighLight = null;
@@ -80,8 +42,11 @@
                 if (lng == null) {
                     lng = "be"; // Set the default language
                 }
-                if (request.getParameter("cnt") != null) {
-                    aDef = Entry.getWordInContext(szWord);
+                if (lng.equalsIgnoreCase("context")) {
+                    String szPag = request.getParameter("pag");
+                    if(szPag == null) szPag = "0";
+                    int pag = Integer.valueOf(szPag);
+                    aDef = Entry.getWordInContext(szWord, pag, out);
                     szHighLight = szWord;
                 } else {
                     aDef = Entry.searchDefinition(szWord, lng, caseInsensitive);
@@ -161,7 +126,7 @@
                 if ( i == Math.ceil((double)aDef.size() / 2) + 1 )   { out.print("\n</div>\n<div id='col_right' class='left'>\n"); }
                 if ( i == aDef.size() + 1 )     { out.print("</div>\n"); }
             } %>
-            <script type='text/javascript'>adjustColsHeigh();</script><%
+            <script type='text/javascript'>//adjustColsHeigh();</script><%
         }
     }
     %>
