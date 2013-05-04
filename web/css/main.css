@@ -1,0 +1,186 @@
+/* 
+    Document   : main
+    Created on : 21-feb-2013, 17:44:14
+    Author     : chiron
+    Description:
+        s2dict main stylesheet
+*/
+html,body {
+    height:100%; /* needed for container min-height */
+}
+ #main-container {height:100%;}
+ #main-content {min-height: 100%;}
+/******/
+
+a {
+    color: #f77a01;
+    text-decoration: none;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    font-size: 62.5%; /** trick 1em == 10px **/
+    font-weight: 300;
+}
+
+header#main-header {
+    background: url('../images/header_bg.png');
+    height: 115px;
+    margin-bottom: -45px;
+    padding-bottom: 45px;
+    
+    font-family: 'Roboto', sans-serif;
+    font-weight: 100;
+}
+header#main-header #s2-header-title {
+    color: #1f1f1f;
+    font-size: 5em;
+    line-height: 115px;
+    text-align: right;
+    text-transform: uppercase;
+}
+
+#main-container {
+    background: /*url('../images/book_img.png') no-repeat 10% 90%,*/ url('../images/bg.png');
+    color: whitesmoke;
+    padding-top: 30px;
+    font-size: 1.6em;
+    position: relative;
+}
+
+#main-container #main-content {
+    margin: 2em auto 8em;
+}
+
+#pilcrow {
+    background: url('../images/pilcrow.png') no-repeat center;
+    margin-bottom: 50px;
+    position: absolute;
+    bottom:0;
+    width: 100%;
+    height: 52px;
+}
+
+/* *****************************
+ *         footer              *
+ *******************************/
+#main-footer {
+    background: url('../images/footer_bg.png');
+    color: whitesmoke;
+    height: 128px;
+}
+#main-footer #s2-footer {
+    position: relative;
+}
+#main-footer #s2-footer-copy {
+    margin-top: 60px;
+}
+#main-footer #s2-footer-flag {
+    background: url('../images/footer_flag.png');
+    position: absolute;
+    right: 20px;
+    top: 0;
+    overflow: hidden;
+    
+    padding: 15px 12px 20px;
+    width: 96px;
+    height: 59px;
+    
+    text-align: center;
+}
+
+/** menu **/
+#menu .menu-item {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 1.4em;
+    line-height: 1em;
+    text-transform: uppercase;
+}
+
+#menu .menu-item a {
+    color: #636363;
+    text-decoration: none;
+}
+
+#menu .menu-item a.active {
+    color: #f77a01;
+}
+
+/** form staff **/
+#search_bar {
+    background: url('../images/search_divisor.jpg') repeat-x right bottom;
+    text-align: right;
+    padding-bottom: 25px;
+}
+#search_bar label.ui-state-default {
+    font-weight: 300; /* @override jqueryui */
+}
+#id_q {
+    background: url('../images/search_form.png');
+    border: 0;
+    outline: 0;
+    
+    padding-left: 25px;
+    padding-right: 60px;
+    height: 60px;
+    width: 245px;
+}
+
+#mode {
+    display: inline-block;
+}
+
+/** dictionary search results definitions **/
+ .definition {
+    font-family: "Times New Roman", Times, serif;
+    margin-bottom: 1em;
+ }
+
+.definition h3 {
+    font-size: 1.2em;
+    padding-left: 15px;
+    padding-right: 25px;
+}
+.definition p, .definition ul li {
+    padding-left: 35px;
+    padding-right: 25px;
+    text-align: justify;
+}
+
+.definition dl {
+    padding-left: 50px;
+}
+
+.definition dt {
+    float: left;
+    margin-right: 1em;
+    font-weight: bold;
+}
+.definition .example {
+    font-style:italic;
+}
+.definition .highlight {
+    background: #f77a01;
+}
+
+/** about **/
+#about h3 {
+    margin-top: 1.2em;
+    margin-bottom: 0.5em;
+}
+#about h4 {
+    margin-top: 1.2em;
+}
+#about h3 + h4 {
+    margin-top: 0.5em;
+}
+
+#about p {
+    margin-bottom: 0.6em;
+}
+
+#w3counter {
+    float: right;
+    margin-right: 30px;
+    margin-top: 24px;
+}

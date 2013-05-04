@@ -1,0 +1,37 @@
+<%-- any content can be specified here e.g.: --%>
+<%@ page pageEncoding="UTF-8" %>
+
+<footer id="main-footer">
+    <div id="s2-footer" class="container_16">
+        <div id="s2-footer-copy">
+            <% // Copyright advisement
+            String szAutor, szCopy, szLib;
+            szLib = "<span style='text-decoration:underline;'>Diccionario del Benasqu&eacute;s</span>";
+            szAutor = "&Aacute;ngel Ballar&iacute;n Cornel";
+            szCopy = "Copyright&copy; " + szAutor + ", Zaragoza, 1978";
+            out.print(MessageFormat.format(rCopy.getString("copydict"), szLib, szAutor, szCopy));
+            // stats
+            if(rConf.getString("statsModule").equalsIgnoreCase("enabled")/*User.moduleEnabled()*/) { %>
+                <%@include file="stats.jspf"  %> <!--TODO: ENABLE stats --> <%
+            } %>
+        </div>
+        <div id="s2-footer-flag">
+            <div id="counter">
+            <%=MessageFormat.format(r.getString("counter"), DBManager.getSizeDB()) %>
+            </div>
+        </div>
+        
+    </div><!-- End of Footer -->
+</footer>
+
+<div id="help" class="ui-helper-hidden" onclick="$('#help').hide(400)">
+    <% String szHelpDiv = "WEB-INF/jspf/" + r.getString("help_div");%>
+    <jsp:include page="<%=szHelpDiv%>" />
+</div>
+
+<div id="license" class="ui-helper-hidden" onclick="$('#license').hide(400);">
+    <p><img id="gpl_logo" src="img/gplv3.png" alt="GPL v3 logo"/>
+        Copyright&copy; Santiago Lamora Subir&aacute; <%=Calendar.getInstance().get(Calendar.YEAR)%>
+    </p>
+    <jsp:include page='<%=r.getString("licTxt") %>' />
+</div>

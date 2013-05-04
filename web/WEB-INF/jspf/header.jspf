@@ -1,0 +1,40 @@
+<%-- any content can be specified here e.g.: --%>
+<%@ page pageEncoding="UTF-8" %>
+
+<%
+    StringBuffer loginPath = request.getRequestURL().append("?action=6");
+    //loginPath.insert(4, "s");
+    //loginPath.replace(8180, 8443)
+    String szLogAction;
+    if (userLogged) {
+       szLogAction = "Log Out";
+       loginPath.append("&log_action=logout");
+       } else {
+        szLogAction = "Log In";
+    }
+    //DEBUG out.print(loginPath);
+%>
+
+<header id="main-header">
+  <div id="s2-header" class="container_16">
+    <div id="lang">
+        <select name="lang" onchange="changeLang(this.value)">
+            <option value="">[<%=r.getString("lng")%>]</option>
+            <option value="an">aragon&eacute;s</option>
+            <option value="an_BE">benasqu&eacute;s</option>
+            <option value="ca">catal&agrave;</option>
+            <option value="en">english</option>
+            <option value="es">espa&ntilde;ol</option>
+        </select>
+    </div>
+    <div id="s2-header-logo" class="grid_3">
+        <a href="index.jsp">
+            <img id="logo" alt="dictionary logo" src="images/logo.jpg" />
+         </a>
+    </div>
+    <div id="s2-header-title" class="grid_13">
+            <%= r.getString("title")%>
+            <%--<h4>JSP-Tech Web Dictionary <%= rConf.getString("version")%></h4> --%>
+    </div>
+  </div> <!-- End of HEADER -->
+</header>

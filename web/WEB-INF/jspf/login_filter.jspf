@@ -1,0 +1,10 @@
+
+<%@ page pageEncoding="UTF-8" %>
+<%@page import="database.User" %>
+
+
+<form method="post" action="j_security_check">
+    <label>user: </label><input name="j_username" size=10>
+    <label>pass: </label><input type="j_password" name="passwd" size=10>
+    <input type="submit" name="action" value="login">
+</form>

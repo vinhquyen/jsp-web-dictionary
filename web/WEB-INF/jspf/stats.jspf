@@ -1,0 +1,35 @@
+<%@ page pageEncoding="UTF-8" %>
+
+<!-- Begin W3Counter Tracking Code -->
+<div id="w3counter">
+<script type="text/javascript" src="http://www.w3counter.com/tracker.js"></script>
+<script type="text/javascript">
+	w3counter(17544);
+</script>
+<object> <!-- this tag has been added to W3C-XHTML compliance -->
+  <noscript>
+      <p>
+        <a href="http://www.w3counter.com"><img
+          src="http://www.w3counter.com/tracker.php?id=17544" style="border: 0"
+          alt="W3Counter" /></a>
+      </p>
+  </noscript>
+</object>
+</div>
+<!-- End W3Counter Tracking Code-->
+
+<!-- Begin Google Analytics -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4057569-2']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+<!-- End Google Analytics -->
